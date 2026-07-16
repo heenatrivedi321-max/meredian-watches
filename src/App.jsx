@@ -140,7 +140,7 @@ export default function App() {
 
           <div className="video-dimmer absolute inset-0 bg-black z-25 pointer-events-none" style={{ opacity: 0 }} />
 
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80 z-30 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/50 z-30 pointer-events-none" />
         </div>
 
         {/* NAVIGATION */}
