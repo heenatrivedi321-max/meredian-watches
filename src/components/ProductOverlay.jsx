@@ -45,7 +45,7 @@ export default function ProductOverlay({ watch, onClose }) {
         {/* Close Button */}
         <button 
           onClick={onClose}
-          className="fixed top-6 right-6 lg:top-10 lg:right-10 z-[100] w-12 h-12 rounded-full border border-black/10 bg-white/50 backdrop-blur-xl flex items-center justify-center hover:bg-black hover:text-white hover:scale-110 transition-all duration-300 shadow-xl text-black"
+          className="fixed top-4 right-4 sm:top-6 sm:right-6 lg:top-10 lg:right-10 z-[100] w-11 h-11 sm:w-12 sm:h-12 rounded-full border border-black/10 bg-black/5 backdrop-blur-xl flex items-center justify-center hover:bg-black hover:text-white hover:scale-110 transition-all duration-300 shadow-xl text-black"
         >
           <X size={20} strokeWidth={2} />
         </button>
@@ -286,7 +286,7 @@ export default function ProductOverlay({ watch, onClose }) {
               {watch.outOfStock ? (
                 <button 
                   onClick={() => window.location.href = `https://wa.me/918431724851?text=Hi%2C%20I%27m%20interested%20in%20the%20${encodeURIComponent(watch.brand + ' ' + watch.model)}.%20Is%20it%20available%3F`}
-                  className="px-8 sm:px-14 py-5 sm:py-7 bg-white/10 border border-white/20 text-white hover:bg-white/20 hover:scale-[1.01] active:scale-[0.99] rounded-full text-xs sm:text-sm tracking-[0.2em] uppercase font-bold transition-all duration-300 flex items-center justify-center gap-3 sm:gap-4"
+                  className="px-8 sm:px-14 py-5 sm:py-7 bg-black/5 border border-black/10 text-black hover:bg-black hover:text-white hover:scale-[1.01] active:scale-[0.99] rounded-full text-xs sm:text-sm tracking-[0.2em] uppercase font-bold transition-all duration-300 flex items-center justify-center gap-3 sm:gap-4"
                 >
                   Notify Me — WhatsApp
                 </button>
@@ -305,7 +305,7 @@ export default function ProductOverlay({ watch, onClose }) {
                       window.location.href = checkout.webUrl;
                     } catch (err) {
                       console.warn("SDK checkout failed, falling back to cart URL:", err);
-                      window.location.href = `https://meridianwatches.store/cart/${watch.shopifyVariantId}:1`;
+                      window.location.href = `https://posterempire.vercel.app/cart/${watch.shopifyVariantId}:1`;
                     }
                   }}
                   disabled={isRedirecting}

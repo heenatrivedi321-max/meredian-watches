@@ -48,8 +48,8 @@ export default function ReviewsMarquee() {
       </div>
       
       {/* Gradient fades on edges so it doesn't pop in/out harshly */}
-      <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-      <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+      <div className="absolute inset-y-0 left-0 w-12 sm:w-32 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+      <div className="absolute inset-y-0 right-0 w-12 sm:w-32 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
       
     </section>
   );

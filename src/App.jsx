@@ -145,16 +145,16 @@ export default function App() {
 
         {/* NAVIGATION */}
         <nav className="fixed top-0 left-0 w-full h-16 sm:h-20 lg:h-24 z-50 flex items-center justify-between px-4 sm:px-8 lg:px-12 pointer-events-auto mix-blend-difference">
-          <button onClick={() => setShowBrand(true)} className="flex-1 text-left text-[9px] sm:text-[10px] tracking-[0.3em] font-light uppercase hover:opacity-50 transition-opacity cursor-pointer">Heritage</button>
+          <button onClick={() => setShowBrand(true)} className="flex-1 text-left text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] font-light uppercase hover:opacity-50 transition-opacity cursor-pointer">Heritage</button>
           <div className="flex-1 flex justify-center">
-            <img src="/logo.jpg" alt="Meridian Logo" className="h-10 sm:h-14 lg:h-20 w-auto object-contain drop-shadow-[0_0_20px_rgba(255,0,0,0.5)] hover:scale-105 transition-transform cursor-pointer" />
+            <img src="/logo.jpg" alt="Meridian Logo" className="h-10 sm:h-14 lg:h-20 w-auto object-contain drop-shadow-[0_0_15px_rgba(201,169,110,0.4)] hover:scale-105 transition-transform cursor-pointer" />
           </div>
           <div 
             onClick={() => {
               const grid = document.querySelector('.max-w-screen-2xl');
               if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }}
-            className="flex-1 text-right text-[9px] sm:text-[10px] tracking-[0.3em] font-light uppercase hover:opacity-50 transition-opacity cursor-pointer"
+            className="flex-1 text-right text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] font-light uppercase hover:opacity-50 transition-opacity cursor-pointer"
           >
             Collection
           </div>
@@ -190,7 +190,7 @@ export default function App() {
                 Logic Defied
               </h2>
               <h1 
-                className="text-[3.5rem] sm:text-6xl md:text-[6rem] lg:text-[8rem] font-bold tracking-tighter leading-none drop-shadow-2xl premium-shimmer" 
+                className="text-[2.2rem] sm:text-6xl md:text-[6rem] lg:text-[8rem] font-bold tracking-tighter leading-none drop-shadow-2xl premium-shimmer" 
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 MERIDIAN

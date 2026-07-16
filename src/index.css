@@ -54,6 +54,17 @@
   background: #444; 
 }
 
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #222 #050505;
+}
+
+/* Mobile safe area insets for floating buttons */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 @keyframes rainbow-shimmer-smooth {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }

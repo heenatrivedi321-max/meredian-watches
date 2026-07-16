@@ -14,9 +14,9 @@ export default function BrandStory({ onClose }) {
     <div className="fixed inset-0 z-[150] bg-[#0a0a0a] text-white overflow-y-auto">
       <button
         onClick={onClose}
-        className="fixed top-6 right-6 z-[200] text-[10px] tracking-[0.3em] uppercase font-bold text-white/50 hover:text-white transition-colors"
+        className="fixed top-4 right-4 z-[200] w-12 h-12 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white/60 hover:text-white hover:bg-white/20 transition-colors text-[10px] tracking-[0.3em] uppercase font-bold"
       >
-        Close
+        ✕
       </button>
 
       {/* Hero */}

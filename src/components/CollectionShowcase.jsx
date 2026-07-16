@@ -89,7 +89,7 @@ function ProductCard({ watch, index, onClick }) {
       onClick={() => onClick(watch)}
       style={{
         backgroundColor: '#ffffff',
-        minHeight: 'min(520px, 65vh)',
+        minHeight: 'min(520px, 70vh)',
       }}
       onMouseEnter={() => {
         setIsHovered(true);
