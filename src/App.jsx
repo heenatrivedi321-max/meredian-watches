@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import CollectionShowcase from './components/CollectionShowcase';
@@ -8,6 +8,7 @@ import ScrollToTop from './components/ScrollToTop';
 import BrandStory from './components/BrandStory';
 import ProductSchema from './components/ProductSchema';
 import InstagramFeed from './components/InstagramFeed';
+import IntroSplash from './components/IntroSplash';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,6 +16,8 @@ export default function App() {
   const mainRef = useRef(null);
   const [selectedWatch, setSelectedWatch] = useState(null);
   const [showBrand, setShowBrand] = useState(false);
+  const [introDone, setIntroDone] = useState(false);
+  const handleIntroComplete = useCallback(() => setIntroDone(true), []);
 
   useEffect(() => {
     let ctx = gsap.context(() => {
@@ -106,6 +109,9 @@ export default function App() {
 
   return (
     <>
+      {/* Intro Splash */}
+      {!introDone && <IntroSplash onComplete={handleIntroComplete} />}
+
       {/* Product Schema for SEO */}
       <ProductSchema watch={selectedWatch} />
 
@@ -115,7 +121,7 @@ export default function App() {
         <div className="fixed inset-0 w-full h-screen z-0 pointer-events-none bg-black overflow-hidden">
           
           <video 
-            autoPlay loop muted playsInline preload="auto"
+            autoPlay loop muted playsInline preload="auto" fetchPriority="high"
             className="absolute inset-0 w-full h-full object-cover opacity-90"
             style={{ transform: 'scale(1.3) translateZ(0)', willChange: 'transform' }}
           >
