@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #0a0908;
+  --color-surface: #111111;
+  --color-primary: #f5e5ce;
+  --color-accent: #d89c44;
+  
+  --font-sans: "Outfit", sans-serif;
+  --font-serif: "Playfair Display", serif;
+  --font-anton: "Anton", sans-serif;
+}
+
+@layer base {
+  :root {
+    --bg-color: #0a0908;
+    --text-color: #f5e5ce;
+    --accent-gold: #d89c44;
+  }
+  
+  body {
+    @apply bg-[var(--bg-color)] text-[var(--text-color)] font-sans antialiased overflow-x-hidden selection:bg-[var(--accent-gold)] selection:text-[var(--bg-color)];
+  }
+}
+
+@layer utilities {
+  .text-outline {
+    -webkit-text-stroke: 1px var(--text-color);
+    color: transparent;
+  }
+  
+  .text-outline-thick {
+    -webkit-text-stroke: 3px var(--text-color);
+    color: transparent;
+  }
+
+  .font-anton {
+    font-family: 'Anton', sans-serif;
+  }
+}
+
+/* Hide scrollbar for cleaner look */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #050505; 
+}
+::-webkit-scrollbar-thumb {
+  background: #222; 
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #444; 
+}
+
+@keyframes rainbow-shimmer-smooth {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@layer utilities {
+  .rainbow-shimmer {
+    background: linear-gradient(
+      to right,
+      #ffffff 10%,
+      #cbb2ff 30%,
+      #ffffff 50%,
+      #cbb2ff 70%,
+      #ffffff 90%
+    );
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbow-shimmer-smooth 3s ease-in-out infinite;
+    color: transparent;
+    -webkit-text-stroke: 0px !important;
+  }
+}
+
+@keyframes holographic-fluid {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.holographic-bg {
+  background: linear-gradient(
+    -45deg,
+    #ff0080,
+    #ff8c00,
+    #40e0d0,
+    #8a2be2,
+    #ff0080
+  );
+  background-size: 400% 400%;
+  animation: holographic-fluid 15s ease infinite;
+}
+
+.holographic-border {
+  position: relative;
+  background: transparent;
+}
+.holographic-border::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(
+    -45deg,
+    #ff0080,
+    #ff8c00,
+    #40e0d0,
+    #8a2be2,
+    #ff0080
+  );
+  background-size: 400% 400%;
+  animation: holographic-fluid 8s ease infinite;
+  -webkit-mask: 
+     linear-gradient(#fff 0 0) content-box, 
+     linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.holographic-border:focus-within::before {
+  opacity: 1;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee-scroll 120s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}

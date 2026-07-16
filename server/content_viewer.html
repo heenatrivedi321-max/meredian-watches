@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MERIDIAN — Content Library</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0a0a0a; color: #fff; font-family: 'Inter', -apple-system, sans-serif; padding: 2rem; }
+    h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.05em; margin-bottom: 0.5rem; }
+    .subtitle { color: #666; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 3rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem; }
+    .card { background: #111; border-radius: 16px; overflow: hidden; border: 1px solid #1a1a1a; transition: border-color 0.3s; }
+    .card:hover { border-color: #333; }
+    .card img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+    .card-body { padding: 1.5rem; }
+    .card-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .date { color: #888; font-size: 0.75rem; letter-spacing: 0.1em; }
+    .status { font-size: 0.7rem; padding: 0.25rem 0.75rem; border-radius: 999px; }
+    .status.ready { background: #1a2e1a; color: #4ade80; }
+    .status.posted { background: #1a1a2e; color: #60a5fa; }
+    .watch-name { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .theme { color: #666; font-size: 0.75rem; text-transform: capitalize; }
+    .caption { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 8px; padding: 1rem; margin-top: 1rem; font-size: 0.85rem; line-height: 1.6; color: #ccc; white-space: pre-wrap; cursor: pointer; position: relative; }
+    .caption:hover { border-color: #333; }
+    .copy-hint { position: absolute; top: 0.5rem; right: 0.5rem; font-size: 0.65rem; color: #555; }
+    .copy-btn { display: block; width: 100%; margin-top: 0.75rem; padding: 0.75rem; background: #fff; color: #000; border: none; border-radius: 8px; font-weight: 600; font-size: 0.8rem; cursor: pointer; letter-spacing: 0.1em; text-transform: uppercase; transition: background 0.2s; }
+    .copy-btn:hover { background: #ddd; }
+    .empty { text-align: center; padding: 6rem 2rem; color: #444; }
+    .empty h2 { font-size: 1.5rem; margin-bottom: 1rem; color: #666; }
+    .empty p { font-size: 0.9rem; }
+    .empty code { background: #1a1a1a; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem; }
+    .refresh { display: inline-block; margin-top: 2rem; padding: 0.5rem 1.5rem; background: #1a1a1a; color: #888; border: 1px solid #333; border-radius: 8px; text-decoration: none; font-size: 0.8rem; transition: all 0.2s; }
+    .refresh:hover { background: #222; color: #fff; border-color: #555; }
+  </style>
+</head>
+<body>
+  <h1>Content Library</h1>
+  <p class="subtitle">Generated posts ready to upload</p>
+  <div id="content" class="grid"></div>
+
+  <script>
+    async function loadContent() {
+      const container = document.getElementById('content');
+      try {
+        const resp = await fetch('/api/content');
+        const posts = await resp.json();
+        if (!posts.length) {
+          container.innerHTML = `
+            <div class="empty" style="grid-column: 1/-1">
+              <h2>No content yet</h2>
+              <p>Generate posts with: <code>python3 generate_content.py --days 3</code></p>
+              <a href="/api/content" class="refresh" onclick="loadContent(); return false;">Refresh</a>
+            </div>`;
+          return;
+        }
+        container.innerHTML = posts.map(p => `
+          <div class="card">
+            ${p.image ? `<img src="/api/image/${p.image}" alt="${p.watch.brand} ${p.watch.model}">` : '<div style="aspect-ratio:1;background:#1a1a1a;display:flex;align-items:center;justify-content:center;color:#333;">No image</div>'}
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="date">${p.date} — Post #${p.post_number}</span>
+                <span class="status ${p.posted ? 'posted' : 'ready'}">${p.posted ? 'Posted' : 'Ready'}</span>
+              </div>
+              <div class="watch-name">${p.watch.brand} ${p.watch.model}</div>
+              <div class="theme">${p.theme} · ${p.watch.price}</div>
+              <div class="caption" onclick="copyCaption(this, '${p.date}_post${p.post_number}')">
+                <span class="copy-hint">click to copy</span>
+                ${p.caption.full_caption || p.caption.hook}
+              </div>
+              <button class="copy-btn" onclick="copyCaption(this.previousElementSibling, '${p.date}_post${p.post_number}')">
+                Copy Caption
+              </button>
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        container.innerHTML = `
+          <div class="empty" style="grid-column: 1/-1">
+            <h2>Server not running</h2>
+            <p>Start it with: <code>cd server && python3 view_content.py</code></p>
+          </div>`;
+      }
+    }
+
+    function copyCaption(el, id) {
+      const text = el.textContent.replace('click to copy', '').trim();
+      navigator.clipboard.writeText(text).then(() => {
+        const hint = el.querySelector('.copy-hint');
+        if (hint) { hint.textContent = 'copied!'; setTimeout(() => hint.textContent = 'click to copy', 2000); }
+      });
+    }
+
+    loadContent();
+  </script>
+</body>
+</html>
