@@ -114,11 +114,12 @@ export default class SoundtrackEngine {
     const loadPromises = STEMS.map(async (stem) => {
       try {
         const response = await fetch(stem.file);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const arrayBuffer = await response.arrayBuffer();
         const audioBuffer = await this.ctx.decodeAudioData(arrayBuffer);
         this.buffers[stem.name] = audioBuffer;
       } catch (e) {
-        console.warn(`Failed to load stem: ${stem.name}`, e);
+        console.warn(`SoundtrackEngine: Failed to load stem "${stem.name}":`, e.message);
       }
     });
 

@@ -90,7 +90,7 @@ export default function App() {
           start: "top top",
           end: "bottom top",
           pin: i < acts.length - 1, // Don't pin the last section (collection)
-          snap: i < acts.length - 1 ? { snapTo: 1, duration: { min: 0.3, max: 0.6 }, delay: 0, ease: "power2.inOut" } : false,
+          snap: i < acts.length - 1 ? { snapTo: "labels", duration: { min: 0.4, max: 0.8 }, delay: 0.1, ease: "power3.inOut" } : false,
           onEnter: () => setCurrentAct(i + 1),
           onEnterBack: () => setCurrentAct(i + 1),
         });
@@ -263,7 +263,7 @@ export default function App() {
       porscheTl.to(".video-dimmer", { opacity: 0, duration: 1 }, 6);
 
       // ============================================================
-      // ACT IV — THE REVEAL (Iris wipe into collection intro)
+      // ACT IV — THE REVEAL (Circular wipe into collection intro)
       // ============================================================
       const revealTl = gsap.timeline({
         scrollTrigger: {
@@ -274,10 +274,10 @@ export default function App() {
         }
       });
 
-      // Iris wipe open
-      revealTl.fromTo(".iris-circle",
-        { attr: { r: 0 } },
-        { attr: { r: 75 }, duration: 2, ease: "power2.inOut" }, 0);
+      // Circular reveal via clip-path
+      revealTl.fromTo(".act-reveal-content",
+        { clipPath: 'circle(0% at 50% 50%)' },
+        { clipPath: 'circle(75% at 50% 50%)', duration: 2, ease: "power2.inOut" }, 0);
 
       // Text enters
       revealTl.fromTo(".reveal-title",
@@ -559,25 +559,16 @@ export default function App() {
 
           {/* ---- ACT IV: THE REVEAL (Transition) ---- */}
           <section className="act-section act-reveal relative w-full h-screen flex flex-col items-center justify-center pointer-events-auto overflow-hidden bg-black">
-            {/* Iris wipe SVG */}
-            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none" style={{ zIndex: 1 }}>
-              <defs>
-                <mask id="iris-mask">
-                  <rect width="100" height="100" fill="white" />
-                  <circle className="iris-circle" cx="50" cy="50" r="0" fill="black" />
-                </mask>
-              </defs>
-              <rect width="100" height="100" fill="black" mask="url(#iris-mask)" />
-            </svg>
-
-            {/* Watch gears video inside the iris */}
-            <video
-              autoPlay loop muted playsInline preload="none"
-              className="absolute inset-0 w-full h-full object-cover opacity-60"
-              style={{ mask: 'url(#iris-mask)', WebkitMask: 'url(#iris-mask)' }}
-            >
-              <source src="/Watch_gears_Clean.mp4" type="video/mp4" />
-            </video>
+            {/* Watch gears video — revealed via clip-path animation */}
+            <div className="act-reveal-content absolute inset-0" style={{ clipPath: 'circle(0% at 50% 50%)' }}>
+              <video
+                autoPlay loop muted playsInline preload="none"
+                className="absolute inset-0 w-full h-full object-cover opacity-60"
+              >
+                <source src="/Watch_gears_Clean.mp4" type="video/mp4" />
+              </video>
+              <div className="absolute inset-0 bg-black/40" />
+            </div>
 
             <div className="relative z-10 text-center">
               <h2 className="reveal-title cinema-title text-[2rem] sm:text-5xl md:text-7xl lg:text-8xl gold-shimmer">

@@ -9,10 +9,21 @@ import React from 'react';
  * - Vignette (dark edges)
  * - Anamorphic lens flare (horizontal gold streak)
  * - Scene counter (Roman numerals)
- * - Color grade filter (shifts per section)
+ * - Section dots (clickable navigation)
  */
-export default function CinematicOverlay({ currentAct = 1, totalActs = 5 }) {
+export default function CinematicOverlay({ currentAct = 1, totalActs = 5, onNavigate }) {
   const romanNumerals = ['I', 'II', 'III', 'IV', 'V'];
+  const sectionIds = ['act-hero', 'act-manifesto', 'act-porsche', 'act-reveal', 'act-collection'];
+
+  const handleDotClick = (index) => {
+    if (onNavigate) {
+      onNavigate(index);
+    } else {
+      // Default: scroll to the section
+      const el = document.querySelector(`.${sectionIds[index]}`);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <div className="cinematic-overlay fixed inset-0 pointer-events-none z-[200]" aria-hidden="true">
@@ -38,12 +49,15 @@ export default function CinematicOverlay({ currentAct = 1, totalActs = 5 }) {
         </span>
       </div>
 
-      {/* Section Dots — right side */}
-      <div className="section-dots">
+      {/* Section Dots — right side (clickable) */}
+      <div className="section-dots pointer-events-auto" style={{ pointerEvents: 'auto' }}>
         {Array.from({ length: totalActs }, (_, i) => (
-          <div
+          <button
             key={i}
-            className={`section-dot ${i + 1 === currentAct ? 'section-dot-active' : ''}`}
+            onClick={() => handleDotClick(i)}
+            className={`section-dot ${i + 1 === currentAct ? 'section-dot-active' : ''} cursor-pointer`}
+            aria-label={`Go to section ${i + 1}`}
+            style={{ pointerEvents: 'auto' }}
           />
         ))}
       </div>
