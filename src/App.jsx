@@ -84,7 +84,7 @@ function FluidBackground() {
     });
 
     gsap.to(containerRef.current, {
-      autoAlpha: 0.6,
+      autoAlpha: 0.8,
       scrollTrigger: {
         trigger: ".product-reveal",
         start: "top 90%",
@@ -98,7 +98,7 @@ function FluidBackground() {
   return (
     <div 
       ref={containerRef}
-      className="fixed inset-0 w-full h-screen pointer-events-none opacity-60" 
+      className="fixed inset-0 w-full h-screen pointer-events-none opacity-80" 
       style={{ zIndex: 1 }}
     >
       <canvas 

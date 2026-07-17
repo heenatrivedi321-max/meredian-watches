@@ -316,7 +316,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
             The Collection
           </p>
           <h2
-            className="legacy-text text-[2.2rem] sm:text-[3rem] md:text-[5rem] lg:text-[7rem] xl:text-[6rem] font-light tracking-[-0.02em] text-white text-center leading-none gold-shimmer pb-4"
+            className="legacy-text text-[2.5rem] sm:text-[4rem] md:text-[6rem] lg:text-[8rem] xl:text-[7rem] font-extralight tracking-[-0.03em] text-white text-center leading-none pb-4"
           >
             Choose Your<br />Legacy.
           </h2>
@@ -344,7 +344,9 @@ export default function CollectionShowcase({ onSelectWatch }) {
 
         {/* Product Grid Section */}
         <section className="relative z-20 w-full bg-transparent px-4 md:px-12 py-32 pointer-events-none">
-          <div className="pointer-events-auto">
+          {/* Dark backdrop so products pop against fluid */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60 pointer-events-none" />
+          <div className="pointer-events-auto relative z-10">
             {/* Grid of Watches */}
             <div className="max-w-screen-2xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 relative z-20 pb-32">
               {WATCHES.map((watch, idx) => (
