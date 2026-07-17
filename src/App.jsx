@@ -11,6 +11,7 @@ import InstagramFeed from './components/InstagramFeed';
 import IntroSplash from './components/IntroSplash';
 import CinematicOverlay from './components/CinematicOverlay';
 import SoundtrackEngine from './audio/SoundtrackEngine';
+import WebGLFluidBg from './components/WebGLFluidBg';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -277,12 +278,17 @@ export default function App() {
             ============================================================ */}
         <div className="fixed inset-0 w-full h-screen z-0 pointer-events-none bg-black overflow-hidden">
 
-          {/* Hero video (stars) */}
+          {/* WEBGL FLUID — always active, base layer */}
+          <div className="absolute inset-0 w-full h-full z-0 pointer-events-auto" style={{ opacity: 0.7 }}>
+            <WebGLFluidBg />
+          </div>
+
+          {/* Hero video (stars) — on top of fluid */}
           <video
             ref={heroVideoRef}
             autoPlay loop muted playsInline preload="auto" fetchPriority="high"
-            className="absolute inset-0 w-full h-full object-cover opacity-90"
-            style={{ transform: 'scale(1.3) translateZ(0)', willChange: 'transform' }}
+            className="absolute inset-0 w-full h-full object-cover opacity-75"
+            style={{ transform: 'scale(1.3) translateZ(0)', willChange: 'transform', mixBlendMode: 'screen' }}
           >
             <source src="/stars.mp4" type="video/mp4" />
           </video>
@@ -291,25 +297,25 @@ export default function App() {
           <video
             autoPlay loop muted playsInline preload="none"
             className="bg-liquid absolute inset-0 w-full h-full object-cover z-10"
-            style={{ opacity: 0, transform: 'scale(1.3) translateZ(0)', willChange: 'transform, opacity' }}
+            style={{ opacity: 0, transform: 'scale(1.3) translateZ(0)', willChange: 'transform, opacity', mixBlendMode: 'screen' }}
           >
-            <source src="/Watch_rotating_in_liquid_explosion_202607141039.mp4?v=5" type="video/mp4" />
+            <source src="/Watch_rotating_in_liquid_explosion_202607141039.mp4?v=6" type="video/mp4" />
           </video>
 
           {/* Porsche tunnel */}
           <video
             autoPlay loop muted playsInline preload="none"
             className="bg-porsche absolute inset-0 w-full h-full object-cover z-20"
-            style={{ opacity: 0, transform: 'scale(1.3) translateZ(0)', willChange: 'transform, opacity' }}
+            style={{ opacity: 0, transform: 'scale(1.3) translateZ(0)', willChange: 'transform, opacity', mixBlendMode: 'screen' }}
           >
-            <source src="/Porsche_driving_through_tunnel_202606281316.mp4?v=5" type="video/mp4" />
+            <source src="/Porsche_driving_through_tunnel_202606281316.mp4?v=6" type="video/mp4" />
           </video>
 
           {/* Dimmer for text legibility */}
           <div className="video-dimmer absolute inset-0 bg-black z-25 pointer-events-none" style={{ opacity: 0 }} />
 
           {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/50 z-30 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40 z-30 pointer-events-none" />
         </div>
 
         {/* ============================================================

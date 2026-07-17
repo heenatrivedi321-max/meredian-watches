@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import WebGLFluid from 'webgl-fluid';
 import ReviewsMarquee from './ReviewsMarquee';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -197,88 +196,6 @@ function ProductCard({ watch, index, onClick }) {
 }
 
 // ============================================
-// WEBGL FLUID SIMULATION BACKGROUND
-// ============================================
-const FluidBackground = ({ sectionRef }) => {
-  const canvasRef = useRef(null);
-  const containerRef = useRef(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const isMobile = window.innerWidth < 768;
-
-    WebGLFluid(canvas, {
-      TRIGGER: 'hover',
-      IMMEDIATE: true,
-      AUTO: true,
-      INTERVAL: isMobile ? 5000 : 3000,
-      SIM_RESOLUTION: isMobile ? 32 : 64,
-      DYE_RESOLUTION: isMobile ? 256 : 1024,
-      CAPTURE_RESOLUTION: isMobile ? 256 : 512,
-      DENSITY_DISSIPATION: 1,
-      VELOCITY_DISSIPATION: 0.2,
-      PRESSURE: 0.8,
-      PRESSURE_ITERATIONS: isMobile ? 10 : 20,
-      CURL: isMobile ? 15 : 30,
-      SPLAT_RADIUS: 0.25,
-      SPLAT_FORCE: isMobile ? 3000 : 6000,
-      SPLAT_COUNT: isMobile ? 3 : 8,
-      SHADING: true,
-      COLORFUL: true,
-      COLOR_UPDATE_SPEED: 10,
-      PAUSED: false,
-      BACK_COLOR: { r: 0, g: 0, b: 0 },
-      TRANSPARENT: false,
-      BLOOM: true,
-      BLOOM_ITERATIONS: isMobile ? 3 : 8,
-      BLOOM_RESOLUTION: isMobile ? 128 : 256,
-      BLOOM_INTENSITY: 0.8,
-      BLOOM_THRESHOLD: 0.6,
-      BLOOM_SOFT_KNEE: 0.7,
-      SUNRAYS: !isMobile,
-      SUNRAYS_RESOLUTION: isMobile ? 128 : 196,
-      SUNRAYS_WEIGHT: 1.0,
-    });
-
-    // GSAP ScrollTrigger to show/hide the fluid background
-    if (sectionRef && sectionRef.current) {
-      gsap.to(containerRef.current, {
-        autoAlpha: 1,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom", 
-          end: "bottom top",   
-          toggleActions: "play reverse play reverse",
-        }
-      });
-    }
-
-  }, [sectionRef]);
-
-  return (
-    <div 
-      ref={containerRef}
-      className="fixed inset-0 w-full h-screen pointer-events-none opacity-0 invisible" 
-      style={{ zIndex: 0 }}
-    >
-      <canvas 
-        ref={canvasRef} 
-        className="absolute inset-0 w-full h-full pointer-events-none" 
-        style={{ width: '100vw', height: '100vh' }}
-      />
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.15) 20%, rgba(0,0,0,0.85) 100%)',
-        }}
-      />
-    </div>
-  );
-};
-
-// ============================================
 // MAIN EXPORT: CollectionShowcase
 // ============================================
 export default function CollectionShowcase({ onSelectWatch }) {
@@ -371,8 +288,6 @@ export default function CollectionShowcase({ onSelectWatch }) {
       {/* SECTION 4 & 5: LEGACY + PRODUCTS */}
       {/* ======================================== */}
       <div className="relative z-0 w-full bg-black">
-        <FluidBackground sectionRef={sectionRef} />
-
         {/* Legacy Header Section */}
         <section
           ref={taglineRef}
