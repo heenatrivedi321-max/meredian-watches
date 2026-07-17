@@ -212,7 +212,6 @@ const FluidBackground = ({ sectionRef }) => {
     if (!canvas) return;
 
     const isMobile = window.innerWidth < 768;
-    if (isMobile) return;
 
     WebGLFluid(canvas, {
       TRIGGER: 'hover',

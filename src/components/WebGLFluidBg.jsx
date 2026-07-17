@@ -6,7 +6,7 @@ export default function WebGLFluidBg() {
 
   useEffect(() => {
     let simulation = null;
-    if (canvasRef.current && window.innerWidth >= 768) {
+    if (canvasRef.current) {
       const isMobile = window.innerWidth < 768;
       simulation = webGLFluid(canvasRef.current, {
         IMMEDIATE: true,
