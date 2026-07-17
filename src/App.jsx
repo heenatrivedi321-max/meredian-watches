@@ -84,7 +84,7 @@ function FluidBackground() {
     });
 
     gsap.to(containerRef.current, {
-      autoAlpha: 0.8,
+      autoAlpha: 0.4,
       scrollTrigger: {
         trigger: ".product-reveal",
         start: "top 90%",

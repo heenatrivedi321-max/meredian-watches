@@ -344,8 +344,6 @@ export default function CollectionShowcase({ onSelectWatch }) {
 
         {/* Product Grid Section */}
         <section className="relative z-20 w-full bg-transparent px-4 md:px-12 py-32 pointer-events-none">
-          {/* Dark backdrop so products pop against fluid */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60 pointer-events-none" />
           <div className="pointer-events-auto relative z-10">
             {/* Grid of Watches */}
             <div className="max-w-screen-2xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 relative z-20 pb-32">
