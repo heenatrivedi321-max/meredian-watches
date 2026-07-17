@@ -72,13 +72,23 @@ function FluidBackground() {
       SUNRAYS_WEIGHT: 1.0,
     });
 
-    // Hide fluid when scrolling past hero
+    // Hide fluid when scrolling past hero, show again at "Choose Your Legacy"
     gsap.to(containerRef.current, {
       autoAlpha: 0,
       scrollTrigger: {
         trigger: ".hero-spacer",
         start: "top top",
         end: "bottom top",
+        scrub: true,
+      }
+    });
+
+    gsap.to(containerRef.current, {
+      autoAlpha: 0.6,
+      scrollTrigger: {
+        trigger: ".product-reveal",
+        start: "top 90%",
+        end: "top 50%",
         scrub: true,
       }
     });
