@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ReviewsMarquee from './ReviewsMarquee';
+import WatchSection from './WatchSection';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -342,17 +343,12 @@ export default function CollectionShowcase({ onSelectWatch }) {
           </div>
         </section>
 
-        {/* Product Grid Section */}
-        <section className="relative z-20 w-full bg-transparent px-4 md:px-12 py-32 pointer-events-none">
-          <div className="pointer-events-auto relative z-10">
-            {/* Grid of Watches */}
-            <div className="max-w-screen-2xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 relative z-20 pb-32">
-              {WATCHES.map((watch, idx) => (
-                <ProductCard key={watch.id} watch={watch} index={idx} onClick={onSelectWatch} />
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* Product Grid Section — Full-Screen Watch Sections */}
+        <div className="relative z-20 pointer-events-none">
+          {WATCHES.map((watch, idx) => (
+            <WatchSection key={watch.id} watch={watch} index={idx} onClick={onSelectWatch} />
+          ))}
+        </div>
 
         {/* ======================================== */}
         {/* SECTION 5.5: THE IRONIC REVIEWS MARQUEE */}

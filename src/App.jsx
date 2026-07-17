@@ -9,6 +9,7 @@ import ScrollToTop from './components/ScrollToTop';
 import BrandStory from './components/BrandStory';
 import ProductSchema from './components/ProductSchema';
 import InstagramFeed from './components/InstagramFeed';
+import BrandFilm from './components/BrandFilm';
 import IntroSplash from './components/IntroSplash';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -553,6 +554,7 @@ export default function App() {
         </div>
 
         <InstagramFeed />
+        <BrandFilm />
         <CollectionShowcase onSelectWatch={setSelectedWatch} />
         <ProductOverlay watch={selectedWatch} onClose={() => setSelectedWatch(null)} />
       </div>
