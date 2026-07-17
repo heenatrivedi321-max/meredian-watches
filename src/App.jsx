@@ -45,7 +45,19 @@ export default function App() {
   const [showBrand, setShowBrand] = useState(false);
   const [introDone, setIntroDone] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [soundOn, setSoundOn] = useState(false);
+  const audioRef = useRef(null);
   const handleIntroComplete = useCallback(() => setIntroDone(true), []);
+
+  const toggleSound = useCallback(() => {
+    if (!audioRef.current) return;
+    if (soundOn) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play().catch(() => {});
+    }
+    setSoundOn(prev => !prev);
+  }, [soundOn]);
 
   useEffect(() => {
     let ctx = gsap.context(() => {
@@ -206,6 +218,11 @@ export default function App() {
             <source src="/stars.mp4" type="video/mp4" />
           </video>
 
+          {/* Ambient audio for hero video */}
+          <audio ref={audioRef} loop preload="auto">
+            <source src="/ambient.mp3" type="audio/mpeg" />
+          </audio>
+
           <video 
             autoPlay loop muted playsInline preload="none"
             className="manifesto-video bg-liquid absolute inset-0 w-full h-full object-cover z-10"
@@ -334,6 +351,26 @@ export default function App() {
                 <div className="absolute top-0 left-0 w-full h-full bg-[#C9A96E] transform -translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-in-out" />
               </div>
             </div>
+
+            {/* Sound toggle */}
+            <button 
+              onClick={toggleSound}
+              className="absolute bottom-12 right-6 sm:right-10 w-10 h-10 flex items-center justify-center rounded-full border border-white/15 backdrop-blur-sm hover:border-[#C9A96E]/50 transition-all duration-300 pointer-events-auto z-[60] cursor-pointer group"
+              aria-label={soundOn ? "Mute sound" : "Play sound"}
+            >
+              {soundOn ? (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-[#C9A96E]">
+                  <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="currentColor" opacity="0.3" />
+                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+                </svg>
+              ) : (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-white/40 group-hover:text-white/60">
+                  <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="currentColor" opacity="0.2" />
+                  <line x1="23" y1="9" x2="17" y2="15" />
+                  <line x1="17" y1="9" x2="23" y2="15" />
+                </svg>
+              )}
+            </button>
           </section>
 
           {/* MANIFESTO */}
