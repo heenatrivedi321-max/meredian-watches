@@ -87,14 +87,30 @@ function ProductCard({ watch, index, onClick }) {
       style={{
         backgroundColor: '#ffffff',
         minHeight: 'min(520px, 70vh)',
+        transformStyle: 'preserve-3d',
+        perspective: '1000px',
       }}
       onMouseEnter={() => {
         setIsHovered(true);
         if (videoRef.current) videoRef.current.play();
+        gsap.to(cardRef.current, {
+          z: 50,
+          scale: 1.02,
+          boxShadow: '0 25px 60px rgba(0,0,0,0.5)',
+          duration: 0.4,
+          ease: 'power2.out',
+        });
       }}
       onMouseLeave={() => {
         setIsHovered(false);
         if (videoRef.current) videoRef.current.pause();
+        gsap.to(cardRef.current, {
+          z: 0,
+          scale: 1,
+          boxShadow: '0 0px 0px rgba(0,0,0,0)',
+          duration: 0.5,
+          ease: 'power2.out',
+        });
       }}
     >
       {/* Background Video (plays on hover, subtle) */}
@@ -287,7 +303,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
       {/* ======================================== */}
       {/* SECTION 4 & 5: LEGACY + PRODUCTS */}
       {/* ======================================== */}
-      <div className="relative z-0 w-full bg-black">
+      <div className="product-reveal relative z-0 w-full bg-black">
 
         {/* Legacy Header Section */}
         <section
