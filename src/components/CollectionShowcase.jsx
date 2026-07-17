@@ -121,14 +121,12 @@ function ProductCard({ watch, index, onClick }) {
       {/* Brand Name — Top */}
       <div className="absolute top-6 left-6 right-6 z-30">
         <h3
-          className="text-[1.8rem] sm:text-[2.5rem] md:text-[3.5rem] font-bold tracking-tighter leading-none text-white/90 uppercase"
-          style={{ fontFamily: "'Playfair Display', serif" }}
+          className="text-[1.8rem] sm:text-[2.5rem] md:text-[3.5rem] font-light tracking-[-0.02em] leading-none text-white/90 uppercase"
         >
           {watch.brand}
         </h3>
         <p
-          className="text-sm md:text-base font-light tracking-[0.3em] uppercase text-white/50 mt-1"
-          style={{ fontFamily: "'Playfair Display', serif" }}
+          className="text-sm md:text-base font-light tracking-[0.2em] uppercase text-white/40 mt-1"
         >
           {watch.model}
         </p>
@@ -160,16 +158,14 @@ function ProductCard({ watch, index, onClick }) {
         {/* Tagline */}
         {watch.tagline && (
           <p 
-            className="text-xs md:text-sm text-white/40 mb-3 italic"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            className="text-xs md:text-sm text-white/30 mb-3 font-light"
           >
             "{watch.tagline}"
           </p>
         )}
         <div className="flex items-center justify-between">
           <span
-            className="text-2xl md:text-3xl font-bold text-white tracking-tight"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            className="text-2xl md:text-3xl font-light text-white tracking-tight"
           >
             {watch.price}
           </span>
@@ -376,16 +372,12 @@ export default function CollectionShowcase({ onSelectWatch }) {
           className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center pointer-events-none"
         >
           <p
-            className="legacy-text text-[10px] font-light tracking-[0.5em] uppercase text-white/40 mb-6"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            className="legacy-text text-[10px] font-light tracking-[0.5em] uppercase text-white/30 mb-6"
           >
             The Collection
           </p>
           <h2
-            className="legacy-text text-[2.2rem] sm:text-[3rem] md:text-[5rem] lg:text-[7rem] xl:text-[6rem] font-bold tracking-tighter text-white text-center leading-none gold-shimmer pb-4"
-            style={{
-              fontFamily: "'Playfair Display', serif",
-            }}
+            className="legacy-text text-[2.2rem] sm:text-[3rem] md:text-[5rem] lg:text-[7rem] xl:text-[6rem] font-light tracking-[-0.02em] text-white text-center leading-none gold-shimmer pb-4"
           >
             Choose Your<br />Legacy.
           </h2>
@@ -398,17 +390,15 @@ export default function CollectionShowcase({ onSelectWatch }) {
         >
           <div className="story-text-container text-center px-4">
             <p
-              className="text-[10px] lg:text-xs font-light tracking-[0.5em] uppercase text-white/30 mb-8"
-              style={{ fontFamily: "'Playfair Display', serif" }}
+              className="text-[10px] lg:text-xs font-light tracking-[0.5em] uppercase text-white/25 mb-8"
             >
               Meridian Archive
             </p>
             <h3
-              className="text-[2rem] md:text-[3.5rem] font-medium tracking-tighter text-white leading-tight"
-              style={{ fontFamily: "'Playfair Display', serif" }}
+              className="text-[2rem] md:text-[3.5rem] font-light tracking-[-0.02em] text-white leading-tight"
             >
               Every piece tells a story.<br />
-              <span className="text-white/40 font-light">Find yours.</span>
+              <span className="text-white/30 font-light">Find yours.</span>
             </h3>
           </div>
         </section>
@@ -453,20 +443,17 @@ export default function CollectionShowcase({ onSelectWatch }) {
         {/* Content */}
         <div className="relative z-10 flex flex-col items-center text-center px-8 pointer-events-auto">
           <p
-            className="closer-text text-[10px] font-light tracking-[0.5em] uppercase text-white/40 mb-6"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            className="closer-text text-[10px] font-light tracking-[0.5em] uppercase text-white/30 mb-6"
           >
             Time is fleeting
           </p>
           <h2
-            className="closer-text text-[2.2rem] sm:text-[3rem] md:text-[5rem] lg:text-[7rem] xl:text-[6rem] font-bold tracking-tighter text-white leading-none mb-4 gold-shimmer pb-2"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            className="closer-text text-[2.2rem] sm:text-[3rem] md:text-[5rem] lg:text-[7rem] xl:text-[6rem] font-light tracking-[-0.02em] text-white leading-none mb-4 gold-shimmer pb-2"
           >
             Time Waits<br />For No One.
           </h2>
           <p
-            className="closer-text text-base md:text-lg text-white/30 max-w-md mt-4 mb-12"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            className="closer-text text-base md:text-lg text-white/25 max-w-md mt-4 mb-12 font-light"
           >
             Your legacy starts with what you wear. Make it count.
           </p>
@@ -490,7 +477,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
             <div className="flex flex-col md:flex-row items-center justify-between gap-12 mb-16">
               <img src="/logo.jpg" alt="Meridian" className="h-12 w-auto object-contain opacity-60" />
               <div className="flex flex-col items-center md:items-end gap-3">
-                <p className="text-xs tracking-[0.3em] uppercase text-white/30" style={{ fontFamily: "'Playfair Display', serif" }}>
+                <p className="text-xs tracking-[0.3em] uppercase text-white/25 font-light">
                   Stay in the loop
                 </p>
                 <div className="flex items-center gap-2">
@@ -511,8 +498,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
               {['Shop', 'Heritage', 'Instagram', 'Contact'].map((link) => (
                 <button 
                   key={link}
-                  className="text-xs tracking-[0.3em] uppercase text-white/25 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
+                  className="text-xs tracking-[0.25em] uppercase text-white/20 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer font-light"
                 >
                   {link}
                 </button>

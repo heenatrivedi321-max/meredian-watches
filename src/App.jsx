@@ -213,8 +213,7 @@ export default function App() {
               <div className="flex flex-col items-center gap-10">
                 <button 
                   onClick={() => { setShowBrand(true); setMenuOpen(false); }}
-                  className="text-2xl tracking-[0.3em] uppercase text-white/80 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
+                  className="text-2xl tracking-[0.15em] uppercase text-white/80 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer font-light"
                 >
                   Heritage
                 </button>
@@ -224,8 +223,7 @@ export default function App() {
                     if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     setMenuOpen(false);
                   }}
-                  className="text-2xl tracking-[0.3em] uppercase text-white/80 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
+                  className="text-2xl tracking-[0.15em] uppercase text-white/80 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer font-light"
                 >
                   Collection
                 </button>
@@ -248,22 +246,21 @@ export default function App() {
           {/* HERO */}
           <section className="hero-spacer relative w-full h-screen flex flex-col items-center justify-center pointer-events-auto">
             <div className="hero-content flex flex-col items-center text-center mt-12 pointer-events-auto px-4">
-              <h2 className="text-[8px] sm:text-[9px] font-light tracking-[0.5em] uppercase text-white/50 mb-4 sm:mb-8">
+              <h2 className="text-[10px] sm:text-[11px] font-light tracking-[0.4em] uppercase text-white/40 mb-6 sm:mb-10">
                 Logic Defied
               </h2>
               <h1 
-                className="text-[2.2rem] sm:text-6xl md:text-[6rem] lg:text-[8rem] font-bold tracking-tighter leading-none gold-shimmer" 
-                style={{ fontFamily: "'Playfair Display', serif" }}
+                className="text-[2.2rem] sm:text-6xl md:text-[6rem] lg:text-[8rem] font-light tracking-[-0.02em] leading-none gold-shimmer" 
               >
-                MERIDIAN
+                Meridian
               </h1>
             </div>
 
             <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center group cursor-pointer pointer-events-auto">
-              <span className="text-[9px] font-light tracking-[0.3em] uppercase text-white/40 mb-4 group-hover:text-[#C9A96E] transition-colors duration-500">
+              <span className="text-[10px] font-light tracking-[0.3em] uppercase text-white/30 mb-4 group-hover:text-[#C9A96E] transition-colors duration-500">
                 Explore
               </span>
-              <div className="w-[1px] h-12 bg-white/20 overflow-hidden relative">
+              <div className="w-[1px] h-12 bg-white/15 overflow-hidden relative">
                 <div className="absolute top-0 left-0 w-full h-full bg-[#C9A96E] transform -translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-in-out" />
               </div>
             </div>
@@ -275,24 +272,21 @@ export default function App() {
               <div className="relative w-full max-w-[90rem] mx-auto px-4 md:px-8 text-center flex flex-col items-center justify-center space-y-3 sm:space-y-4 md:space-y-6" style={{ perspective: "1000px" }}>
                 <div className="w-full">
                   <h2 
-                    className="manifesto-line text-[1.6rem] sm:text-[2.2rem] md:text-[3.5rem] lg:text-[4.5rem] xl:text-[5rem] font-medium tracking-tighter text-white select-none w-full leading-tight"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
+                    className="manifesto-line text-[1.6rem] sm:text-[2.2rem] md:text-[3.5rem] lg:text-[4.5rem] xl:text-[5rem] font-light tracking-[-0.02em] text-white select-none w-full leading-tight"
                   >
                     Your smartwatch just told you to stand up.
                   </h2>
                 </div>
                 <div className="w-full">
                   <h2 
-                    className="manifesto-line text-[1.6rem] sm:text-[2.2rem] md:text-[3.5rem] lg:text-[4.5rem] xl:text-[5rem] font-medium tracking-tighter text-white select-none w-full leading-tight"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
+                    className="manifesto-line text-[1.6rem] sm:text-[2.2rem] md:text-[3.5rem] lg:text-[4.5rem] xl:text-[5rem] font-light tracking-[-0.02em] text-white select-none w-full leading-tight"
                   >
                     Congrats on hitting 10,000 steps.
                   </h2>
                 </div>
                 <div className="w-full">
                   <h2 
-                    className="manifesto-line text-[1.4rem] sm:text-[1.8rem] md:text-[2.8rem] lg:text-[3.5rem] xl:text-[4rem] font-medium tracking-tighter text-white/70 select-none w-full leading-tight"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
+                    className="manifesto-line text-[1.4rem] sm:text-[1.8rem] md:text-[2.8rem] lg:text-[3.5rem] xl:text-[4rem] font-light tracking-[-0.02em] text-white/60 select-none w-full leading-tight"
                   >
                     Too bad your wrist looks like a tiny iPad.
                   </h2>
@@ -307,24 +301,21 @@ export default function App() {
               <div className="relative w-full max-w-[90rem] mx-auto px-4 md:px-8 text-center flex flex-col items-center justify-center space-y-3 sm:space-y-4 md:space-y-6">
                 <div className="w-full">
                   <h2 
-                    className="porsche-line text-[1.6rem] sm:text-[2.2rem] md:text-[3.5rem] lg:text-[4.5rem] xl:text-[5rem] font-medium tracking-tighter text-white select-none w-full leading-tight"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
+                    className="porsche-line text-[1.6rem] sm:text-[2.2rem] md:text-[3.5rem] lg:text-[4.5rem] xl:text-[5rem] font-light tracking-[-0.02em] text-white select-none w-full leading-tight"
                   >
                     You will inevitably perish.
                   </h2>
                 </div>
                 <div className="w-full">
                   <h2 
-                    className="porsche-line text-[1.6rem] sm:text-[2.2rem] md:text-[3.5rem] lg:text-[4.5rem] xl:text-[5rem] font-medium tracking-tighter text-white select-none w-full leading-tight"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
+                    className="porsche-line text-[1.6rem] sm:text-[2.2rem] md:text-[3.5rem] lg:text-[4.5rem] xl:text-[5rem] font-light tracking-[-0.02em] text-white select-none w-full leading-tight"
                   >
                     Your legacy will be forgotten.
                   </h2>
                 </div>
                 <div className="w-full">
                   <h2 
-                    className="porsche-line text-[1.4rem] sm:text-[1.8rem] md:text-[2.8rem] lg:text-[3.5rem] xl:text-[4rem] font-medium tracking-tighter text-white/70 select-none w-full leading-tight"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
+                    className="porsche-line text-[1.4rem] sm:text-[1.8rem] md:text-[2.8rem] lg:text-[3.5rem] xl:text-[4rem] font-light tracking-[-0.02em] text-white/60 select-none w-full leading-tight"
                   >
                     But hey, at least your wrist looks expensive.
                   </h2>
