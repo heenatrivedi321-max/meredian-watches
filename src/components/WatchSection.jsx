@@ -31,13 +31,11 @@ export default function WatchSection({ watch, index, onClick }) {
   const videoRef = useRef(null);
   const textRef = useRef(null);
   const ctaRef = useRef(null);
-  const [videoLoaded, setVideoLoaded] = useState(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const vid = videoRef.current;
 
-      // Video plays when section enters viewport
       if (vid) {
         ScrollTrigger.create({
           trigger: sectionRef.current,
@@ -50,7 +48,6 @@ export default function WatchSection({ watch, index, onClick }) {
         });
       }
 
-      // Ironic line fades in
       gsap.fromTo(textRef.current,
         { autoAlpha: 0, x: 40 },
         {
@@ -65,7 +62,6 @@ export default function WatchSection({ watch, index, onClick }) {
         }
       );
 
-      // CTA button fades in after text
       gsap.fromTo(ctaRef.current,
         { autoAlpha: 0, y: 20 },
         {
@@ -87,88 +83,89 @@ export default function WatchSection({ watch, index, onClick }) {
 
   const isEven = index % 2 === 0;
 
+  // Even index: video LEFT, content RIGHT
+  // Odd index: content LEFT, video RIGHT
+  const videoSide = isEven ? 'left' : 'right';
+  const contentSide = isEven ? 'right' : 'left';
+
   return (
     <div
       ref={sectionRef}
-      className="relative w-full h-screen overflow-hidden bg-black cursor-pointer"
-      onClick={() => !watch.outOfStock && onClick(watch)}
+      className="relative w-full h-screen overflow-hidden bg-black flex"
     >
-      {/* Full-screen background video */}
-      <video
-        ref={videoRef}
-        muted
-        loop
-        playsInline
-        preload="none"
-        onLoadedData={() => setVideoLoaded(true)}
-        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
-        style={{
-          opacity: videoLoaded ? 0.4 : 0,
-          willChange: 'transform',
-        }}
-      >
-        <source src={watch.cinematicVideo} type="video/mp4" />
-      </video>
-
-      {/* Watch image — centered */}
-      <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-        <img
-          src={watch.image}
-          alt={`${watch.brand} ${watch.model}`}
-          loading="lazy"
-          className="w-[55%] sm:w-[45%] md:w-[35%] lg:w-[30%] h-auto object-contain drop-shadow-[0_20px_60px_rgba(0,0,0,0.8)]"
-          style={{
-            mixBlendMode: 'multiply',
-            filter: 'contrast(1.1) saturate(1.15) drop-shadow(0 0 40px rgba(201,169,110,0.15))',
-          }}
-        />
+      {/* VIDEO SIDE — half width, full height */}
+      <div className={`w-1/2 h-full relative overflow-hidden ${videoSide === 'right' ? 'order-2' : 'order-1'}`}>
+        <video
+          ref={videoRef}
+          loop
+          playsInline
+          preload="none"
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src={watch.cinematicVideo} type="video/mp4" />
+        </video>
+        {/* Subtle vignette over video */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent pointer-events-none" style={videoSide === 'right' ? { background: 'linear-gradient(to left, rgba(0,0,0,0.3), transparent)' } : {}} />
       </div>
 
-      {/* Brand + Model — top left */}
-      <div className={`absolute top-12 sm:top-16 md:top-20 ${isEven ? 'left-6 sm:left-12 md:left-20' : 'right-6 sm:right-12 md:right-20'} z-20 pointer-events-none`}>
-        <p className="text-[10px] sm:text-xs font-light tracking-[0.5em] uppercase text-white/25 mb-2">
-          {watch.brand}
-        </p>
-        <h3 className="text-[1.8rem] sm:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] font-extralight tracking-[-0.02em] text-white leading-none">
-          {watch.model}
-        </h3>
-        <p className="text-lg sm:text-xl md:text-2xl font-extralight text-white/40 mt-2 tracking-tight">
-          {watch.price}
-        </p>
+      {/* CONTENT SIDE — half width, full height */}
+      <div className={`w-1/2 h-full relative flex flex-col justify-center px-8 sm:px-12 md:px-16 lg:px-20 ${contentSide === 'right' ? 'order-2' : 'order-1'}`}>
+
+        {/* Brand + Model */}
+        <div className="mb-auto pt-20 sm:pt-24 md:pt-28">
+          <p className="text-[10px] sm:text-xs font-light tracking-[0.5em] uppercase text-[#C9A96E]/50 mb-3">
+            {watch.brand}
+          </p>
+          <h3 className="text-[1.8rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] font-extralight tracking-[-0.02em] text-white leading-none">
+            {watch.model}
+          </h3>
+          <p className="text-xl sm:text-2xl md:text-3xl font-extralight text-white/30 mt-3 tracking-tight">
+            {watch.price}
+          </p>
+        </div>
+
+        {/* Watch image — centered vertically */}
+        <div className="flex-1 flex items-center justify-center pointer-events-none">
+          <img
+            src={watch.image}
+            alt={`${watch.brand} ${watch.model}`}
+            loading="lazy"
+            className="w-[70%] sm:w-[60%] md:w-[55%] h-auto object-contain"
+            style={{
+              mixBlendMode: 'multiply',
+              filter: 'contrast(1.1) saturate(1.15)',
+            }}
+          />
+        </div>
+
+        {/* Ironic line + CTA — bottom */}
+        <div className="mb-16 sm:mb-20 md:mb-24">
+          <div ref={textRef}>
+            <p className="text-sm sm:text-base md:text-lg font-light text-white/35 italic leading-relaxed mb-6">
+              "{IRONIC_LINES[index % IRONIC_LINES.length]}"
+            </p>
+          </div>
+          <div ref={ctaRef}>
+            {watch.outOfStock ? (
+              <span className="inline-block px-6 py-3 border border-white/15 text-white/40 text-xs tracking-[0.25em] uppercase rounded-full">
+                Sold Out (we see you sweating)
+              </span>
+            ) : (
+              <button
+                className="inline-block px-6 py-3 border border-[#C9A96E]/40 text-[#C9A96E] text-xs tracking-[0.25em] uppercase rounded-full
+                           hover:bg-[#C9A96E] hover:text-black transition-all duration-500
+                           hover:shadow-[0_0_30px_rgba(201,169,110,0.3)] cursor-pointer"
+                onClick={(e) => { e.stopPropagation(); onClick(watch); }}
+              >
+                {CTA_TEXTS[index % CTA_TEXTS.length]}
+              </button>
+            )}
+          </div>
+        </div>
       </div>
 
-      {/* Ironic line + CTA — opposite side */}
-      <div
-        ref={textRef}
-        className={`absolute bottom-24 sm:bottom-28 md:bottom-32 ${isEven ? 'right-6 sm:right-12 md:right-20 text-right' : 'left-6 sm:left-12 md:left-20 text-left'} z-20 pointer-events-none max-w-md`}
-      >
-        <p className="text-sm sm:text-base md:text-lg font-light text-white/40 italic leading-relaxed">
-          "{IRONIC_LINES[index % IRONIC_LINES.length]}"
-        </p>
-      </div>
-
-      <div
-        ref={ctaRef}
-        className={`absolute bottom-12 sm:bottom-16 md:bottom-20 ${isEven ? 'right-6 sm:right-12 md:right-20' : 'left-6 sm:left-12 md:left-20'} z-20 pointer-events-auto`}
-      >
-        {watch.outOfStock ? (
-          <span className="px-6 py-3 border border-white/15 text-white/40 text-xs tracking-[0.25em] uppercase rounded-full">
-            Sold Out (we see you sweating)
-          </span>
-        ) : (
-          <button
-            className="px-6 py-3 border border-[#C9A96E]/40 text-[#C9A96E] text-xs tracking-[0.25em] uppercase rounded-full
-                       hover:bg-[#C9A96E] hover:text-black transition-all duration-500 backdrop-blur-sm
-                       hover:shadow-[0_0_30px_rgba(201,169,110,0.3)]"
-            onClick={(e) => { e.stopPropagation(); onClick(watch); }}
-          >
-            {CTA_TEXTS[index % CTA_TEXTS.length]}
-          </button>
-        )}
-      </div>
-
-      {/* Subtle gold accent line */}
-      <div className={`absolute ${isEven ? 'left-6 sm:left-12 md:left-20' : 'right-6 sm:right-12 md:right-20'} top-1/2 -translate-y-1/2 w-[1px] h-20 bg-gradient-to-b from-transparent via-[#C9A96E]/20 to-transparent pointer-events-none z-10`} />
+      {/* Gold divider between halves */}
+      <div className="absolute top-[15%] bottom-[15%] left-1/2 -translate-x-1/2 w-[1px] bg-gradient-to-b from-transparent via-[#C9A96E]/15 to-transparent pointer-events-none z-10" />
     </div>
   );
 }
