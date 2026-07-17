@@ -159,7 +159,7 @@ export const WATCHES = [
     color: "#4a0e0e",
     amazonLink: "https://www.amazon.in/dp/B07QCW7KRS",
     shopifyVariantId: "44408774066219",
-    video: "/Luxury_watch_commercial_diamond_…_202607141833.mp4",
+    video: "/Luxury_watch_commercial_diamond_202607141833.mp4",
     cinematicVideo: "/Watch_rotating_in_liquid_explosion_202607141039.mp4",
     image: "/watches_new/Luxury_men's_watch_red_dial_202607141708.jpeg",
     gallery: [
