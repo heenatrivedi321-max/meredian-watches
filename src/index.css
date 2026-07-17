@@ -65,29 +65,28 @@
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-@keyframes rainbow-shimmer-smooth {
+@keyframes gold-shimmer-smooth {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
 @layer utilities {
-  .rainbow-shimmer {
+  .gold-shimmer {
     background: linear-gradient(
       to right,
-      #ffffff 10%,
-      #cbb2ff 30%,
-      #ffffff 50%,
-      #cbb2ff 70%,
-      #ffffff 90%
+      #C9A96E 0%,
+      #E8D5A3 25%,
+      #C9A96E 50%,
+      #E8D5A3 75%,
+      #C9A96E 100%
     );
     background-size: 200% auto;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: rainbow-shimmer-smooth 3s ease-in-out infinite;
+    animation: gold-shimmer-smooth 4s ease-in-out infinite;
     color: transparent;
-    -webkit-text-stroke: 0px !important;
   }
 }
 

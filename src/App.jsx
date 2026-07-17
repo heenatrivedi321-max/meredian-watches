@@ -17,6 +17,7 @@ export default function App() {
   const [selectedWatch, setSelectedWatch] = useState(null);
   const [showBrand, setShowBrand] = useState(false);
   const [introDone, setIntroDone] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const handleIntroComplete = useCallback(() => setIntroDone(true), []);
 
   useEffect(() => {
@@ -115,7 +116,7 @@ export default function App() {
       {/* Product Schema for SEO */}
       <ProductSchema watch={selectedWatch} />
 
-      <div ref={mainRef} className="w-full bg-black min-h-screen text-white font-sans overflow-x-hidden selection:bg-white selection:text-black">
+      <div ref={mainRef} className="w-full bg-black min-h-screen text-white font-sans overflow-x-hidden selection:bg-[#C9A96E] selection:text-black">
         
         {/* FIXED BACKGROUND MEDIA LAYER */}
         <div className="fixed inset-0 w-full h-screen z-0 pointer-events-none bg-black overflow-hidden">
@@ -151,52 +152,107 @@ export default function App() {
 
         {/* NAVIGATION */}
         <nav className="fixed top-0 left-0 w-full h-16 sm:h-20 lg:h-24 z-50 flex items-center justify-between px-4 sm:px-8 lg:px-12 pointer-events-auto mix-blend-difference">
-          <button onClick={() => setShowBrand(true)} className="flex-1 text-left text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] font-light uppercase hover:opacity-50 transition-opacity cursor-pointer">Heritage</button>
+          {/* Desktop: Heritage */}
+          <button 
+            onClick={() => setShowBrand(true)} 
+            className="hidden md:block flex-1 text-left text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] font-light uppercase hover:opacity-50 transition-opacity cursor-pointer"
+          >
+            Heritage
+          </button>
+
+          {/* Logo */}
           <div className="flex-1 flex justify-center">
             <img src="/logo.jpg" alt="Meridian Logo" className="h-10 sm:h-14 lg:h-20 w-auto object-contain drop-shadow-[0_0_15px_rgba(201,169,110,0.4)] hover:scale-105 transition-transform cursor-pointer" />
           </div>
+
+          {/* Desktop: Collection */}
           <div 
             onClick={() => {
               const grid = document.querySelector('.max-w-screen-2xl');
               if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }}
-            className="flex-1 text-right text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] font-light uppercase hover:opacity-50 transition-opacity cursor-pointer"
+            className="hidden md:block flex-1 text-right text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] font-light uppercase hover:opacity-50 transition-opacity cursor-pointer"
           >
             Collection
           </div>
+
+          {/* Mobile: Hamburger */}
+          <button 
+            onClick={() => setMenuOpen(true)}
+            className="md:hidden absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-[5px] cursor-pointer p-2"
+            aria-label="Open menu"
+          >
+            <span className="block w-5 h-[1px] bg-white" />
+            <span className="block w-5 h-[1px] bg-white" />
+          </button>
         </nav>
+
+        {/* MOBILE MENU OVERLAY */}
+        {menuOpen && (
+          <div className="fixed inset-0 z-[100] pointer-events-auto">
+            {/* Backdrop */}
+            <div 
+              className="absolute inset-0 bg-black/90 backdrop-blur-sm"
+              onClick={() => setMenuOpen(false)}
+            />
+            {/* Menu Panel */}
+            <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center bg-black/95">
+              {/* Close button */}
+              <button 
+                onClick={() => setMenuOpen(false)}
+                className="absolute top-5 right-5 w-10 h-10 flex items-center justify-center cursor-pointer"
+                aria-label="Close menu"
+              >
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="white" strokeWidth="1">
+                  <line x1="2" y1="2" x2="18" y2="18" />
+                  <line x1="18" y1="2" x2="2" y2="18" />
+                </svg>
+              </button>
+
+              {/* Nav Links */}
+              <div className="flex flex-col items-center gap-10">
+                <button 
+                  onClick={() => { setShowBrand(true); setMenuOpen(false); }}
+                  className="text-2xl tracking-[0.3em] uppercase text-white/80 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer"
+                  style={{ fontFamily: "'Playfair Display', serif" }}
+                >
+                  Heritage
+                </button>
+                <button 
+                  onClick={() => {
+                    const grid = document.querySelector('.max-w-screen-2xl');
+                    if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    setMenuOpen(false);
+                  }}
+                  className="text-2xl tracking-[0.3em] uppercase text-white/80 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer"
+                  style={{ fontFamily: "'Playfair Display', serif" }}
+                >
+                  Collection
+                </button>
+                <a 
+                  href="https://www.instagram.com/meri.dianwatches"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm tracking-[0.3em] uppercase text-white/40 hover:text-[#C9A96E] transition-colors duration-300 mt-8"
+                >
+                  Instagram
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* SCROLLING CONTENT LAYER */}
         <div className="relative z-50 w-full pointer-events-none">
 
           {/* HERO */}
           <section className="hero-spacer relative w-full h-screen flex flex-col items-center justify-center pointer-events-auto">
-            <style>
-              {`
-                @keyframes shimmer {
-                  0% { background-position: 0% 50%; }
-                  50% { background-position: 100% 50%; }
-                  100% { background-position: 0% 50%; }
-                }
-                .premium-shimmer {
-                  background: linear-gradient(to right, #ffffff 10%, #cbb2ff 30%, #ffffff 50%, #cbb2ff 70%, #ffffff 90%);
-                  background-size: 200% auto;
-                  color: #000;
-                  background-clip: text;
-                  -webkit-background-clip: text;
-                  -webkit-text-fill-color: transparent;
-                  animation: shimmer 3s linear infinite;
-                  filter: drop-shadow(0 0 40px rgba(203, 178, 255, 0.4));
-                }
-              `}
-            </style>
-            
             <div className="hero-content flex flex-col items-center text-center mt-12 pointer-events-auto px-4">
-              <h2 className="text-[8px] sm:text-[9px] font-light tracking-[0.5em] uppercase text-white/70 mb-4 sm:mb-8">
+              <h2 className="text-[8px] sm:text-[9px] font-light tracking-[0.5em] uppercase text-white/50 mb-4 sm:mb-8">
                 Logic Defied
               </h2>
               <h1 
-                className="text-[2.2rem] sm:text-6xl md:text-[6rem] lg:text-[8rem] font-bold tracking-tighter leading-none drop-shadow-2xl premium-shimmer" 
+                className="text-[2.2rem] sm:text-6xl md:text-[6rem] lg:text-[8rem] font-bold tracking-tighter leading-none gold-shimmer" 
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 MERIDIAN
@@ -204,11 +260,11 @@ export default function App() {
             </div>
 
             <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center group cursor-pointer pointer-events-auto">
-              <span className="text-[9px] font-light tracking-[0.3em] uppercase text-white/60 mb-4 group-hover:text-white transition-colors duration-500">
+              <span className="text-[9px] font-light tracking-[0.3em] uppercase text-white/40 mb-4 group-hover:text-[#C9A96E] transition-colors duration-500">
                 Explore
               </span>
-              <div className="w-[1px] h-12 bg-white/30 overflow-hidden relative">
-                <div className="absolute top-0 left-0 w-full h-full bg-white transform -translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-in-out" />
+              <div className="w-[1px] h-12 bg-white/20 overflow-hidden relative">
+                <div className="absolute top-0 left-0 w-full h-full bg-[#C9A96E] transform -translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-in-out" />
               </div>
             </div>
           </section>
@@ -220,7 +276,7 @@ export default function App() {
                 <div className="w-full">
                   <h2 
                     className="manifesto-line text-[1.6rem] sm:text-[2.2rem] md:text-[3.5rem] lg:text-[4.5rem] xl:text-[5rem] font-medium tracking-tighter text-white select-none w-full leading-tight"
-                    style={{ fontFamily: "'Inter', 'Helvetica Neue', sans-serif" }}
+                    style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     Your smartwatch just told you to stand up.
                   </h2>
@@ -228,15 +284,15 @@ export default function App() {
                 <div className="w-full">
                   <h2 
                     className="manifesto-line text-[1.6rem] sm:text-[2.2rem] md:text-[3.5rem] lg:text-[4.5rem] xl:text-[5rem] font-medium tracking-tighter text-white select-none w-full leading-tight"
-                    style={{ fontFamily: "'Inter', 'Helvetica Neue', sans-serif" }}
+                    style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     Congrats on hitting 10,000 steps.
                   </h2>
                 </div>
                 <div className="w-full">
                   <h2 
-                    className="manifesto-line text-[1.4rem] sm:text-[1.8rem] md:text-[2.8rem] lg:text-[3.5rem] xl:text-[4rem] font-medium tracking-tighter text-white/80 select-none w-full leading-tight"
-                    style={{ fontFamily: "'Inter', 'Helvetica Neue', sans-serif" }}
+                    className="manifesto-line text-[1.4rem] sm:text-[1.8rem] md:text-[2.8rem] lg:text-[3.5rem] xl:text-[4rem] font-medium tracking-tighter text-white/70 select-none w-full leading-tight"
+                    style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     Too bad your wrist looks like a tiny iPad.
                   </h2>
@@ -252,7 +308,7 @@ export default function App() {
                 <div className="w-full">
                   <h2 
                     className="porsche-line text-[1.6rem] sm:text-[2.2rem] md:text-[3.5rem] lg:text-[4.5rem] xl:text-[5rem] font-medium tracking-tighter text-white select-none w-full leading-tight"
-                    style={{ fontFamily: "'Inter', 'Helvetica Neue', sans-serif" }}
+                    style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     You will inevitably perish.
                   </h2>
@@ -260,15 +316,15 @@ export default function App() {
                 <div className="w-full">
                   <h2 
                     className="porsche-line text-[1.6rem] sm:text-[2.2rem] md:text-[3.5rem] lg:text-[4.5rem] xl:text-[5rem] font-medium tracking-tighter text-white select-none w-full leading-tight"
-                    style={{ fontFamily: "'Inter', 'Helvetica Neue', sans-serif" }}
+                    style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     Your legacy will be forgotten.
                   </h2>
                 </div>
                 <div className="w-full">
                   <h2 
-                    className="porsche-line text-[1.4rem] sm:text-[1.8rem] md:text-[2.8rem] lg:text-[3.5rem] xl:text-[4rem] font-medium tracking-tighter text-white/80 select-none w-full leading-tight"
-                    style={{ fontFamily: "'Inter', 'Helvetica Neue', sans-serif" }}
+                    className="porsche-line text-[1.4rem] sm:text-[1.8rem] md:text-[2.8rem] lg:text-[3.5rem] xl:text-[4rem] font-medium tracking-tighter text-white/70 select-none w-full leading-tight"
+                    style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     But hey, at least your wrist looks expensive.
                   </h2>

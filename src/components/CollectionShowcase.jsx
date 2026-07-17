@@ -11,8 +11,6 @@ gsap.registerPlugin(ScrollTrigger);
 // ============================================
 import { WATCHES } from '../data/watches';
 
-// Cursor trail removed for performance
-
 // ============================================
 // MAGNETIC BUTTON
 // ============================================
@@ -56,7 +54,7 @@ function MagneticButton({ children, className = '', onClick }) {
 }
 
 // ============================================
-// SINGLE PRODUCT CARD (Bucks Sauce Style)
+// SINGLE PRODUCT CARD
 // ============================================
 function ProductCard({ watch, index, onClick }) {
   const cardRef = useRef(null);
@@ -66,16 +64,15 @@ function ProductCard({ watch, index, onClick }) {
 
   useEffect(() => {
     gsap.fromTo(cardRef.current,
-      { y: 120, opacity: 0, rotate: index % 2 === 0 ? -2 : 2 },
+      { y: 80, opacity: 0 },
       {
         y: 0,
         opacity: 1,
-        rotate: 0,
-        duration: 1,
+        duration: 0.9,
         ease: "power3.out",
         scrollTrigger: {
           trigger: cardRef.current,
-          start: "top 85%",
+          start: "top 88%",
           toggleActions: "play none none none"
         }
       }
@@ -100,7 +97,7 @@ function ProductCard({ watch, index, onClick }) {
         if (videoRef.current) videoRef.current.pause();
       }}
     >
-      {/* Background Video (plays on hover) */}
+      {/* Background Video (plays on hover, subtle) */}
       <video
         ref={videoRef}
         muted
@@ -110,14 +107,14 @@ function ProductCard({ watch, index, onClick }) {
         key={watch.id}
         src={`${watch.video}?t=${watch.id}`}
         className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 scale-[1.3]"
-        style={{ opacity: isHovered ? 0.25 : 0 }}
+        style={{ opacity: isHovered ? 0.15 : 0 }}
       />
 
-      {/* Gradients for text readability (sits above image) */}
+      {/* Gradients for text readability */}
       <div
         className="absolute inset-0 pointer-events-none z-20 transition-opacity duration-500"
         style={{
-          background: `linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 25%, transparent 75%, rgba(0,0,0,0.8) 100%)`,
+          background: `linear-gradient(180deg, rgba(0,0,0,0.7) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.7) 100%)`,
         }}
       />
 
@@ -125,13 +122,13 @@ function ProductCard({ watch, index, onClick }) {
       <div className="absolute top-6 left-6 right-6 z-30">
         <h3
           className="text-[1.8rem] sm:text-[2.5rem] md:text-[3.5rem] font-bold tracking-tighter leading-none text-white/90 uppercase"
-          style={{ fontFamily: "'Inter', 'Helvetica Neue', sans-serif" }}
+          style={{ fontFamily: "'Playfair Display', serif" }}
         >
           {watch.brand}
         </h3>
         <p
-          className="text-sm md:text-base font-light tracking-[0.3em] uppercase text-white/60 mt-1"
-          style={{ fontFamily: "'Inter', sans-serif" }}
+          className="text-sm md:text-base font-light tracking-[0.3em] uppercase text-white/50 mt-1"
+          style={{ fontFamily: "'Playfair Display', serif" }}
         >
           {watch.model}
         </p>
@@ -149,7 +146,7 @@ function ProductCard({ watch, index, onClick }) {
           alt={`${watch.brand} ${watch.model}`}
           loading="lazy"
           onLoad={() => setImgLoaded(true)}
-          className="w-full h-full object-contain transition-all duration-700 group-hover:scale-105"
+          className="w-full h-full object-contain transition-all duration-700 group-hover:scale-[1.03]"
           style={{
             mixBlendMode: 'multiply',
             filter: 'contrast(1.05) saturate(1.1)',
@@ -158,42 +155,44 @@ function ProductCard({ watch, index, onClick }) {
         />
       </div>
 
-      {/* Price + CTA — Bottom */}
-      <div
-        className="absolute bottom-0 left-0 right-0 z-30 p-6 transition-all duration-500"
-        style={{
-          transform: isHovered ? 'translateY(0)' : 'translateY(20px)',
-          opacity: isHovered ? 1 : 0.7,
-        }}
-      >
+      {/* Tagline + Price + CTA — Bottom */}
+      <div className="absolute bottom-0 left-0 right-0 z-30 p-6">
+        {/* Tagline */}
+        {watch.tagline && (
+          <p 
+            className="text-xs md:text-sm text-white/40 mb-3 italic"
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
+            "{watch.tagline}"
+          </p>
+        )}
         <div className="flex items-center justify-between">
           <span
             className="text-2xl md:text-3xl font-bold text-white tracking-tight"
-            style={{ fontFamily: "'Inter', sans-serif" }}
+            style={{ fontFamily: "'Playfair Display', serif" }}
           >
             {watch.price}
           </span>
           {watch.outOfStock ? (
-            <span className="px-4 py-2 bg-white/10 border border-white/20 text-white/70 text-xs tracking-[0.2em] uppercase rounded-full backdrop-blur-md">
+            <span className="px-4 py-2 bg-white/10 border border-white/20 text-white/60 text-xs tracking-[0.2em] uppercase rounded-full backdrop-blur-md">
               Out of Stock
             </span>
           ) : (
             <MagneticButton
-              className="px-5 py-2.5 border border-white/40 text-white text-xs tracking-[0.25em] uppercase font-medium
+              className="px-5 py-2.5 border border-white/30 text-white text-xs tracking-[0.25em] uppercase font-medium
                          hover:bg-white hover:text-black transition-all duration-300 rounded-full backdrop-blur-md"
             >
-              View Product →
+              View →
             </MagneticButton>
           )}
         </div>
       </div>
 
-      {/* Subtle border glow on hover */}
+      {/* Subtle border on hover */}
       <div
         className="absolute inset-0 rounded-2xl border transition-all duration-500 pointer-events-none"
         style={{
-          borderColor: isHovered ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.06)',
-          boxShadow: isHovered ? `0 0 60px ${watch.color}80, inset 0 0 60px ${watch.color}20` : 'none',
+          borderColor: isHovered ? 'rgba(201,169,110,0.25)' : 'rgba(255,255,255,0.06)',
         }}
       />
     </div>
@@ -290,8 +289,6 @@ export default function CollectionShowcase({ onSelectWatch }) {
   const taglineRef = useRef(null);
   const storyRef = useRef(null);
   const closerRef = useRef(null);
-  const horizontalSectionRef = useRef(null);
-  const horizontalTrackRef = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -326,8 +323,6 @@ export default function CollectionShowcase({ onSelectWatch }) {
         }
       );
 
-      // Removed horizontal scroll logic
-
       gsap.fromTo(".closer-btn",
         { autoAlpha: 0, y: 30 },
         {
@@ -354,7 +349,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
           scrollTrigger: {
             trigger: storyRef.current,
             start: "top top",
-            end: "+=150%", // Pins for 1.5x screen height
+            end: "+=150%",
             scrub: true,
             pin: true
           }
@@ -381,20 +376,19 @@ export default function CollectionShowcase({ onSelectWatch }) {
           className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center pointer-events-none"
         >
           <p
-            className="legacy-text text-[10px] font-light tracking-[0.5em] uppercase text-white/50 mb-6"
-            style={{ fontFamily: "'Inter', sans-serif" }}
+            className="legacy-text text-[10px] font-light tracking-[0.5em] uppercase text-white/40 mb-6"
+            style={{ fontFamily: "'Playfair Display', serif" }}
           >
             The Collection
           </p>
           <h2
-            className="legacy-text text-[2.2rem] sm:text-[3rem] md:text-[5rem] lg:text-[7rem] xl:text-[6rem] font-bold tracking-tighter text-white text-center leading-none rainbow-shimmer pb-4"
+            className="legacy-text text-[2.2rem] sm:text-[3rem] md:text-[5rem] lg:text-[7rem] xl:text-[6rem] font-bold tracking-tighter text-white text-center leading-none gold-shimmer pb-4"
             style={{
-              fontFamily: "'Inter', 'Helvetica Neue', sans-serif",
+              fontFamily: "'Playfair Display', serif",
             }}
           >
             Choose Your<br />Legacy.
           </h2>
-          <div className="legacy-text w-16 h-[1px] bg-gradient-to-r from-transparent via-amber-400/50 to-transparent mt-10" />
         </section>
 
         {/* Dedicated Story Section - Pinned & Scaled */}
@@ -404,14 +398,14 @@ export default function CollectionShowcase({ onSelectWatch }) {
         >
           <div className="story-text-container text-center px-4">
             <p
-              className="text-[10px] lg:text-xs font-light tracking-[0.5em] uppercase text-white/40 mb-8"
-              style={{ fontFamily: "'Inter', sans-serif" }}
+              className="text-[10px] lg:text-xs font-light tracking-[0.5em] uppercase text-white/30 mb-8"
+              style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Meridian Archive
             </p>
             <h3
               className="text-[2rem] md:text-[3.5rem] font-medium tracking-tighter text-white leading-tight"
-              style={{ fontFamily: "'Inter', 'Helvetica Neue', sans-serif" }}
+              style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Every piece tells a story.<br />
               <span className="text-white/40 font-light">Find yours.</span>
@@ -459,20 +453,20 @@ export default function CollectionShowcase({ onSelectWatch }) {
         {/* Content */}
         <div className="relative z-10 flex flex-col items-center text-center px-8 pointer-events-auto">
           <p
-            className="closer-text text-[10px] font-light tracking-[0.5em] uppercase text-white/50 mb-6"
-            style={{ fontFamily: "'Inter', sans-serif" }}
+            className="closer-text text-[10px] font-light tracking-[0.5em] uppercase text-white/40 mb-6"
+            style={{ fontFamily: "'Playfair Display', serif" }}
           >
             Time is fleeting
           </p>
           <h2
-            className="closer-text text-[2.2rem] sm:text-[3rem] md:text-[5rem] lg:text-[7rem] xl:text-[6rem] font-bold tracking-tighter text-white leading-none mb-4 rainbow-shimmer pb-2"
-            style={{ fontFamily: "'Inter', 'Helvetica Neue', sans-serif" }}
+            className="closer-text text-[2.2rem] sm:text-[3rem] md:text-[5rem] lg:text-[7rem] xl:text-[6rem] font-bold tracking-tighter text-white leading-none mb-4 gold-shimmer pb-2"
+            style={{ fontFamily: "'Playfair Display', serif" }}
           >
             Time Waits<br />For No One.
           </h2>
           <p
-            className="closer-text text-base md:text-lg text-white/40 max-w-md mt-4 mb-12"
-            style={{ fontFamily: "'Inter', sans-serif" }}
+            className="closer-text text-base md:text-lg text-white/30 max-w-md mt-4 mb-12"
+            style={{ fontFamily: "'Playfair Display', serif" }}
           >
             Your legacy starts with what you wear. Make it count.
           </p>
@@ -483,21 +477,78 @@ export default function CollectionShowcase({ onSelectWatch }) {
               if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }}
             className="closer-btn px-12 py-5 bg-white text-black text-sm tracking-[0.35em] uppercase font-bold
-                       rounded-full hover:bg-white/90 transition-all duration-300 shadow-[0_0_60px_rgba(255,255,255,0.15)] cursor-pointer"
+                       rounded-full hover:bg-[#C9A96E] hover:text-black transition-all duration-300 shadow-[0_0_60px_rgba(201,169,110,0.15)] cursor-pointer"
           >
             Shop Now
           </MagneticButton>
         </div>
 
         {/* Footer */}
-        <div className="absolute bottom-8 left-0 right-0 flex items-center justify-center z-10">
-          <p
-            className="text-[9px] tracking-[0.4em] uppercase text-white/20"
-            style={{ fontFamily: "'Inter', sans-serif" }}
-          >
-            © 2026 Meridian — All Rights Reserved
-          </p>
-        </div>
+        <footer className="relative z-10 w-full mt-32 pointer-events-auto">
+          <div className="max-w-6xl mx-auto px-8 py-16">
+            {/* Top: Logo + Newsletter */}
+            <div className="flex flex-col md:flex-row items-center justify-between gap-12 mb-16">
+              <img src="/logo.jpg" alt="Meridian" className="h-12 w-auto object-contain opacity-60" />
+              <div className="flex flex-col items-center md:items-end gap-3">
+                <p className="text-xs tracking-[0.3em] uppercase text-white/30" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  Stay in the loop
+                </p>
+                <div className="flex items-center gap-2">
+                  <input 
+                    type="email" 
+                    placeholder="your@email.com"
+                    className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-xs text-white/60 placeholder:text-white/20 focus:outline-none focus:border-[#C9A96E]/40 w-56 transition-colors"
+                  />
+                  <button className="px-5 py-2 bg-white/10 border border-white/10 text-white/60 text-xs tracking-[0.2em] uppercase rounded-full hover:bg-[#C9A96E] hover:text-black hover:border-[#C9A96E] transition-all duration-300">
+                    Join
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Middle: Nav Links */}
+            <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 mb-16">
+              {['Shop', 'Heritage', 'Instagram', 'Contact'].map((link) => (
+                <button 
+                  key={link}
+                  className="text-xs tracking-[0.3em] uppercase text-white/25 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer"
+                  style={{ fontFamily: "'Playfair Display', serif" }}
+                >
+                  {link}
+                </button>
+              ))}
+            </div>
+
+            {/* Divider */}
+            <div className="w-full h-[1px] bg-white/5 mb-8" />
+
+            {/* Bottom: Copyright + Social */}
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <p className="text-[10px] tracking-[0.3em] uppercase text-white/15">
+                © 2026 Meridian — All Rights Reserved
+              </p>
+              <div className="flex items-center gap-6">
+                <a 
+                  href="https://www.instagram.com/meri.dianwatches" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-[10px] tracking-[0.3em] uppercase text-white/15 hover:text-[#C9A96E] transition-colors duration-300"
+                >
+                  Instagram
+                </a>
+                <a 
+                  href="https://wa.me/918431724851" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-[10px] tracking-[0.3em] uppercase text-white/15 hover:text-[#C9A96E] transition-colors duration-300"
+                >
+                  WhatsApp
+                </a>
+              </div>
+            </div>
+          </div>
+        </footer>
+
       </section>
       </div>
     </div>
