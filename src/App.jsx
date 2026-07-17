@@ -84,11 +84,11 @@ function FluidBackground() {
     });
 
     gsap.to(containerRef.current, {
-      autoAlpha: 0.4,
+      autoAlpha: 0.5,
       scrollTrigger: {
         trigger: ".product-reveal",
-        start: "top 90%",
-        end: "top 50%",
+        start: "top 60%",
+        end: "top 20%",
         scrub: true,
       }
     });
