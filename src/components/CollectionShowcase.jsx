@@ -108,7 +108,7 @@ function ProductCard({ watch, index, onClick }) {
         playsInline
         preload="none"
         key={watch.id}
-        src={watch.video}
+        src={`${watch.video}?t=${watch.id}`}
         className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 scale-[1.3]"
         style={{ opacity: isHovered ? 0.25 : 0 }}
       />

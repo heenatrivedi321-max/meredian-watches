@@ -199,7 +199,7 @@ export const WATCHES = [
     amazonLink: "https://www.amazon.in/dp/B084G47ND2",
     shopifyVariantId: "44408774131755",
     video: "/Diver_watch_crashing_through_water_202607141829.mp4",
-    cinematicVideo: "/Untitled_Scene_06-28_15_13_25_202606290757.mp4",
+    cinematicVideo: "/Diver_watch_crashing_through_water_202607141829.mp4",
     image: "/watches_new/Men's_watch_product_shot_2K_202607141702.jpeg",
     gallery: [
       "/watches_new/Men's_watch_product_shot_2K_202607141702.jpeg",
