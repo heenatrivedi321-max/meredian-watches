@@ -59,6 +59,17 @@ function FluidBackground() {
       SUNRAYS_WEIGHT: 1.0,
     });
 
+    // Hide fluid when scrolling past hero
+    gsap.to(containerRef.current, {
+      autoAlpha: 0,
+      scrollTrigger: {
+        trigger: ".hero-spacer",
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+      }
+    });
+
   }, []);
 
   return (
@@ -117,16 +128,7 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [soundOn, setSoundOn] = useState(false);
   const audioRef = useRef(null);
-  const handleIntroComplete = useCallback(() => {
-    setIntroDone(true);
-    // Auto-play ambient audio after intro splash
-    setTimeout(() => {
-      if (audioRef.current) {
-        audioRef.current.play().catch(() => {});
-        setSoundOn(true);
-      }
-    }, 500);
-  }, []);
+  const handleIntroComplete = useCallback(() => setIntroDone(true), []);
 
   const toggleSound = useCallback(() => {
     if (!audioRef.current) return;
