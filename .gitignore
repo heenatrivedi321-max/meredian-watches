@@ -77,3 +77,9 @@ bucks_top.png
 test_*.jpg
 test_*.jpeg
 .vercel
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
