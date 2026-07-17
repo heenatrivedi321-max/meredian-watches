@@ -358,7 +358,7 @@ export default function App() {
             className="bg-stars absolute inset-0 w-full h-full object-cover opacity-90"
             style={{ transform: 'scale(1.3) translateZ(0)', willChange: 'transform' }}
           >
-            <source src="/stars.mp4" type="video/mp4" />
+            <source src="/hero-4k.mp4" type="video/mp4" />
           </video>
 
           {/* Ambient audio for hero video */}
