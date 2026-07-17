@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { createCheckout } from '../shopify';
-import { createPaymentLink } from '../razorpay';
 
 export default function ProductOverlay({ watch, onClose }) {
   const containerRef = useRef(null);
@@ -297,16 +296,11 @@ export default function ProductOverlay({ watch, onClose }) {
                     if (isRedirecting) return;
                     setIsRedirecting(true);
                     try {
-                      const url = await createPaymentLink(watch);
-                      window.location.href = url;
+                      const cart = await createCheckout(watch.shopifyVariantId);
+                      window.location.href = cart.checkoutUrl;
                     } catch (err) {
-                      console.warn("Payment Link failed, trying Shopify:", err);
-                      try {
-                        const cart = await createCheckout(watch.shopifyVariantId);
-                        window.location.href = cart.checkoutUrl;
-                      } catch (err2) {
-                        window.location.href = `https://shop.meredianwatches.store/cart/${watch.shopifyVariantId}:1`;
-                      }
+                      console.warn("Checkout failed:", err);
+                      window.location.href = `https://shop.meredianwatches.store/cart/${watch.shopifyVariantId}:1`;
                     }
                   }}
                   disabled={isRedirecting}
