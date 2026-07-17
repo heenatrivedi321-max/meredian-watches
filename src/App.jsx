@@ -9,27 +9,28 @@ import BrandStory from './components/BrandStory';
 import ProductSchema from './components/ProductSchema';
 import InstagramFeed from './components/InstagramFeed';
 import IntroSplash from './components/IntroSplash';
-import CinematicOverlay from './components/CinematicOverlay';
-import SoundtrackEngine from './audio/SoundtrackEngine';
-import WebGLFluidBg from './components/WebGLFluidBg';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ============================================================
-// SCROLL PROGRESS BAR
-// ============================================================
 function ScrollProgress() {
   const barRef = useRef(null);
+
   useEffect(() => {
     gsap.to(barRef.current, {
       scaleX: 1,
       ease: "none",
-      scrollTrigger: { trigger: document.body, start: "top top", end: "bottom bottom", scrub: 0.3 },
+      scrollTrigger: {
+        trigger: document.body,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.3,
+      }
     });
   }, []);
+
   return (
-    <div className="fixed top-0 left-0 w-full h-[2px] z-[220] pointer-events-none">
-      <div
+    <div className="fixed top-0 left-0 w-full h-[2px] z-[200] pointer-events-none">
+      <div 
         ref={barRef}
         className="h-full bg-gradient-to-r from-[#C9A96E] via-[#E8D5A3] to-[#C9A96E] origin-left"
         style={{ transform: 'scaleX(0)' }}
@@ -38,232 +39,165 @@ function ScrollProgress() {
   );
 }
 
-// ============================================================
-// MAIN APP
-// ============================================================
 export default function App() {
   const mainRef = useRef(null);
   const [selectedWatch, setSelectedWatch] = useState(null);
   const [showBrand, setShowBrand] = useState(false);
   const [introDone, setIntroDone] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [currentAct, setCurrentAct] = useState(1);
-  const heroVideoRef = useRef(null);
-  const soundtrackRef = useRef(null);
+  const [soundOn, setSoundOn] = useState(false);
+  const audioRef = useRef(null);
+  const handleIntroComplete = useCallback(() => setIntroDone(true), []);
 
-  // ---- Intro complete → auto-play soundtrack ----
-  const handleIntroComplete = useCallback(() => {
-    setIntroDone(true);
-    // Auto-play soundtrack — intro splash already unlocked AudioContext
-    if (!soundtrackRef.current) {
-      soundtrackRef.current = new SoundtrackEngine();
-      soundtrackRef.current.init().then(() => {
-        soundtrackRef.current.play();
-      });
+  const toggleSound = useCallback(() => {
+    if (!audioRef.current) return;
+    if (soundOn) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play().catch(() => {});
     }
-  }, []);
+    setSoundOn(prev => !prev);
+  }, [soundOn]);
 
-  // ============================================================
-  // GSAP ANIMATIONS
-  // ============================================================
   useEffect(() => {
     let ctx = gsap.context(() => {
 
-      // ---- NO PINNING — free scroll with scroll-triggered animations ----
-      // Track which section is in view
-      const sections = gsap.utils.toArray('.cinema-section');
-      sections.forEach((section, i) => {
-        ScrollTrigger.create({
-          trigger: section,
-          start: "top center",
-          end: "bottom center",
-          onEnter: () => setCurrentAct(i + 1),
-          onEnterBack: () => setCurrentAct(i + 1),
-        });
-      });
-
-      // ---- GLOBAL SCROLL PROGRESS for soundtrack ----
-      ScrollTrigger.create({
-        trigger: document.body,
-        start: "top top",
-        end: "bottom bottom",
-        onUpdate: (self) => {
-          if (soundtrackRef.current && soundtrackRef.current.isPlaying) {
-            soundtrackRef.current.setProgress(self.progress);
-          }
-        },
-      });
-
       // ============================================================
-      // HERO — entrance + scroll parallax
+      // 1. HERO — entrance animation + scroll parallax
       // ============================================================
       const heroTl = gsap.timeline({ delay: 0.2 });
-      heroTl.fromTo(".hero-tagline",
-        { autoAlpha: 0, y: 30 },
-        { autoAlpha: 1, y: 0, duration: 1.4, ease: "power3.out" }
-      );
-      heroTl.fromTo(".hero-title",
-        { autoAlpha: 0, y: 60, scale: 0.92, rotateX: 8 },
-        { autoAlpha: 1, y: 0, scale: 1, rotateX: 0, duration: 2, ease: "power3.out" },
-        "-=1"
-      );
-      heroTl.fromTo(".hero-explore",
+      heroTl.fromTo(".hero-tagline", 
         { autoAlpha: 0, y: 20 },
-        { autoAlpha: 1, y: 0, duration: 1.2, ease: "power3.out" },
+        { autoAlpha: 1, y: 0, duration: 1.2, ease: "power3.out" }
+      );
+      heroTl.fromTo(".hero-title", 
+        { autoAlpha: 0, y: 40, scale: 0.95 },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 1.5, ease: "power3.out" },
         "-=0.8"
       );
-      heroTl.fromTo(".hero-subtitle",
-        { autoAlpha: 0 },
-        { autoAlpha: 1, duration: 1, ease: "power2.out" },
-        "-=1.5"
+      heroTl.fromTo(".hero-explore", 
+        { autoAlpha: 0, y: 20 },
+        { autoAlpha: 1, y: 0, duration: 1, ease: "power3.out" },
+        "-=0.6"
       );
 
-      // Hero parallax on scroll — smooth fade + depth
+      // Hero parallax on scroll
       gsap.to(".hero-content", {
         scrollTrigger: {
-          trigger: ".section-hero",
+          trigger: ".hero-spacer",
           start: "top top",
           end: "bottom top",
-          scrub: 1.5,
+          scrub: true,
         },
-        y: "-35%",
+        y: "-30%",
         opacity: 0,
-        scale: 0.88,
-        filter: "blur(6px)",
-        ease: "none",
+        scale: 0.9,
+        ease: "none"
       });
 
+      // Hero explore indicator fades out
       gsap.to(".hero-explore", {
         scrollTrigger: {
-          trigger: ".section-hero",
+          trigger: ".hero-spacer",
           start: "top top",
-          end: "25% top",
+          end: "30% top",
           scrub: true,
         },
         opacity: 0,
-        y: -40,
-        ease: "none",
+        y: -30,
+        ease: "none"
       });
 
       // ============================================================
-      // VIDEO CROSSFADES — Stars → Liquid → Porsche
+      // 2. CROSSFADE: Stars → Liquid Video
       // ============================================================
-      gsap.to(".bg-liquid", {
-        opacity: 0.85,
+      const crossfadeTl = gsap.timeline({
         scrollTrigger: {
-          trigger: ".section-manifesto",
+          trigger: ".manifesto-spacer",
           start: "top 80%",
           end: "top 20%",
           scrub: true,
         }
       });
+      crossfadeTl.to(".bg-liquid", { opacity: 0.8, duration: 1, ease: "none" });
 
-      gsap.to(".bg-porsche", {
-        opacity: 1,
+      // ============================================================
+      // 3. MANIFESTO — staggered reveal with scale
+      // ============================================================
+      const manifestoTl = gsap.timeline({
         scrollTrigger: {
-          trigger: ".section-porsche",
-          start: "top 80%",
-          end: "top 20%",
-          scrub: true,
-        }
-      });
-      gsap.to(".bg-liquid", {
-        opacity: 0,
-        scrollTrigger: {
-          trigger: ".section-porsche",
-          start: "top 80%",
-          end: "top 20%",
-          scrub: true,
+          trigger: ".manifesto-spacer",
+          start: "top 50%",
+          end: "bottom bottom",
+          scrub: 0.5,
         }
       });
 
-      // ============================================================
-      // MANIFESTO — text reveals on scroll
-      // ============================================================
       const manifestoLines = gsap.utils.toArray(".manifesto-line");
-      manifestoLines.forEach((line, i) => {
-        gsap.fromTo(line,
-          { autoAlpha: 0, y: 60, scale: 0.95, rotateX: 4 },
-          {
-            autoAlpha: 1, y: 0, scale: 1, rotateX: 0,
-            duration: 1.2, ease: "power3.out",
-            scrollTrigger: {
-              trigger: line,
-              start: "top 85%",
-              end: "top 40%",
-              scrub: 1,
-            }
-          }
-        );
+
+      // Each line: fade in + slight rise + subtle scale from 0.96
+      manifestoTl.fromTo(manifestoLines[0], 
+        { autoAlpha: 0, y: 50, scale: 0.96 }, 
+        { autoAlpha: 1, y: 0, scale: 1, duration: 1.5, ease: "power2.out" }, 0);
+
+      manifestoTl.fromTo(manifestoLines[1], 
+        { autoAlpha: 0, y: 50, scale: 0.96 }, 
+        { autoAlpha: 1, y: 0, scale: 1, duration: 1.5, ease: "power2.out" }, 0.4);
+
+      manifestoTl.fromTo(manifestoLines[2], 
+        { autoAlpha: 0, y: 50, scale: 0.96 }, 
+        { autoAlpha: 1, y: 0, scale: 1, duration: 1.5, ease: "power2.out" }, 0.8);
+
+      // All lines exit with stagger + slight rise
+      manifestoTl.to(manifestoLines, { 
+        autoAlpha: 0, y: -30, duration: 1, stagger: 0.15, ease: "power2.in" 
       });
+      manifestoTl.to(".manifesto-video", { autoAlpha: 1, duration: 0.5 }, "<");
 
       // ============================================================
-      // PORSCHE — text reveals on scroll
+      // 4. PORSCHE — staggered reveal with depth
       // ============================================================
-      const porscheLines = gsap.utils.toArray(".porsche-line");
-      porscheLines.forEach((line, i) => {
-        gsap.fromTo(line,
-          { autoAlpha: 0, y: 80, scale: 0.88, rotateX: 8 },
-          {
-            autoAlpha: 1, y: 0, scale: 1, rotateX: 0,
-            duration: 1.5, ease: "power3.out",
-            scrollTrigger: {
-              trigger: line,
-              start: "top 85%",
-              end: "top 40%",
-              scrub: 1,
-            }
-          }
-        );
-      });
-
-      // Porsche dimmer
-      gsap.to(".video-dimmer", {
-        opacity: 0.6,
+      const porscheTl = gsap.timeline({
         scrollTrigger: {
-          trigger: ".section-porsche",
-          start: "top 60%",
-          end: "bottom 20%",
-          scrub: true,
+          trigger: ".porsche-spacer",
+          start: "top 10%",
+          end: "bottom bottom",
+          scrub: 0.5,
         }
       });
 
-      // ============================================================
-      // COLLECTION — cinematic entrance
-      // ============================================================
-      gsap.fromTo(".collection-wrapper",
-        { autoAlpha: 0, y: 80 },
-        {
-          autoAlpha: 1, y: 0, duration: 1.5, ease: "power3.out",
-          scrollTrigger: {
-            trigger: ".collection-wrapper",
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          }
-        }
-      );
+      const porscheLines = gsap.utils.toArray(".porsche-line");
+
+      porscheTl.to(".bg-porsche", { autoAlpha: 1, duration: 1, ease: "none" }, 0)
+               .to(".bg-liquid", { autoAlpha: 0, duration: 1, ease: "none" }, 0);
+
+      porscheTl.fromTo(porscheLines[0], 
+        { autoAlpha: 0, y: 50, scale: 0.96 }, 
+        { autoAlpha: 1, y: 0, scale: 1, duration: 2, ease: "power2.out" }, 0.5);
+
+      porscheTl.fromTo(porscheLines[1], 
+        { autoAlpha: 0, y: 50, scale: 0.96 }, 
+        { autoAlpha: 1, y: 0, scale: 1, duration: 1.8, ease: "power2.out" }, 1.5);
+
+      porscheTl.fromTo(porscheLines[2], 
+        { autoAlpha: 0, y: 50, scale: 0.96 }, 
+        { autoAlpha: 1, y: 0, scale: 1, duration: 1.5, ease: "power2.out" }, 2.5);
+
+      porscheTl.to(".video-dimmer", { autoAlpha: 0.7, duration: 1.5 }, 0.5);
+
+      porscheTl.to(porscheLines, { 
+        autoAlpha: 0, y: -30, duration: 1, stagger: 0.15, ease: "power2.in" 
+      }, 6);
+      porscheTl.to(".video-dimmer", { autoAlpha: 0, duration: 1 }, 6);
 
     }, mainRef);
-
     return () => ctx.revert();
-  }, []);
-
-  // ---- Cleanup soundtrack on unmount ----
-  useEffect(() => {
-    return () => {
-      if (soundtrackRef.current) {
-        soundtrackRef.current.destroy();
-      }
-    };
   }, []);
 
   return (
     <>
       {/* Intro Splash */}
       {!introDone && <IntroSplash onComplete={handleIntroComplete} />}
-
-      {/* Cinematic Overlay — vignette + scene counter + dots only */}
-      <CinematicOverlay currentAct={currentAct} totalActs={4} />
 
       {/* Scroll Progress */}
       <ScrollProgress />
@@ -272,70 +206,60 @@ export default function App() {
       <ProductSchema watch={selectedWatch} />
 
       <div ref={mainRef} className="w-full bg-black min-h-screen text-white font-sans overflow-x-hidden selection:bg-[#C9A96E] selection:text-black">
-
-        {/* ============================================================
-            FIXED BACKGROUND MEDIA LAYER
-            ============================================================ */}
+        
+        {/* FIXED BACKGROUND MEDIA LAYER */}
         <div className="fixed inset-0 w-full h-screen z-0 pointer-events-none bg-black overflow-hidden">
-
-          {/* WEBGL FLUID — always active, base layer */}
-          <div className="absolute inset-0 w-full h-full z-0 pointer-events-auto" style={{ opacity: 0.7 }}>
-            <WebGLFluidBg />
-          </div>
-
-          {/* Hero video (stars) — on top of fluid */}
-          <video
-            ref={heroVideoRef}
+          
+          <video 
             autoPlay loop muted playsInline preload="auto" fetchPriority="high"
-            className="absolute inset-0 w-full h-full object-cover opacity-75"
-            style={{ transform: 'scale(1.3) translateZ(0)', willChange: 'transform', mixBlendMode: 'screen' }}
+            className="absolute inset-0 w-full h-full object-cover opacity-90"
+            style={{ transform: 'scale(1.3) translateZ(0)', willChange: 'transform' }}
           >
             <source src="/stars.mp4" type="video/mp4" />
           </video>
 
-          {/* Liquid explosion */}
-          <video
+          {/* Ambient audio for hero video */}
+          <audio ref={audioRef} loop preload="auto">
+            <source src="/ambient.mp3" type="audio/mpeg" />
+          </audio>
+
+          <video 
             autoPlay loop muted playsInline preload="none"
-            className="bg-liquid absolute inset-0 w-full h-full object-cover z-10"
-            style={{ opacity: 0, transform: 'scale(1.3) translateZ(0)', willChange: 'transform, opacity', mixBlendMode: 'screen' }}
+            className="manifesto-video bg-liquid absolute inset-0 w-full h-full object-cover z-10"
+            style={{ opacity: 0, transform: 'scale(1.3) translateZ(0)', willChange: 'transform, opacity' }}
           >
-            <source src="/Watch_rotating_in_liquid_explosion_202607141039.mp4?v=6" type="video/mp4" />
+            <source src="/Watch_rotating_in_liquid_explosion_202607141039.mp4?v=3" type="video/mp4" />
           </video>
 
-          {/* Porsche tunnel */}
-          <video
+          <video 
             autoPlay loop muted playsInline preload="none"
             className="bg-porsche absolute inset-0 w-full h-full object-cover z-20"
-            style={{ opacity: 0, transform: 'scale(1.3) translateZ(0)', willChange: 'transform, opacity', mixBlendMode: 'screen' }}
+            style={{ opacity: 0, transform: 'scale(1.3) translateZ(0)', willChange: 'transform, opacity' }}
           >
-            <source src="/Porsche_driving_through_tunnel_202606281316.mp4?v=6" type="video/mp4" />
+            <source src="/Porsche_driving_through_tunnel_202606281316.mp4?v=3" type="video/mp4" />
           </video>
 
-          {/* Dimmer for text legibility */}
           <div className="video-dimmer absolute inset-0 bg-black z-25 pointer-events-none" style={{ opacity: 0 }} />
 
-          {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40 z-30 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/50 z-30 pointer-events-none" />
         </div>
 
-        {/* ============================================================
-            NAVIGATION
-            ============================================================ */}
-        <nav className="fixed top-0 left-0 w-full h-16 sm:h-20 z-50 flex items-center justify-between px-4 sm:px-8 lg:px-12 pointer-events-auto mix-blend-difference" style={{ zIndex: 230 }}>
-          <button
-            onClick={() => setShowBrand(true)}
+        {/* NAVIGATION */}
+        <nav className="fixed top-0 left-0 w-full h-16 sm:h-20 lg:h-24 z-50 flex items-center justify-between px-4 sm:px-8 lg:px-12 pointer-events-auto mix-blend-difference">
+          <button 
+            onClick={() => setShowBrand(true)} 
             className="hidden md:block flex-1 text-left text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] font-light uppercase hover:opacity-50 transition-opacity cursor-pointer"
           >
             Heritage
           </button>
 
           <div className="flex-1 flex justify-center">
-            <img src="/logo.jpg" alt="Meridian Logo" className="h-8 sm:h-10 lg:h-14 w-auto object-contain drop-shadow-[0_0_15px_rgba(201,169,110,0.4)] hover:scale-105 transition-transform cursor-pointer" />
+            <img src="/logo.jpg" alt="Meridian Logo" className="h-10 sm:h-14 lg:h-20 w-auto object-contain drop-shadow-[0_0_15px_rgba(201,169,110,0.4)] hover:scale-105 transition-transform cursor-pointer" />
           </div>
 
-          <div
+          <div 
             onClick={() => {
-              const grid = document.querySelector('.collection-wrapper');
+              const grid = document.querySelector('.max-w-screen-2xl');
               if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }}
             className="hidden md:block flex-1 text-right text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] font-light uppercase hover:opacity-50 transition-opacity cursor-pointer"
@@ -344,7 +268,7 @@ export default function App() {
           </div>
 
           {/* Mobile: Hamburger */}
-          <button
+          <button 
             onClick={() => setMenuOpen(true)}
             className="md:hidden absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-[5px] cursor-pointer p-2"
             aria-label="Open menu"
@@ -354,16 +278,17 @@ export default function App() {
           </button>
         </nav>
 
-        {/* ============================================================
-            MOBILE MENU OVERLAY
-            ============================================================ */}
+        {/* MOBILE MENU OVERLAY */}
         {menuOpen && (
-          <div className="fixed inset-0 z-[300] pointer-events-auto">
-            <div className="absolute inset-0 bg-black/92 backdrop-blur-md" onClick={() => setMenuOpen(false)} />
+          <div className="fixed inset-0 z-[100] pointer-events-auto">
+            <div 
+              className="absolute inset-0 bg-black/90 backdrop-blur-sm"
+              onClick={() => setMenuOpen(false)}
+            />
             <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center bg-black/95">
-              <button
+              <button 
                 onClick={() => setMenuOpen(false)}
-                className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center cursor-pointer"
+                className="absolute top-5 right-5 w-10 h-10 flex items-center justify-center cursor-pointer"
                 aria-label="Close menu"
               >
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="white" strokeWidth="1">
@@ -373,15 +298,15 @@ export default function App() {
               </button>
 
               <div className="flex flex-col items-center gap-10">
-                <button
+                <button 
                   onClick={() => { setShowBrand(true); setMenuOpen(false); }}
                   className="text-2xl tracking-[0.15em] uppercase text-white/80 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer font-light"
                 >
                   Heritage
                 </button>
-                <button
+                <button 
                   onClick={() => {
-                    const grid = document.querySelector('.collection-wrapper');
+                    const grid = document.querySelector('.max-w-screen-2xl');
                     if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     setMenuOpen(false);
                   }}
@@ -389,7 +314,7 @@ export default function App() {
                 >
                   Collection
                 </button>
-                <a
+                <a 
                   href="https://www.instagram.com/meri.dianwatches"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -402,81 +327,106 @@ export default function App() {
           </div>
         )}
 
-        {/* ============================================================
-            SCROLLING CONTENT — flows freely, no pinning
-            ============================================================ */}
+        {/* SCROLLING CONTENT LAYER */}
         <div className="relative z-50 w-full pointer-events-none">
 
-          {/* ---- HERO ---- */}
-          <section className="cinema-section section-hero relative w-full h-screen flex flex-col items-center justify-center pointer-events-auto">
-            <div className="hero-content flex flex-col items-center text-center mt-12 pointer-events-auto px-4" style={{ perspective: '1200px' }}>
-              <p className="hero-tagline text-[10px] sm:text-[11px] font-light tracking-[0.4em] uppercase text-white/40 mb-6 sm:mb-10">
+          {/* HERO */}
+          <section className="hero-spacer relative w-full h-screen flex flex-col items-center justify-center pointer-events-auto">
+            <div className="hero-content flex flex-col items-center text-center mt-12 pointer-events-auto px-4">
+              <h2 className="hero-tagline text-[10px] sm:text-[11px] font-light tracking-[0.4em] uppercase text-white/40 mb-6 sm:mb-10">
                 Logic Defied
-              </p>
-              <h1 className="hero-title text-[3rem] sm:text-7xl md:text-[7rem] lg:text-[10rem] font-extralight tracking-[-0.02em] leading-none gold-shimmer"
-                style={{ textShadow: '0 0 80px rgba(201,169,110,0.3)' }}
+              </h2>
+              <h1 
+                className="hero-title text-[2.2rem] sm:text-6xl md:text-[6rem] lg:text-[8rem] font-light tracking-[-0.02em] leading-none gold-shimmer" 
               >
                 Meridian
               </h1>
-              <p className="hero-subtitle mt-4 sm:mt-6 text-[10px] sm:text-xs tracking-[0.5em] uppercase text-white/20 font-light"
-                style={{ opacity: 0 }}
-              >
-                Curated Luxury Timepieces
-              </p>
             </div>
 
             <div className="hero-explore absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center group cursor-pointer pointer-events-auto">
-              <span className="text-[9px] font-light tracking-[0.4em] uppercase text-white/25 mb-4 group-hover:text-[#C9A96E] transition-colors duration-500">
-                Scroll to Enter
+              <span className="text-[10px] font-light tracking-[0.3em] uppercase text-white/30 mb-4 group-hover:text-[#C9A96E] transition-colors duration-500">
+                Explore
               </span>
-              <div className="w-[1px] h-14 bg-white/10 overflow-hidden relative">
+              <div className="w-[1px] h-12 bg-white/15 overflow-hidden relative">
                 <div className="absolute top-0 left-0 w-full h-full bg-[#C9A96E] transform -translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-in-out" />
+              </div>
+            </div>
+
+            {/* Sound toggle */}
+            <button 
+              onClick={toggleSound}
+              className="absolute bottom-12 right-6 sm:right-10 w-10 h-10 flex items-center justify-center rounded-full border border-white/15 backdrop-blur-sm hover:border-[#C9A96E]/50 transition-all duration-300 pointer-events-auto z-[60] cursor-pointer group"
+              aria-label={soundOn ? "Mute sound" : "Play sound"}
+            >
+              {soundOn ? (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-[#C9A96E]">
+                  <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="currentColor" opacity="0.3" />
+                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+                </svg>
+              ) : (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-white/40 group-hover:text-white/60">
+                  <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="currentColor" opacity="0.2" />
+                  <line x1="23" y1="9" x2="17" y2="15" />
+                  <line x1="17" y1="9" x2="23" y2="15" />
+                </svg>
+              )}
+            </button>
+          </section>
+
+          {/* MANIFESTO */}
+          <section className="manifesto-spacer relative w-full h-[200vh] pointer-events-auto">
+            <div className="sticky top-0 left-0 w-full h-screen flex flex-col items-center justify-center">
+              <div className="relative w-full max-w-[90rem] mx-auto px-4 md:px-8 text-center flex flex-col items-center justify-center space-y-3 sm:space-y-4 md:space-y-6" style={{ perspective: "1000px" }}>
+                <div className="w-full">
+                  <h2 className="manifesto-line text-[1.6rem] sm:text-[2.2rem] md:text-[3.5rem] lg:text-[4.5rem] xl:text-[5rem] font-light tracking-[-0.02em] text-white select-none w-full leading-tight">
+                    Your smartwatch just told you to stand up.
+                  </h2>
+                </div>
+                <div className="w-full">
+                  <h2 className="manifesto-line text-[1.6rem] sm:text-[2.2rem] md:text-[3.5rem] lg:text-[4.5rem] xl:text-[5rem] font-light tracking-[-0.02em] text-white select-none w-full leading-tight">
+                    Congrats on hitting 10,000 steps.
+                  </h2>
+                </div>
+                <div className="w-full">
+                  <h2 className="manifesto-line text-[1.4rem] sm:text-[1.8rem] md:text-[2.8rem] lg:text-[3.5rem] xl:text-[4rem] font-light tracking-[-0.02em] text-white/60 select-none w-full leading-tight">
+                    Too bad your wrist looks like a tiny iPad.
+                  </h2>
+                </div>
               </div>
             </div>
           </section>
 
-          {/* ---- MANIFESTO ---- */}
-          <section className="cinema-section section-manifesto relative w-full min-h-screen flex flex-col items-center justify-center py-32 pointer-events-auto" style={{ perspective: '1200px' }}>
-            <div className="relative w-full max-w-[80rem] mx-auto px-4 md:px-8 text-center flex flex-col items-center justify-center space-y-8 md:space-y-12">
-              <h2 className="manifesto-line text-[1.5rem] sm:text-[2rem] md:text-[3.2rem] lg:text-[4.2rem] xl:text-[5rem] font-extralight tracking-[-0.02em] text-white select-none w-full leading-tight">
-                Your smartwatch just told you to stand up.
-              </h2>
-              <h2 className="manifesto-line text-[1.5rem] sm:text-[2rem] md:text-[3.2rem] lg:text-[4.2rem] xl:text-[5rem] font-extralight tracking-[-0.02em] text-white select-none w-full leading-tight">
-                Congrats on hitting 10,000 steps.
-              </h2>
-              <h2 className="manifesto-line text-[1.3rem] sm:text-[1.7rem] md:text-[2.5rem] lg:text-[3.2rem] xl:text-[3.8rem] font-extralight tracking-[-0.02em] text-white/50 select-none w-full leading-tight">
-                Too bad your wrist looks like a tiny iPad.
-              </h2>
+          {/* PORSCHE */}
+          <section className="porsche-spacer relative w-full h-[200vh] pointer-events-auto">
+            <div className="sticky top-0 left-0 w-full h-screen flex flex-col items-center justify-center pt-24 pb-8 overflow-hidden">
+              <div className="relative w-full max-w-[90rem] mx-auto px-4 md:px-8 text-center flex flex-col items-center justify-center space-y-3 sm:space-y-4 md:space-y-6">
+                <div className="w-full">
+                  <h2 className="porsche-line text-[1.6rem] sm:text-[2.2rem] md:text-[3.5rem] lg:text-[4.5rem] xl:text-[5rem] font-light tracking-[-0.02em] text-white select-none w-full leading-tight">
+                    You will inevitably perish.
+                  </h2>
+                </div>
+                <div className="w-full">
+                  <h2 className="porsche-line text-[1.6rem] sm:text-[2.2rem] md:text-[3.5rem] lg:text-[4.5rem] xl:text-[5rem] font-light tracking-[-0.02em] text-white select-none w-full leading-tight">
+                    Your legacy will be forgotten.
+                  </h2>
+                </div>
+                <div className="w-full">
+                  <h2 className="porsche-line text-[1.4rem] sm:text-[1.8rem] md:text-[2.8rem] lg:text-[3.5rem] xl:text-[4rem] font-light tracking-[-0.02em] text-white/60 select-none w-full leading-tight">
+                    But hey, at least your wrist looks expensive.
+                  </h2>
+                </div>
+              </div>
             </div>
           </section>
-
-          {/* ---- PORSCHE ---- */}
-          <section className="cinema-section section-porsche relative w-full min-h-screen flex flex-col items-center justify-center py-32 pointer-events-auto" style={{ perspective: '1200px' }}>
-            <div className="relative w-full max-w-[80rem] mx-auto px-4 md:px-8 text-center flex flex-col items-center justify-center space-y-8 md:space-y-12">
-              <h2 className="porsche-line text-[1.5rem] sm:text-[2rem] md:text-[3.2rem] lg:text-[4.2rem] xl:text-[5rem] font-extralight tracking-[-0.02em] text-white select-none w-full leading-tight">
-                You will inevitably perish.
-              </h2>
-              <h2 className="porsche-line text-[1.5rem] sm:text-[2rem] md:text-[3.2rem] lg:text-[4.2rem] xl:text-[5rem] font-extralight tracking-[-0.02em] text-white select-none w-full leading-tight">
-                Your legacy will be forgotten.
-              </h2>
-              <h2 className="porsche-line text-[1.3rem] sm:text-[1.7rem] md:text-[2.5rem] lg:text-[3.2rem] xl:text-[3.8rem] font-extralight tracking-[-0.02em] text-white/50 select-none w-full leading-tight">
-                But hey, at least your wrist looks expensive.
-              </h2>
-            </div>
-          </section>
-
-          {/* ---- COLLECTION — direct transition, no gap ---- */}
-          <div className="collection-wrapper relative z-50 pointer-events-auto">
-            <CollectionShowcase onSelectWatch={setSelectedWatch} />
-          </div>
 
         </div>
 
         <InstagramFeed />
+        <CollectionShowcase onSelectWatch={setSelectedWatch} />
         <ProductOverlay watch={selectedWatch} onClose={() => setSelectedWatch(null)} />
       </div>
 
-      {/* Floating UI */}
+      {/* Floating UI — above everything */}
       <WhatsAppButton />
       <ScrollToTop />
 
