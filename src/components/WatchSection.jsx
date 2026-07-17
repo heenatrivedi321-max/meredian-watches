@@ -31,24 +31,24 @@ export default function WatchSection({ watch, index, onClick }) {
   const videoRef = useRef(null);
   const textRef = useRef(null);
   const ctaRef = useRef(null);
+  const [muted, setMuted] = useState(true);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const vid = videoRef.current;
+      if (!vid) return;
 
-      if (vid) {
-        vid.muted = false;
-        vid.volume = 1;
-        ScrollTrigger.create({
-          trigger: sectionRef.current,
-          start: "top 80%",
-          end: "bottom 20%",
-          onEnter: () => vid.play().catch(() => {}),
-          onLeave: () => vid.pause(),
-          onEnterBack: () => vid.play().catch(() => {}),
-          onLeaveBack: () => vid.pause(),
-        });
-      }
+      vid.muted = true;
+
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top 80%",
+        end: "bottom 20%",
+        onEnter: () => vid.play().catch(() => {}),
+        onLeave: () => vid.pause(),
+        onEnterBack: () => vid.play().catch(() => {}),
+        onLeaveBack: () => vid.pause(),
+      });
 
       gsap.fromTo(textRef.current,
         { autoAlpha: 0, x: 40 },
@@ -83,22 +83,26 @@ export default function WatchSection({ watch, index, onClick }) {
     return () => ctx.revert();
   }, []);
 
-  const isEven = index % 2 === 0;
+  const toggleMute = (e) => {
+    e.stopPropagation();
+    const vid = videoRef.current;
+    if (!vid) return;
+    vid.muted = !vid.muted;
+    setMuted(vid.muted);
+  };
 
-  // Even index: video LEFT, content RIGHT
-  // Odd index: content LEFT, video RIGHT
-  const videoSide = isEven ? 'left' : 'right';
-  const contentSide = isEven ? 'right' : 'left';
+  const isEven = index % 2 === 0;
 
   return (
     <div
       ref={sectionRef}
       className="relative w-full h-screen overflow-hidden bg-black flex"
     >
-      {/* VIDEO SIDE — half width, full height */}
-      <div className={`w-1/2 h-full relative overflow-hidden ${videoSide === 'right' ? 'order-2' : 'order-1'}`}>
+      {/* VIDEO SIDE */}
+      <div className={`w-1/2 h-full relative overflow-hidden ${isEven ? 'order-1' : 'order-2'}`}>
         <video
           ref={videoRef}
+          muted
           loop
           playsInline
           preload="metadata"
@@ -106,12 +110,34 @@ export default function WatchSection({ watch, index, onClick }) {
         >
           <source src={watch.cinematicVideo} type="video/mp4" />
         </video>
-        {/* Subtle vignette over video */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent pointer-events-none" style={videoSide === 'right' ? { background: 'linear-gradient(to left, rgba(0,0,0,0.3), transparent)' } : {}} />
+        <div className="absolute inset-0 pointer-events-none" style={isEven
+          ? { background: 'linear-gradient(to right, transparent 70%, rgba(0,0,0,0.6) 100%)' }
+          : { background: 'linear-gradient(to left, transparent 70%, rgba(0,0,0,0.6) 100%)' }
+        } />
+
+        {/* Sound toggle */}
+        <button
+          onClick={toggleMute}
+          className="absolute bottom-6 left-6 z-20 w-8 h-8 flex items-center justify-center rounded-full border border-white/20 hover:border-[#C9A96E]/50 transition-all duration-300 bg-black/30 backdrop-blur-sm cursor-pointer"
+        >
+          {muted ? (
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5">
+              <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="white" opacity="0.4" />
+              <line x1="23" y1="9" x2="17" y2="15" />
+              <line x1="17" y1="9" x2="23" y2="15" />
+            </svg>
+          ) : (
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C9A96E" strokeWidth="1.5">
+              <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="#C9A96E" opacity="0.6" />
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+            </svg>
+          )}
+        </button>
       </div>
 
-      {/* CONTENT SIDE — half width, full height */}
-      <div className={`w-1/2 h-full relative flex flex-col justify-center px-8 sm:px-12 md:px-16 lg:px-20 ${contentSide === 'right' ? 'order-2' : 'order-1'}`}>
+      {/* CONTENT SIDE */}
+      <div className={`w-1/2 h-full relative flex flex-col justify-center px-8 sm:px-12 md:px-16 lg:px-20 ${isEven ? 'order-2' : 'order-1'}`}>
 
         {/* Brand + Model */}
         <div className="mb-auto pt-20 sm:pt-24 md:pt-28">
@@ -126,7 +152,7 @@ export default function WatchSection({ watch, index, onClick }) {
           </p>
         </div>
 
-        {/* Watch image — centered vertically */}
+        {/* Watch image */}
         <div className="flex-1 flex items-center justify-center pointer-events-none">
           <img
             src={watch.image}
@@ -140,7 +166,7 @@ export default function WatchSection({ watch, index, onClick }) {
           />
         </div>
 
-        {/* Ironic line + CTA — bottom */}
+        {/* Ironic line + CTA */}
         <div className="mb-16 sm:mb-20 md:mb-24">
           <div ref={textRef}>
             <p className="text-sm sm:text-base md:text-lg font-light text-white/35 italic leading-relaxed mb-6">
@@ -166,7 +192,7 @@ export default function WatchSection({ watch, index, onClick }) {
         </div>
       </div>
 
-      {/* Gold divider between halves */}
+      {/* Gold divider */}
       <div className="absolute top-[15%] bottom-[15%] left-1/2 -translate-x-1/2 w-[1px] bg-gradient-to-b from-transparent via-[#C9A96E]/15 to-transparent pointer-events-none z-10" />
     </div>
   );
