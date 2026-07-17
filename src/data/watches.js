@@ -122,9 +122,9 @@ export const WATCHES = [
     shopifyVariantId: "44408774033451",
     video: "/Watch_gears_forming_watch_dial_202606291025.mp4",
     cinematicVideo: "/Luxury_watch_spinning_gears_202607141816.mp4",
-    image: "/watches_new/Men's_watch_product_shot_2K_202607141702.jpeg",
+    image: "/watches_new/Luxury_men's_watch_macro_2K_202607141712.jpeg",
     gallery: [
-      "/watches_new/Men's_watch_product_shot_2K_202607141702.jpeg",
+      "/watches_new/Luxury_men's_watch_macro_2K_202607141712.jpeg",
       "/watches_new/FORSINING TOURBILLON4.jpg",
       "/watches_new/FORSINING TOURBILLON3.jpg",
       "/watches_new/FORSINING TOURBILLON2.jpg",
@@ -200,9 +200,9 @@ export const WATCHES = [
     shopifyVariantId: "44408774131755",
     video: "/Diver_watch_crashing_through_water_202607141829.mp4",
     cinematicVideo: "/Untitled_Scene_06-28_15_13_25_202606290757.mp4",
-    image: "/watches_new/Luxury_men's_watch_macro_2K_202607141712.jpeg",
+    image: "/watches_new/Men's_watch_product_shot_2K_202607141702.jpeg",
     gallery: [
-      "/watches_new/Luxury_men's_watch_macro_2K_202607141712.jpeg",
+      "/watches_new/Men's_watch_product_shot_2K_202607141702.jpeg",
       "/watches_new/OLEVS Watch for Men Original Analog Quartz Chronograph Luxury Dress Stainless Steel Chain Waterproof Luminous Men's Wrist Watch Date2.jpg",
       "/watches_new/OLEVS Watch for Men Original Analog Quartz Chronograph Luxury Dress Stainless Steel Chain Waterproof Luminous Men's Wrist Watch Date.jpg"
     ],
