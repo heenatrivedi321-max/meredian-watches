@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -31,15 +31,15 @@ export default function WatchSection({ watch, index, onClick }) {
   const videoRef = useRef(null);
   const textRef = useRef(null);
   const ctaRef = useRef(null);
-  const [muted, setMuted] = useState(true);
+  const soundIconRef = useRef(null);
 
   useEffect(() => {
     const vid = videoRef.current;
-    if (!vid) return;
+    const section = sectionRef.current;
+    if (!vid || !section) return;
 
     vid.muted = true;
 
-    // Use IntersectionObserver — more reliable than ScrollTrigger for video
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -52,8 +52,7 @@ export default function WatchSection({ watch, index, onClick }) {
       },
       { threshold: 0.2 }
     );
-
-    observer.observe(sectionRef.current);
+    observer.observe(section);
 
     gsap.fromTo(textRef.current,
       { autoAlpha: 0, x: 40 },
@@ -62,7 +61,7 @@ export default function WatchSection({ watch, index, onClick }) {
         duration: 1.2,
         ease: "power3.out",
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: section,
           start: "center 65%",
           toggleActions: "play none none reverse"
         }
@@ -77,7 +76,7 @@ export default function WatchSection({ watch, index, onClick }) {
         delay: 0.3,
         ease: "power3.out",
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: section,
           start: "center 55%",
           toggleActions: "play none none reverse"
         }
@@ -87,13 +86,20 @@ export default function WatchSection({ watch, index, onClick }) {
     return () => observer.disconnect();
   }, []);
 
-  const toggleMute = (e) => {
+  const handleSoundToggle = useCallback((e) => {
+    e.preventDefault();
     e.stopPropagation();
     const vid = videoRef.current;
     if (!vid) return;
     vid.muted = !vid.muted;
-    setMuted(vid.muted);
-  };
+    // Update icon directly via DOM
+    if (soundIconRef.current) {
+      soundIconRef.current.innerHTML = vid.muted
+        ? '<polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="white" opacity="0.4" /><line x1="23" y1="9" x2="17" y2="15" /><line x1="17" y1="9" x2="23" y2="15" />'
+        : '<polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="#C9A96E" opacity="0.6" /><path d="M19.07 4.93a10 10 0 0 1 0 14.14" /><path d="M15.54 8.46a5 5 0 0 1 0 7.07" />';
+      soundIconRef.current.setAttribute('stroke', vid.muted ? 'white' : '#C9A96E');
+    }
+  }, []);
 
   const isEven = index % 2 === 0;
 
@@ -106,7 +112,7 @@ export default function WatchSection({ watch, index, onClick }) {
       <div className={`w-1/2 h-full relative overflow-hidden ${isEven ? 'order-1' : 'order-2'}`}>
         <video
           ref={videoRef}
-          muted={muted}
+          muted
           loop
           playsInline
           preload="auto"
@@ -119,31 +125,22 @@ export default function WatchSection({ watch, index, onClick }) {
           : { background: 'linear-gradient(to left, transparent 70%, rgba(0,0,0,0.6) 100%)' }
         } />
 
-        {/* Sound toggle */}
+        {/* Sound toggle — pure DOM, no React state */}
         <button
-          onClick={toggleMute}
-          className="absolute bottom-6 left-6 z-20 w-8 h-8 flex items-center justify-center rounded-full border border-white/20 hover:border-[#C9A96E]/50 transition-all duration-300 bg-black/30 backdrop-blur-sm cursor-pointer"
+          onMouseDown={handleSoundToggle}
+          className="absolute bottom-6 left-6 z-30 w-10 h-10 flex items-center justify-center rounded-full border border-white/30 bg-black/40 backdrop-blur-sm cursor-pointer"
+          style={{ touchAction: 'manipulation' }}
         >
-          {muted ? (
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5">
-              <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="white" opacity="0.4" />
-              <line x1="23" y1="9" x2="17" y2="15" />
-              <line x1="17" y1="9" x2="23" y2="15" />
-            </svg>
-          ) : (
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C9A96E" strokeWidth="1.5">
-              <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="#C9A96E" opacity="0.6" />
-              <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-              <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-            </svg>
-          )}
+          <svg ref={soundIconRef} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5">
+            <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="white" opacity="0.4" />
+            <line x1="23" y1="9" x2="17" y2="15" />
+            <line x1="17" y1="9" x2="23" y2="15" />
+          </svg>
         </button>
       </div>
 
       {/* CONTENT SIDE */}
       <div className={`w-1/2 h-full relative flex flex-col justify-center px-8 sm:px-12 md:px-16 lg:px-20 ${isEven ? 'order-2' : 'order-1'}`}>
-
-        {/* Brand + Model */}
         <div className="mb-auto pt-20 sm:pt-24 md:pt-28">
           <p className="text-[10px] sm:text-xs font-light tracking-[0.5em] uppercase text-[#C9A96E]/50 mb-3">
             {watch.brand}
@@ -156,7 +153,6 @@ export default function WatchSection({ watch, index, onClick }) {
           </p>
         </div>
 
-        {/* Watch image */}
         <div className="flex-1 flex items-center justify-center pointer-events-none">
           <img
             src={watch.image}
@@ -170,7 +166,6 @@ export default function WatchSection({ watch, index, onClick }) {
           />
         </div>
 
-        {/* Ironic line + CTA */}
         <div className="mb-16 sm:mb-20 md:mb-24">
           <div ref={textRef}>
             <p className="text-sm sm:text-base md:text-lg font-light text-white/35 italic leading-relaxed mb-6">
@@ -196,8 +191,7 @@ export default function WatchSection({ watch, index, onClick }) {
         </div>
       </div>
 
-      {/* Gold divider */}
-      <div className="absolute top-[15%] bottom-[15%] left-1/2 -translate-x-1/2 w-[1px] bg-gradient-to-b from-transparent via-[#C9A96E]/15 to-transparent pointer-events-none z-10" />
+      <div className="absolute top-[15%] bottom-[15%] left-1/2 -touch-action -translate-x-1/2 w-[1px] bg-gradient-to-b from-transparent via-[#C9A96E]/15 to-transparent pointer-events-none z-10" />
     </div>
   );
 }

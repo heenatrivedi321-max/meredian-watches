@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -8,49 +8,62 @@ export default function BrandFilm() {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
   const textRef = useRef(null);
-  const [muted, setMuted] = useState(true);
+  const soundIconRef = useRef(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const vid = videoRef.current;
-      if (!vid) return;
+    const vid = videoRef.current;
+    const section = sectionRef.current;
+    if (!vid || !section) return;
 
-      vid.muted = true;
+    vid.muted = true;
 
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top 80%",
-        end: "bottom 20%",
-        onEnter: () => vid.play().catch(() => {}),
-        onLeave: () => vid.pause(),
-        onEnterBack: () => vid.play().catch(() => {}),
-        onLeaveBack: () => vid.pause(),
-      });
-
-      gsap.fromTo(textRef.current,
-        { autoAlpha: 0, y: 30 },
-        {
-          autoAlpha: 1, y: 0,
-          duration: 1.5,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "center 60%",
-            toggleActions: "play none none reverse"
+    // IntersectionObserver for reliable video playback
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            vid.play().catch(() => {});
+          } else {
+            vid.pause();
           }
-        }
-      );
-    }, sectionRef);
+        });
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(section);
 
-    return () => ctx.revert();
+    gsap.fromTo(textRef.current,
+      { autoAlpha: 0, y: 30 },
+      {
+        autoAlpha: 1, y: 0,
+        duration: 1.5,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: section,
+          start: "center 60%",
+          toggleActions: "play none none reverse"
+        }
+      }
+    );
+
+    return () => observer.disconnect();
   }, []);
 
-  const toggleMute = (e) => {
+  const handleSoundToggle = (e) => {
+    e.preventDefault();
     e.stopPropagation();
     const vid = videoRef.current;
     if (!vid) return;
     vid.muted = !vid.muted;
-    setMuted(vid.muted);
+    if (soundIconRef.current) {
+      if (vid.muted) {
+        soundIconRef.current.innerHTML = '<polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="white" opacity="0.4" /><line x1="23" y1="9" x2="17" y2="15" /><line x1="17" y1="9" x2="23" y2="15" />';
+        soundIconRef.current.setAttribute('stroke', 'white');
+      } else {
+        soundIconRef.current.innerHTML = '<polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="#C9A96E" opacity="0.6" /><path d="M19.07 4.93a10 10 0 0 1 0 14.14" /><path d="M15.54 8.46a5 5 0 0 1 0 7.07" />';
+        soundIconRef.current.setAttribute('stroke', '#C9A96E');
+      }
+    }
   };
 
   return (
@@ -60,37 +73,27 @@ export default function BrandFilm() {
     >
       <video
         ref={videoRef}
-        autoPlay
-        muted={muted}
+        muted
         loop
         playsInline
         preload="auto"
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ willChange: 'transform' }}
       >
         <source src="/brand-film.mp4" type="video/mp4" />
       </video>
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/30 pointer-events-none" />
 
-      {/* Unmute button */}
       <button
-        onClick={toggleMute}
-        className="absolute top-6 right-6 sm:top-8 sm:right-8 z-20 w-10 h-10 flex items-center justify-center rounded-full border border-white/20 hover:border-[#C9A96E]/50 transition-all duration-300 bg-black/30 backdrop-blur-sm cursor-pointer"
+        onMouseDown={handleSoundToggle}
+        className="absolute top-6 right-6 sm:top-8 sm:right-8 z-30 w-10 h-10 flex items-center justify-center rounded-full border border-white/30 bg-black/40 backdrop-blur-sm cursor-pointer"
+        style={{ touchAction: 'manipulation' }}
       >
-        {muted ? (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5">
-            <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="white" opacity="0.4" />
-            <line x1="23" y1="9" x2="17" y2="15" />
-            <line x1="17" y1="9" x2="23" y2="15" />
-          </svg>
-        ) : (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C9A96E" strokeWidth="1.5">
-            <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="#C9A96E" opacity="0.6" />
-            <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-            <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-          </svg>
-        )}
+        <svg ref={soundIconRef} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5">
+          <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="white" opacity="0.4" />
+          <line x1="23" y1="9" x2="17" y2="15" />
+          <line x1="17" y1="9" x2="23" y2="15" />
+        </svg>
       </button>
 
       <div
