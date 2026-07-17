@@ -34,53 +34,57 @@ export default function WatchSection({ watch, index, onClick }) {
   const [muted, setMuted] = useState(true);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const vid = videoRef.current;
-      if (!vid) return;
+    const vid = videoRef.current;
+    if (!vid) return;
 
-      vid.muted = true;
+    vid.muted = true;
 
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top 80%",
-        end: "bottom 20%",
-        onEnter: () => vid.play().catch(() => {}),
-        onLeave: () => vid.pause(),
-        onEnterBack: () => vid.play().catch(() => {}),
-        onLeaveBack: () => vid.pause(),
-      });
-
-      gsap.fromTo(textRef.current,
-        { autoAlpha: 0, x: 40 },
-        {
-          autoAlpha: 1, x: 0,
-          duration: 1.2,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "center 65%",
-            toggleActions: "play none none reverse"
+    // Use IntersectionObserver — more reliable than ScrollTrigger for video
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            vid.play().catch(() => {});
+          } else {
+            vid.pause();
           }
-        }
-      );
+        });
+      },
+      { threshold: 0.2 }
+    );
 
-      gsap.fromTo(ctaRef.current,
-        { autoAlpha: 0, y: 20 },
-        {
-          autoAlpha: 1, y: 0,
-          duration: 1,
-          delay: 0.3,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "center 55%",
-            toggleActions: "play none none reverse"
-          }
-        }
-      );
-    }, sectionRef);
+    observer.observe(sectionRef.current);
 
-    return () => ctx.revert();
+    gsap.fromTo(textRef.current,
+      { autoAlpha: 0, x: 40 },
+      {
+        autoAlpha: 1, x: 0,
+        duration: 1.2,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "center 65%",
+          toggleActions: "play none none reverse"
+        }
+      }
+    );
+
+    gsap.fromTo(ctaRef.current,
+      { autoAlpha: 0, y: 20 },
+      {
+        autoAlpha: 1, y: 0,
+        duration: 1,
+        delay: 0.3,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "center 55%",
+          toggleActions: "play none none reverse"
+        }
+      }
+    );
+
+    return () => observer.disconnect();
   }, []);
 
   const toggleMute = (e) => {
@@ -105,7 +109,7 @@ export default function WatchSection({ watch, index, onClick }) {
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src={watch.cinematicVideo} type="video/mp4" />
