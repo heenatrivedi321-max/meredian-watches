@@ -106,7 +106,7 @@ export default function WatchSection({ watch, index, onClick }) {
       <div className={`w-1/2 h-full relative overflow-hidden ${isEven ? 'order-1' : 'order-2'}`}>
         <video
           ref={videoRef}
-          muted
+          muted={muted}
           loop
           playsInline
           preload="auto"

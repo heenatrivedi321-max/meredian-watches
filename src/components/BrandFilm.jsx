@@ -60,7 +60,9 @@ export default function BrandFilm() {
     >
       <video
         ref={videoRef}
-        muted
+        autoPlay
+        muted={muted}
+        loop
         playsInline
         preload="auto"
         className="absolute inset-0 w-full h-full object-cover"
