@@ -46,16 +46,12 @@ export default function App() {
   const [introDone, setIntroDone] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [soundOn, setSoundOn] = useState(false);
-  const audioRef = useRef(null);
+  const heroVideoRef = useRef(null);
   const handleIntroComplete = useCallback(() => setIntroDone(true), []);
 
   const toggleSound = useCallback(() => {
-    if (!audioRef.current) return;
-    if (soundOn) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play().catch(() => {});
-    }
+    if (!heroVideoRef.current) return;
+    heroVideoRef.current.muted = soundOn;
     setSoundOn(prev => !prev);
   }, [soundOn]);
 
@@ -211,17 +207,13 @@ export default function App() {
         <div className="fixed inset-0 w-full h-screen z-0 pointer-events-none bg-black overflow-hidden">
           
           <video 
+            ref={heroVideoRef}
             autoPlay loop muted playsInline preload="auto" fetchPriority="high"
             className="absolute inset-0 w-full h-full object-cover opacity-90"
             style={{ transform: 'scale(1.3) translateZ(0)', willChange: 'transform' }}
           >
             <source src="/stars.mp4" type="video/mp4" />
           </video>
-
-          {/* Ambient audio for hero video */}
-          <audio ref={audioRef} loop preload="auto">
-            <source src="/ambient.mp3" type="audio/mpeg" />
-          </audio>
 
           <video 
             autoPlay loop muted playsInline preload="none"
