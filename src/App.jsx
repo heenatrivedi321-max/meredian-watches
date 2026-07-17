@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import WebGLFluid from 'webgl-fluid';
 import CollectionShowcase from './components/CollectionShowcase';
 import ProductOverlay from './components/ProductOverlay';
 import WhatsAppButton from './components/WhatsAppButton';
@@ -11,6 +12,75 @@ import InstagramFeed from './components/InstagramFeed';
 import IntroSplash from './components/IntroSplash';
 
 gsap.registerPlugin(ScrollTrigger);
+
+// ============================================
+// WEBGL FLUID SIMULATION — GLOBAL BACKGROUND
+// ============================================
+function FluidBackground() {
+  const canvasRef = useRef(null);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const isMobile = window.innerWidth < 768;
+
+    WebGLFluid(canvas, {
+      TRIGGER: 'hover',
+      IMMEDIATE: true,
+      AUTO: true,
+      INTERVAL: isMobile ? 5000 : 3000,
+      SIM_RESOLUTION: isMobile ? 32 : 64,
+      DYE_RESOLUTION: isMobile ? 256 : 1024,
+      CAPTURE_RESOLUTION: isMobile ? 256 : 512,
+      DENSITY_DISSIPATION: 1,
+      VELOCITY_DISSIPATION: 0.2,
+      PRESSURE: 0.8,
+      PRESSURE_ITERATIONS: isMobile ? 10 : 20,
+      CURL: isMobile ? 15 : 30,
+      SPLAT_RADIUS: 0.25,
+      SPLAT_FORCE: isMobile ? 3000 : 6000,
+      SPLAT_COUNT: isMobile ? 3 : 8,
+      SHADING: true,
+      COLORFUL: true,
+      COLOR_UPDATE_SPEED: 10,
+      PAUSED: false,
+      BACK_COLOR: { r: 0, g: 0, b: 0 },
+      TRANSPARENT: false,
+      BLOOM: true,
+      BLOOM_ITERATIONS: isMobile ? 3 : 8,
+      BLOOM_RESOLUTION: isMobile ? 128 : 256,
+      BLOOM_INTENSITY: 0.8,
+      BLOOM_THRESHOLD: 0.6,
+      BLOOM_SOFT_KNEE: 0.7,
+      SUNRAYS: !isMobile,
+      SUNRAYS_RESOLUTION: isMobile ? 128 : 196,
+      SUNRAYS_WEIGHT: 1.0,
+    });
+
+  }, []);
+
+  return (
+    <div 
+      ref={containerRef}
+      className="fixed inset-0 w-full h-screen pointer-events-none opacity-60" 
+      style={{ zIndex: 1 }}
+    >
+      <canvas 
+        ref={canvasRef} 
+        className="absolute inset-0 w-full h-full pointer-events-none" 
+        style={{ width: '100vw', height: '100vh' }}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.1) 20%, rgba(0,0,0,0.7) 100%)',
+        }}
+      />
+    </div>
+  );
+}
 
 function ScrollProgress() {
   const barRef = useRef(null);
@@ -47,7 +117,16 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [soundOn, setSoundOn] = useState(false);
   const audioRef = useRef(null);
-  const handleIntroComplete = useCallback(() => setIntroDone(true), []);
+  const handleIntroComplete = useCallback(() => {
+    setIntroDone(true);
+    // Auto-play ambient audio after intro splash
+    setTimeout(() => {
+      if (audioRef.current) {
+        audioRef.current.play().catch(() => {});
+        setSoundOn(true);
+      }
+    }, 500);
+  }, []);
 
   const toggleSound = useCallback(() => {
     if (!audioRef.current) return;
@@ -201,6 +280,9 @@ export default function App() {
 
       {/* Scroll Progress */}
       <ScrollProgress />
+
+      {/* Global WebGL Fluid Background */}
+      {introDone && <FluidBackground />}
 
       {/* Product Schema for SEO */}
       <ProductSchema watch={selectedWatch} />
