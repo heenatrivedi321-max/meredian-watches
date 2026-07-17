@@ -1,25 +1,22 @@
 import React from 'react';
 
 /**
- * CinematicOverlay — IMAX-style visual layer rendered on top of everything.
+ * CinematicOverlay — Clean premium visual layer.
  * 
  * Provides:
- * - Letterbox bars (2.39:1 cinematic ratio)
- * - Film grain (animated SVG noise)
- * - Vignette (dark edges)
- * - Anamorphic lens flare (horizontal gold streak)
- * - Scene counter (Roman numerals)
- * - Section dots (clickable navigation)
+ * - Vignette (dark edges for depth)
+ * - Anamorphic lens flare (subtle gold streak)
+ * - Scene counter (Roman numerals, bottom-left)
+ * - Section dots (clickable navigation, right side)
  */
-export default function CinematicOverlay({ currentAct = 1, totalActs = 5, onNavigate }) {
-  const romanNumerals = ['I', 'II', 'III', 'IV', 'V'];
-  const sectionIds = ['act-hero', 'act-manifesto', 'act-porsche', 'act-reveal', 'act-collection'];
+export default function CinematicOverlay({ currentAct = 1, totalActs = 4, onNavigate }) {
+  const romanNumerals = ['I', 'II', 'III', 'IV'];
+  const sectionIds = ['section-hero', 'section-manifesto', 'section-porsche', 'section-collection'];
 
   const handleDotClick = (index) => {
     if (onNavigate) {
       onNavigate(index);
     } else {
-      // Default: scroll to the section
       const el = document.querySelector(`.${sectionIds[index]}`);
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
@@ -27,18 +24,11 @@ export default function CinematicOverlay({ currentAct = 1, totalActs = 5, onNavi
 
   return (
     <div className="cinematic-overlay fixed inset-0 pointer-events-none z-[200]" aria-hidden="true">
-      
-      {/* IMAX Letterbox Bars */}
-      <div className="imax-bar imax-bar-top" />
-      <div className="imax-bar imax-bar-bottom" />
 
-      {/* Film Grain */}
-      <div className="film-grain" />
-
-      {/* Vignette */}
+      {/* Vignette — subtle dark edges */}
       <div className="vignette" />
 
-      {/* Anamorphic Lens Flare */}
+      {/* Anamorphic Lens Flare — very subtle */}
       <div className="lens-flare" />
 
       {/* Scene Counter — bottom left */}
