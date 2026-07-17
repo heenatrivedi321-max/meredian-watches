@@ -141,7 +141,7 @@ export default function CheckoutOverlay() {
     // Redirect to Shopify checkout with the watch variant pre-loaded in cart
     const variantId = checkoutItem.shopifyVariantId;
     if (variantId) {
-      const shopifyCheckoutUrl = `https://meridianwatches.store/cart/${variantId}:1`;
+      const shopifyCheckoutUrl = `https://shop.meredianwatches.store/cart/${variantId}:1`;
       window.location.href = shopifyCheckoutUrl;
     } else {
       alert("This product is not yet available for checkout.");

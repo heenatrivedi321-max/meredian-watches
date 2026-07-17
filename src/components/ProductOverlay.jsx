@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
-import { shopifyClient } from '../shopify';
+import { createCheckout } from '../shopify';
 
 export default function ProductOverlay({ watch, onClose }) {
   const containerRef = useRef(null);
@@ -295,17 +295,12 @@ export default function ProductOverlay({ watch, onClose }) {
                   onClick={async () => {
                     if (isRedirecting) return;
                     setIsRedirecting(true);
-                    const gid = `gid://shopify/ProductVariant/${watch.shopifyVariantId}`;
                     try {
-                      const checkout = await shopifyClient.checkout.create();
-                      await shopifyClient.checkout.addLineItems(checkout.id, [{
-                        variantId: gid,
-                        quantity: 1
-                      }]);
-                      window.location.href = checkout.webUrl;
+                      const cart = await createCheckout(watch.shopifyVariantId);
+                      window.location.href = cart.checkoutUrl;
                     } catch (err) {
-                      console.warn("SDK checkout failed, falling back to cart URL:", err);
-                      window.location.href = `https://posterempire.vercel.app/cart/${watch.shopifyVariantId}:1`;
+                      console.warn("Checkout failed:", err);
+                      window.location.href = `https://shop.meredianwatches.store/cart/${watch.shopifyVariantId}:1`;
                     }
                   }}
                   disabled={isRedirecting}
