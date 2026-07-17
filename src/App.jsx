@@ -72,23 +72,26 @@ function FluidBackground() {
       SUNRAYS_WEIGHT: 1.0,
     });
 
-    // Hide fluid when scrolling past hero
-    gsap.to(containerRef.current, {
-      autoAlpha: 0,
-      scrollTrigger: {
-        trigger: ".hero-spacer",
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
+    // Hide fluid initially, show at "Choose Your Legacy"
+    gsap.fromTo(containerRef.current,
+      { autoAlpha: 0 },
+      {
+        autoAlpha: 0.6,
+        scrollTrigger: {
+          trigger: ".product-reveal",
+          start: "top 80%",
+          end: "top 30%",
+          scrub: true,
+        }
       }
-    });
+    );
 
   }, []);
 
   return (
     <div 
       ref={containerRef}
-      className="fixed inset-0 w-full h-screen pointer-events-none opacity-80" 
+      className="fixed inset-0 w-full h-screen pointer-events-none opacity-0" 
       style={{ zIndex: 1 }}
     >
       <canvas 
