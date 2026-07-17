@@ -76,7 +76,7 @@ function FluidBackground() {
     gsap.fromTo(containerRef.current,
       { autoAlpha: 0 },
       {
-        autoAlpha: 0.6,
+        autoAlpha: 0.25,
         scrollTrigger: {
           trigger: ".product-reveal",
           start: "top 80%",
