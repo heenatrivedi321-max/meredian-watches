@@ -37,6 +37,8 @@ export default function WatchSection({ watch, index, onClick }) {
       const vid = videoRef.current;
 
       if (vid) {
+        vid.muted = false;
+        vid.volume = 1;
         ScrollTrigger.create({
           trigger: sectionRef.current,
           start: "top 80%",
@@ -99,7 +101,7 @@ export default function WatchSection({ watch, index, onClick }) {
           ref={videoRef}
           loop
           playsInline
-          preload="none"
+          preload="metadata"
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src={watch.cinematicVideo} type="video/mp4" />

@@ -8,22 +8,35 @@ export default function BrandFilm() {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
   const textRef = useRef(null);
+  const unmutedRef = useRef(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Video plays as you scroll through
       const vid = videoRef.current;
-      if (vid) {
-        ScrollTrigger.create({
-          trigger: sectionRef.current,
-          start: "top 80%",
-          end: "bottom 20%",
-          onEnter: () => vid.play(),
-          onLeave: () => vid.pause(),
-          onEnterBack: () => vid.play(),
-          onLeaveBack: () => vid.pause(),
-        });
-      }
+      if (!vid) return;
+
+      // Start muted so browser allows autoplay
+      vid.muted = true;
+      vid.volume = 1;
+
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top 80%",
+        end: "bottom 20%",
+        onEnter: () => {
+          vid.play().catch(() => {});
+          // Try to unmute after play starts (browsers may allow it after scroll gesture)
+          if (!unmutedRef.current) {
+            setTimeout(() => {
+              vid.muted = false;
+              unmutedRef.current = true;
+            }, 500);
+          }
+        },
+        onLeave: () => vid.pause(),
+        onEnterBack: () => vid.play().catch(() => {}),
+        onLeaveBack: () => vid.pause(),
+      });
 
       // Text overlay fades in near the end
       gsap.fromTo(textRef.current,
@@ -52,7 +65,6 @@ export default function BrandFilm() {
       {/* Full-screen video */}
       <video
         ref={videoRef}
-        muted
         playsInline
         preload="auto"
         className="absolute inset-0 w-full h-full object-cover"
