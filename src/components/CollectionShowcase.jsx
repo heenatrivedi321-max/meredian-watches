@@ -64,15 +64,16 @@ function ProductCard({ watch, index, onClick }) {
 
   useEffect(() => {
     gsap.fromTo(cardRef.current,
-      { y: 80, opacity: 0 },
+      { y: 100, opacity: 0, scale: 0.97 },
       {
         y: 0,
         opacity: 1,
-        duration: 0.9,
+        scale: 1,
+        duration: 1.1,
         ease: "power3.out",
         scrollTrigger: {
           trigger: cardRef.current,
-          start: "top 88%",
+          start: "top 90%",
           toggleActions: "play none none none"
         }
       }
@@ -289,12 +290,14 @@ export default function CollectionShowcase({ onSelectWatch }) {
   useEffect(() => {
     const ctx = gsap.context(() => {
 
-      // "Choose Your Legacy" fade in
-      gsap.fromTo(".legacy-text",
-        { autoAlpha: 0, y: 40, scale: 0.95 },
+      // "Choose Your Legacy" — staggered reveal with scale
+      const legacyEls = gsap.utils.toArray(".legacy-text");
+      gsap.fromTo(legacyEls,
+        { autoAlpha: 0, y: 50, scale: 0.96 },
         {
           autoAlpha: 1, y: 0, scale: 1,
-          duration: 1.5,
+          duration: 1.2,
+          stagger: 0.2,
           ease: "power3.out",
           scrollTrigger: {
             trigger: taglineRef.current,
@@ -304,12 +307,14 @@ export default function CollectionShowcase({ onSelectWatch }) {
         }
       );
 
-      // Closer section animations
-      gsap.fromTo(".closer-text",
-        { autoAlpha: 0, y: 60 },
+      // Closer section — staggered cinematic reveal
+      const closerEls = gsap.utils.toArray(".closer-text");
+      gsap.fromTo(closerEls,
+        { autoAlpha: 0, y: 60, scale: 0.97 },
         {
-          autoAlpha: 1, y: 0,
-          duration: 1.5,
+          autoAlpha: 1, y: 0, scale: 1,
+          duration: 1.2,
+          stagger: 0.2,
           ease: "power3.out",
           scrollTrigger: {
             trigger: closerRef.current,
@@ -320,11 +325,11 @@ export default function CollectionShowcase({ onSelectWatch }) {
       );
 
       gsap.fromTo(".closer-btn",
-        { autoAlpha: 0, y: 30 },
+        { autoAlpha: 0, y: 30, scale: 0.95 },
         {
-          autoAlpha: 1, y: 0,
+          autoAlpha: 1, y: 0, scale: 1,
           duration: 1,
-          delay: 0.5,
+          delay: 0.6,
           ease: "power3.out",
           scrollTrigger: {
             trigger: closerRef.current,
@@ -334,18 +339,20 @@ export default function CollectionShowcase({ onSelectWatch }) {
         }
       );
 
-      // Dedicated Story Section Animation (Rolex zoom effect)
+      // Dedicated Story Section — dramatic zoom with blur + slight rotation
       gsap.fromTo(".story-text-container",
-        { scale: 1, autoAlpha: 1, y: 0 },
+        { scale: 1, autoAlpha: 1, y: 0, rotateX: 0, filter: "blur(0px)" },
         {
-          scale: 4,
+          scale: 5,
           autoAlpha: 0,
-          y: -100,
+          y: -150,
+          rotateX: 8,
+          filter: "blur(4px)",
           ease: "none",
           scrollTrigger: {
             trigger: storyRef.current,
             start: "top top",
-            end: "+=150%",
+            end: "+=180%",
             scrub: true,
             pin: true
           }

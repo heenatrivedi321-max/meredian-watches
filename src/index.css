@@ -18,6 +18,10 @@
     --accent-gold: #d89c44;
   }
   
+  html {
+    scroll-behavior: smooth;
+  }
+  
   body {
     @apply bg-[var(--bg-color)] text-[var(--text-color)] font-sans antialiased overflow-x-hidden selection:bg-[var(--accent-gold)] selection:text-[var(--bg-color)];
   }
