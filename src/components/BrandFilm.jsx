@@ -32,12 +32,11 @@ export default function BrandFilm() {
     );
     observer.observe(section);
 
-    // Dynamic Zoom Effect on Scroll — Rolex Style
+    // Scale effect on scroll
     gsap.fromTo(vid,
-      { scale: 1.25, filter: "brightness(0.6) blur(5px)" },
+      { scale: 1.1 },
       {
         scale: 1,
-        filter: "brightness(1) blur(0px)",
         scrollTrigger: {
           trigger: section,
           start: "top 80%",

@@ -31,39 +31,22 @@ export default function CinemaIntermission({ videoSrc, tag, title, subtitle, sou
     );
     observer.observe(section);
 
-    // ============================================
-    // ROLEX / APPLE CINEMATIC TIMELINE:
-    // 1. Text enters with impact as section scrolls in
-    // 2. Text dissolves out with blur + scale-up as video plays fully
-    // ============================================
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: section,
-        start: "top top",
-        end: "+=150%",
-        scrub: 0.8,
-        pin: true,
-      }
-    });
-
-    // Step 1: Video clears from dark blur to full 4K brightness
-    tl.fromTo(vid,
-      { scale: 1.25, filter: "brightness(0.4) blur(8px)" },
-      { scale: 1.0, filter: "brightness(1) blur(0px)", ease: "none", duration: 1 }
-    );
-
-    // Step 2: Text title enters prominently
-    tl.fromTo(textRef.current,
-      { autoAlpha: 0, scale: 0.9, y: 40 },
-      { autoAlpha: 1, scale: 1, y: 0, ease: "power3.out", duration: 0.8 },
-      0.2
-    );
-
-    // Step 3: Text DISSOLVES OUT with scale + blur, revealing the full video uninterrupted!
-    tl.to(textRef.current,
-      { autoAlpha: 0, scale: 1.3, filter: "blur(12px)", y: -60, ease: "power2.inOut", duration: 1 },
-      1.2
-    );
+    // CLEAN, SMOOTH, NON-BLURRED FADE-IN (NO SCROLL PINNING, NO BLUR FILTERS)
+    if (textRef.current) {
+      gsap.fromTo(textRef.current,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1, y: 0,
+          duration: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 70%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    }
 
     return () => observer.disconnect();
   }, [soundDefault]);
@@ -84,7 +67,7 @@ export default function CinemaIntermission({ videoSrc, tag, title, subtitle, sou
         playPromise.then(() => {
           setIsAudioEnabled(true);
         }).catch(() => {
-          setIsAudioEnabled(false);
+          setIsAudioEnabled(true);
         });
       } else {
         setIsAudioEnabled(true);
@@ -100,7 +83,7 @@ export default function CinemaIntermission({ videoSrc, tag, title, subtitle, sou
       ref={sectionRef}
       className="relative w-full h-screen overflow-hidden bg-black flex items-center justify-center border-y border-white/10"
     >
-      {/* 4K FULL-SCREEN CINEMATIC VIDEO INTERMISSION */}
+      {/* 100% CRISP, NON-BLURRED FULL-SCREEN VIDEO */}
       <video
         ref={videoRef}
         autoPlay
@@ -108,20 +91,19 @@ export default function CinemaIntermission({ videoSrc, tag, title, subtitle, sou
         loop
         playsInline
         preload="auto"
-        className="absolute inset-0 w-full h-full object-cover transition-all duration-1000"
+        className="absolute inset-0 w-full h-full object-cover"
       >
         <source src={videoSrc} type="video/mp4" />
       </video>
 
-      {/* DYNAMIC LUXURY GRADIENT OVERLAYS */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60 pointer-events-none z-10" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/30 to-black pointer-events-none z-10" />
+      {/* DYNAMIC DARK LUXURY GRADIENT OVERLAYS */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/70 pointer-events-none z-10" />
 
       {/* GLASSMORPHISM AUDIO CONTROL PILL */}
       <div className="absolute top-8 right-8 sm:top-12 sm:right-12 z-30">
         <button
           onClick={toggleAudio}
-          className={`group relative px-6 py-3 rounded-full border backdrop-blur-xl transition-all duration-500 flex items-center gap-3 cursor-pointer ${
+          className={`group relative px-6 py-3 rounded-full border backdrop-blur-xl transition-all duration-300 flex items-center gap-3 cursor-pointer ${
             isAudioEnabled
               ? 'bg-white/20 border-white shadow-[0_0_30px_rgba(255,255,255,0.4)]'
               : 'bg-black/60 border-white/20 hover:border-white/50 hover:bg-black/80'
@@ -138,7 +120,7 @@ export default function CinemaIntermission({ videoSrc, tag, title, subtitle, sou
         </button>
       </div>
 
-      {/* HERO OVERLAY TEXT — DISSOLVES ON SCROLL REVEALING FULL VIDEO */}
+      {/* HERO OVERLAY TEXT — CLEAN & SHARP */}
       <div
         ref={textRef}
         className="relative z-20 text-center px-6 max-w-5xl mx-auto flex flex-col items-center pointer-events-none"
@@ -148,7 +130,7 @@ export default function CinemaIntermission({ videoSrc, tag, title, subtitle, sou
           <span className="text-xs font-mono tracking-[0.4em] uppercase text-white font-semibold">{tag}</span>
         </div>
 
-        <h2 className="text-4xl sm:text-7xl md:text-8xl lg:text-[7.5rem] font-black tracking-tighter text-white leading-none uppercase drop-shadow-[0_20px_60px_rgba(0,0,0,1)] mb-6">
+        <h2 className="text-4xl sm:text-7xl md:text-8xl font-black tracking-tighter text-white leading-none uppercase drop-shadow-[0_20px_60px_rgba(0,0,0,1)] mb-6">
           {title}
         </h2>
 

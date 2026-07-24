@@ -367,14 +367,6 @@ export default function App() {
             <source src="/ambient.mp3" type="audio/mpeg" />
           </audio>
 
-          <video 
-            autoPlay loop muted playsInline preload="none"
-            className="manifesto-video bg-liquid absolute inset-0 w-full h-full object-cover z-10"
-            style={{ opacity: 0, transform: 'scale(1.3) translateZ(0)', willChange: 'transform, opacity' }}
-          >
-            <source src="/Watch_rotating_in_liquid_explosion_202607141039.mp4?v=3" type="video/mp4" />
-          </video>
-
           <div className="video-dimmer absolute inset-0 bg-black z-25 pointer-events-none" style={{ opacity: 0 }} />
 
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/50 z-30 pointer-events-none" />
