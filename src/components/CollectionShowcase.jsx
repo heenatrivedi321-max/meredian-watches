@@ -395,13 +395,13 @@ export default function CollectionShowcase({ onSelectWatch }) {
 
           <MagneticButton
             onClick={() => {
-              const grid = document.querySelector('.max-w-screen-2xl');
-              if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              const firstSection = document.querySelector('section');
+              if (firstSection) firstSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }}
-            className="closer-btn px-12 py-5 bg-white text-black text-sm tracking-[0.35em] uppercase font-bold
-                       rounded-full hover:bg-[#C9A96E] hover:text-black transition-all duration-300 shadow-[0_0_60px_rgba(201,169,110,0.15)] cursor-pointer"
+            className="closer-btn px-12 py-5 bg-white text-black text-xs font-mono tracking-[0.3em] uppercase font-extrabold
+                       rounded-full hover:bg-white/90 hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_10px_40px_rgba(255,255,255,0.3)] cursor-pointer"
           >
-            Shop Now
+            EXPLORE ARCHIVE →
           </MagneticButton>
         </div>
 
