@@ -263,7 +263,6 @@ export default function App() {
           scrub: true,
         }
       });
-      porscheTl.to(".bg-porsche", { autoAlpha: 1, duration: 1, ease: "none" }, 0);
       porscheTl.to(".bg-liquid", { autoAlpha: 0, duration: 1, ease: "none" }, 0);
 
       // Typewriter for porsche lines
@@ -374,14 +373,6 @@ export default function App() {
             style={{ opacity: 0, transform: 'scale(1.3) translateZ(0)', willChange: 'transform, opacity' }}
           >
             <source src="/Watch_rotating_in_liquid_explosion_202607141039.mp4?v=3" type="video/mp4" />
-          </video>
-
-          <video 
-            autoPlay loop muted playsInline preload="none"
-            className="bg-porsche absolute inset-0 w-full h-full object-cover z-20"
-            style={{ opacity: 0, transform: 'scale(1.3) translateZ(0)', willChange: 'transform, opacity' }}
-          >
-            <source src="/Porsche_driving_through_tunnel_202606281316.mp4?v=3" type="video/mp4" />
           </video>
 
           <div className="video-dimmer absolute inset-0 bg-black z-25 pointer-events-none" style={{ opacity: 0 }} />
