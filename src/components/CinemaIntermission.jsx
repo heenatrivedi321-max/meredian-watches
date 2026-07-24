@@ -31,20 +31,27 @@ export default function CinemaIntermission({ videoSrc, tag, title, subtitle, sou
     );
     observer.observe(section);
 
-    // CLEAN, SMOOTH, NON-BLURRED FADE-IN (NO SCROLL PINNING, NO BLUR FILTERS)
+    // TEXT REVEALS ON SCROLL ENTRY, THEN FADES OUT SO THE VIDEO IS 100% UNCOVERED!
     if (textRef.current) {
-      gsap.fromTo(textRef.current,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1, y: 0,
-          duration: 1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 70%",
-            toggleActions: "play none none reverse"
-          }
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top 80%",
+          end: "bottom 20%",
+          scrub: 0.5,
         }
+      });
+
+      // Text enters cleanly
+      tl.fromTo(textRef.current,
+        { autoAlpha: 0, y: 50, scale: 0.95 },
+        { autoAlpha: 1, y: 0, scale: 1, ease: "power2.out" }
+      );
+
+      // Text fades out completely, leaving 4K video 100% UNCOVERED!
+      tl.to(textRef.current,
+        { autoAlpha: 0, y: -60, scale: 1.05, ease: "power2.in" },
+        "+=0.4"
       );
     }
 
@@ -120,7 +127,7 @@ export default function CinemaIntermission({ videoSrc, tag, title, subtitle, sou
         </button>
       </div>
 
-      {/* HERO OVERLAY TEXT — CLEAN & SHARP */}
+      {/* HERO OVERLAY TEXT — FADES OUT ON SCROLL REVEALING 100% UNCOVERED VIDEO */}
       <div
         ref={textRef}
         className="relative z-20 text-center px-6 max-w-5xl mx-auto flex flex-col items-center pointer-events-none"
