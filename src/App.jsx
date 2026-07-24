@@ -547,12 +547,23 @@ export default function App() {
 
         <InstagramFeed />
         <BrandFilm />
+        
+        {/* CINEMA TAKEOVER 2: WOLF OF WALL STREET */}
         <CinemaIntermission 
-          videoSrc="/Porsche_driving_through_tunnel_202606281316.mp4" 
-          tag="NIGHT DRIVE // ARCHIVAL REEL" 
-          title="Born from speed. Crafted for eternity." 
-          subtitle="PURE KINETIC HOROLOGY" 
+          videoSrc="/wolf-of-wall-street.mp4" 
+          tag="THE WEALTH MANIFESTO // 02" 
+          title="I choose rich every single time." 
+          subtitle="UNAPOLOGETIC LUXURY // MERIDIAN ARCHIVE" 
         />
+
+        {/* CINEMA TAKEOVER 3: THE DARK KNIGHT */}
+        <CinemaIntermission 
+          videoSrc="/dark-knight.mp4" 
+          tag="NIGHT CHASE // BRUTALIST POWER" 
+          title="Born from shadow. Built for supremacy." 
+          subtitle="PRECISION ENGINEERING IN MOTION" 
+        />
+
         <CollectionShowcase onSelectWatch={setSelectedWatch} />
         <ProductOverlay watch={selectedWatch} onClose={() => setSelectedWatch(null)} />
       </div>
