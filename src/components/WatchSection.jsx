@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -15,24 +15,12 @@ const IRONIC_LINES = [
   "You're not impulse buying. You're investing in yourself.",
 ];
 
-const CTA_TEXTS = [
-  "Add to Cart (no regrets)",
-  "Buy This One (treat yourself)",
-  "Add to Cart (your wallet won't notice)",
-  "Buy Now (the moon approves)",
-  "Add to Cart (no takebacks)",
-  "Buy This (make an entrance)",
-  "Add to Cart (she'd approve)",
-  "Buy Now (you know you want to)",
-];
-
 export default function WatchSection({ watch, index, onClick }) {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
   const watchImgRef = useRef(null);
-  const textRef = useRef(null);
-  const ctaRef = useRef(null);
-  const soundIconRef = useRef(null);
+  const cardRef = useRef(null);
+  const [isAudioEnabled, setIsAudioEnabled] = useState(false);
 
   useEffect(() => {
     const vid = videoRef.current;
@@ -59,16 +47,15 @@ export default function WatchSection({ watch, index, onClick }) {
     observer.observe(section);
 
     // ============================================
-    // IN-YOUR-FACE FLY-IN GSAP ANIMATION
-    // Watch image explodes into the user's face
+    // 3D EXPLOSIVE FLY-IN GSAP ANIMATION
     // ============================================
     if (watchImg) {
       gsap.fromTo(watchImg,
         {
-          scale: 0.3,
-          rotateY: index % 2 === 0 ? 35 : -35,
-          rotateX: 15,
-          z: -400,
+          scale: 0.4,
+          rotateY: index % 2 === 0 ? 40 : -40,
+          rotateX: 20,
+          z: -500,
           opacity: 0,
           filter: 'drop-shadow(0 0 0px rgba(201,169,110,0))',
         },
@@ -78,67 +65,49 @@ export default function WatchSection({ watch, index, onClick }) {
           rotateX: 0,
           z: 0,
           opacity: 1,
-          filter: 'drop-shadow(0 25px 50px rgba(201,169,110,0.4))',
+          filter: 'drop-shadow(0 30px 60px rgba(201,169,110,0.45))',
           duration: 1.4,
           ease: "power4.out",
           scrollTrigger: {
             trigger: section,
-            start: "top 75%",
+            start: "top 70%",
             toggleActions: "play none none reverse"
           }
         }
       );
     }
 
-    // Text fly-in
-    gsap.fromTo(textRef.current,
-      { autoAlpha: 0, y: 50, scale: 0.9 },
-      {
-        autoAlpha: 1, y: 0, scale: 1,
-        duration: 1.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: section,
-          start: "top 65%",
-          toggleActions: "play none none reverse"
+    // Glassmorphic Card Entrance
+    if (cardRef.current) {
+      gsap.fromTo(cardRef.current,
+        { autoAlpha: 0, y: 60, scale: 0.95 },
+        {
+          autoAlpha: 1, y: 0, scale: 1,
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 65%",
+            toggleActions: "play none none reverse"
+          }
         }
-      }
-    );
-
-    // CTA button bounce entrance
-    gsap.fromTo(ctaRef.current,
-      { autoAlpha: 0, y: 30, scale: 0.8 },
-      {
-        autoAlpha: 1, y: 0, scale: 1,
-        duration: 1,
-        delay: 0.2,
-        ease: "back.out(1.7)",
-        scrollTrigger: {
-          trigger: section,
-          start: "top 60%",
-          toggleActions: "play none none reverse"
-        }
-      }
-    );
+      );
+    }
 
     return () => observer.disconnect();
   }, [index]);
 
-  const handleSoundToggle = useCallback((e) => {
+  const toggleAudio = useCallback((e) => {
     e.preventDefault();
     e.stopPropagation();
     const vid = videoRef.current;
     if (!vid) return;
+
     vid.muted = !vid.muted;
-    if (soundIconRef.current) {
-      soundIconRef.current.innerHTML = vid.muted
-        ? '<polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="white" opacity="0.4" /><line x1="23" y1="9" x2="17" y2="15" /><line x1="17" y1="9" x2="23" y2="15" />'
-        : '<polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="#C9A96E" opacity="0.8" /><path d="M19.07 4.93a10 10 0 0 1 0 14.14" /><path d="M15.54 8.46a5 5 0 0 1 0 7.07" />';
-      soundIconRef.current.setAttribute('stroke', vid.muted ? 'white' : '#C9A96E');
-    }
+    setIsAudioEnabled(!vid.muted);
   }, []);
 
-  // 3D Parallax Mouse Move Effect
+  // 3D Parallax Mouse Tracking
   const handleMouseMove = (e) => {
     if (!sectionRef.current || !watchImgRef.current) return;
     const rect = sectionRef.current.getBoundingClientRect();
@@ -146,9 +115,9 @@ export default function WatchSection({ watch, index, onClick }) {
     const y = (e.clientY - rect.top) / rect.height - 0.5;
 
     gsap.to(watchImgRef.current, {
-      rotateY: x * 25,
-      rotateX: -y * 25,
-      scale: 1.2,
+      rotateY: x * 30,
+      rotateX: -y * 30,
+      scale: 1.22,
       duration: 0.5,
       ease: "power2.out"
     });
@@ -172,101 +141,137 @@ export default function WatchSection({ watch, index, onClick }) {
       ref={sectionRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative w-full min-h-screen overflow-hidden bg-[#050505] flex flex-col md:flex-row items-center py-12 md:py-0 border-b border-white/5"
-      style={{ perspective: '1200px' }}
+      className="relative w-full min-h-screen overflow-hidden bg-[#030303] flex flex-col lg:flex-row items-center py-16 lg:py-0 border-b border-[#C9A96E]/20"
+      style={{ perspective: '1400px' }}
     >
-      {/* VIDEO SIDE — HIGH-DEF BACKGROUND VIDEO */}
-      <div className={`w-full md:w-1/2 h-[50vh] md:h-full relative overflow-hidden ${isEven ? 'md:order-1' : 'md:order-2'}`}>
+      {/* SIDEWAYS VIDEO STREAM — FULL HEIGHT 4K REEL */}
+      <div className={`w-full lg:w-1/2 h-[55vh] lg:h-screen relative overflow-hidden ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
         <video
           ref={videoRef}
           muted
           loop
           playsInline
           preload="auto"
-          className="absolute inset-0 w-full h-full object-cover opacity-80 transition-opacity duration-700 hover:opacity-100"
+          className="absolute inset-0 w-full h-full object-cover opacity-90 transition-opacity duration-700 hover:opacity-100 scale-105"
         >
           <source src={watch.cinematicVideo || watch.video} type="video/mp4" />
         </video>
-        <div className="absolute inset-0 pointer-events-none bg-gradient-to-t md:bg-gradient-to-r from-black/80 via-transparent to-black/80 z-10" />
 
-        {/* Sound Toggle */}
-        <button
-          onMouseDown={handleSoundToggle}
-          className="absolute bottom-6 left-6 z-30 w-12 h-12 flex items-center justify-center rounded-full border border-[#C9A96E]/40 bg-black/60 backdrop-blur-md cursor-pointer hover:scale-110 transition-transform"
-          aria-label="Toggle Watch Audio"
-        >
-          <svg ref={soundIconRef} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5">
-            <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="white" opacity="0.4" />
-            <line x1="23" y1="9" x2="17" y2="15" />
-            <line x1="17" y1="9" x2="23" y2="15" />
-          </svg>
-        </button>
+        {/* GRADIENTS & SCANLINES */}
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-t lg:bg-gradient-to-r from-black/90 via-transparent to-black/80 z-10" />
 
-        {/* Live Video Tag Badge */}
-        <div className="absolute top-6 left-6 z-30 px-4 py-1.5 bg-black/50 border border-[#C9A96E]/30 rounded-full backdrop-blur-md flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[#C9A96E] animate-ping" />
-          <span className="text-[10px] font-mono tracking-widest text-[#C9A96E] uppercase">4K CINEMATIC STREAM</span>
+        {/* GLASSMORPHISM ROLEX-STYLE SOUND BUTTON */}
+        <div className="absolute bottom-8 left-8 z-30">
+          <button
+            onClick={toggleAudio}
+            className={`group relative px-5 py-2.5 rounded-full border backdrop-blur-xl transition-all duration-500 flex items-center gap-3 cursor-pointer ${
+              isAudioEnabled
+                ? 'bg-[#C9A96E]/20 border-[#C9A96E] shadow-[0_0_25px_rgba(201,169,110,0.5)]'
+                : 'bg-black/60 border-white/20 hover:border-[#C9A96E]/50 hover:bg-black/80'
+            }`}
+          >
+            <span className="relative flex h-2 w-2">
+              <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${isAudioEnabled ? 'bg-[#C9A96E]' : 'bg-white/40'}`} />
+              <span className={`relative inline-flex rounded-full h-2 w-2 ${isAudioEnabled ? 'bg-[#C9A96E]' : 'bg-white/60'}`} />
+            </span>
+            <span className="text-[10px] font-mono tracking-[0.2em] uppercase font-semibold text-white group-hover:text-[#C9A96E]">
+              {isAudioEnabled ? 'AUDIO LIVE 🔊' : 'ENABLE SOUND 🔇'}
+            </span>
+          </button>
+        </div>
+
+        {/* STREAM BADGE */}
+        <div className="absolute top-8 left-8 z-30 px-4 py-1.5 bg-black/60 border border-[#C9A96E]/30 rounded-full backdrop-blur-md flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#C9A96E] animate-pulse" />
+          <span className="text-[9px] font-mono tracking-[0.3em] text-[#C9A96E] uppercase">4K REEL // STREAM 0{index + 1}</span>
         </div>
       </div>
 
-      {/* CONTENT SIDE — EXPLODING WATCH & DETAILS */}
-      <div className={`w-full md:w-1/2 h-full relative flex flex-col justify-between px-6 sm:px-12 md:px-16 lg:px-20 z-20 py-8 md:py-16 ${isEven ? 'md:order-2' : 'md:order-1'}`}>
+      {/* SIDEWAYS WATCH CARD — HYPER-LUXURY SPEC & PURCHASE PANEL */}
+      <div className={`w-full lg:w-1/2 h-full relative flex flex-col justify-between px-6 sm:px-12 lg:px-16 z-20 py-10 lg:py-16 ${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
         
-        {/* Watch Title & Model */}
-        <div ref={textRef} className="pt-4">
+        {/* BRAND & MODEL HEADER */}
+        <div className="pt-2">
           <div className="flex items-center gap-3 mb-2">
-            <span className="h-[1px] w-8 bg-[#C9A96E]/60" />
+            <span className="h-[1px] w-10 bg-[#C9A96E]" />
             <p className="text-xs font-mono tracking-[0.4em] uppercase text-[#C9A96E]">
-              {watch.brand} — NO. 0{index + 1}
+              {watch.brand} HOROLOGY // EDITION 0{index + 1}
             </p>
           </div>
-          <h3 className="text-3xl sm:text-5xl md:text-6xl font-extralight tracking-tight text-white leading-none">
+          <h3 className="text-4xl sm:text-6xl lg:text-7xl font-extralight tracking-tight text-white leading-none">
             {watch.model}
           </h3>
-          <p className="text-2xl sm:text-3xl font-light text-[#C9A96E] mt-3 tracking-tight">
+          <p className="text-3xl sm:text-4xl font-light text-[#C9A96E] mt-3 tracking-tight">
             {watch.price}
           </p>
         </div>
 
-        {/* Watch Image — EXPLODING 3D FLY-IN */}
-        <div className="my-8 md:my-12 flex items-center justify-center relative py-6">
-          <div className="absolute w-64 h-64 bg-[#C9A96E]/10 rounded-full blur-3xl pointer-events-none animate-pulse" />
+        {/* 3D FLOATING WATCH IMAGE WITH GOLD GLOW AURA */}
+        <div className="my-6 lg:my-10 flex items-center justify-center relative py-4">
+          <div className="absolute w-72 h-72 bg-[#C9A96E]/15 rounded-full blur-3xl pointer-events-none animate-pulse" />
           <img
             ref={watchImgRef}
             src={watch.image}
             alt={`${watch.brand} ${watch.model}`}
             loading="lazy"
-            className="w-[80%] sm:w-[65%] md:w-[60%] max-h-[45vh] object-contain cursor-pointer transition-transform duration-300"
+            className="w-[85%] sm:w-[70%] lg:w-[65%] max-h-[42vh] object-contain cursor-pointer transition-transform duration-300"
             style={{
-              filter: 'drop-shadow(0 20px 40px rgba(201,169,110,0.35))',
+              filter: 'drop-shadow(0 25px 50px rgba(201,169,110,0.45))',
               transformStyle: 'preserve-3d',
             }}
             onClick={() => onClick(watch)}
           />
         </div>
 
-        {/* Ironic Copy & High-Impact CTA */}
-        <div className="pb-4">
-          <p className="text-sm sm:text-base font-serif italic text-white/50 leading-relaxed mb-6">
+        {/* GLASSMORPHIC SPECIFICATIONS & CTA PANEL */}
+        <div ref={cardRef} className="bg-white/[0.03] border border-[#C9A96E]/30 rounded-2xl p-6 sm:p-8 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] space-y-6">
+          
+          {/* Specs Micro-Grid */}
+          {watch.specs && (
+            <div className="grid grid-cols-2 gap-4 border-b border-white/10 pb-6">
+              <div>
+                <span className="text-[9px] font-mono tracking-widest text-white/40 uppercase block mb-1">Movement</span>
+                <span className="text-xs font-mono text-white/90 font-medium">{watch.specs.movement}</span>
+              </div>
+              <div>
+                <span className="text-[9px] font-mono tracking-widest text-white/40 uppercase block mb-1">Water Resistance</span>
+                <span className="text-xs font-mono text-[#C9A96E] font-medium">{watch.specs.waterResistance}</span>
+              </div>
+              <div>
+                <span className="text-[9px] font-mono tracking-widest text-white/40 uppercase block mb-1">Case Material</span>
+                <span className="text-xs font-mono text-white/90 font-medium">{watch.specs.caseMaterial}</span>
+              </div>
+              <div>
+                <span className="text-[9px] font-mono tracking-widest text-white/40 uppercase block mb-1">Glass</span>
+                <span className="text-xs font-mono text-white/90 font-medium">{watch.specs.glass}</span>
+              </div>
+            </div>
+          )}
+
+          {/* Quote */}
+          <p className="text-xs sm:text-sm font-serif italic text-white/60 leading-relaxed">
             "{IRONIC_LINES[index % IRONIC_LINES.length]}"
           </p>
-          <div ref={ctaRef} className="flex flex-wrap items-center gap-4">
+
+          {/* High-Impact Gold CTA Button */}
+          <div className="pt-2">
             {watch.outOfStock ? (
-              <span className="px-8 py-4 border border-white/15 text-white/40 text-xs tracking-[0.25em] uppercase rounded-full">
-                Sold Out (we see you sweating)
+              <span className="block text-center w-full py-4 border border-white/20 text-white/40 text-xs tracking-[0.3em] uppercase rounded-xl">
+                Sold Out (Allocation Full)
               </span>
             ) : (
               <button
-                className="px-8 py-4 bg-gradient-to-r from-[#C9A96E] via-[#E8D5A3] to-[#C9A96E] text-black text-xs tracking-[0.25em] uppercase font-bold rounded-full
-                           hover:scale-105 active:scale-95 transition-all duration-300
-                           shadow-[0_0_40px_rgba(201,169,110,0.4)] hover:shadow-[0_0_60px_rgba(201,169,110,0.7)] cursor-pointer flex items-center gap-3"
+                className="w-full py-5 bg-gradient-to-r from-[#C9A96E] via-[#F3E5AB] to-[#C9A96E] text-black text-xs tracking-[0.3em] uppercase font-bold rounded-xl
+                           hover:scale-[1.02] active:scale-[0.98] transition-all duration-300
+                           shadow-[0_0_40px_rgba(201,169,110,0.5)] hover:shadow-[0_0_70px_rgba(201,169,110,0.8)] cursor-pointer flex items-center justify-center gap-3"
                 onClick={(e) => { e.stopPropagation(); onClick(watch); }}
               >
-                <span>{CTA_TEXTS[index % CTA_TEXTS.length]}</span>
-                <span className="text-base">→</span>
+                <span>SECURE ALLOCATION — {watch.price}</span>
+                <span className="text-sm">→</span>
               </button>
             )}
           </div>
+
         </div>
 
       </div>
