@@ -34,12 +34,10 @@ export default function WatchSection({ watch, index, onClick }) {
     );
     observer.observe(section);
 
-    // ============================================
     // ROLEX-STYLE 3D DEPTH KINETIC ENTRANCE
-    // ============================================
     if (watchCardRef.current) {
       gsap.fromTo(watchCardRef.current,
-        { scale: 0.8, opacity: 0, y: 100, rotateX: 12 },
+        { scale: 0.85, opacity: 0, y: 80, rotateX: 10 },
         {
           scale: 1,
           opacity: 1,
@@ -93,7 +91,7 @@ export default function WatchSection({ watch, index, onClick }) {
         playPromise.then(() => {
           setIsAudioEnabled(true);
         }).catch(() => {
-          setIsAudioEnabled(false);
+          setIsAudioEnabled(true);
         });
       } else {
         setIsAudioEnabled(true);
@@ -112,22 +110,22 @@ export default function WatchSection({ watch, index, onClick }) {
       className="relative w-full min-h-screen bg-[#050507] text-white flex flex-col justify-center py-24 px-4 sm:px-8 lg:px-16 border-b border-white/10 overflow-hidden"
     >
       {/* ROLEX DEEP EMERALD & OBSIDIAN AMBIENT LIGHTING */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,_rgba(10,40,25,0.25)_0%,_rgba(5,5,7,1)_80%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,_rgba(10,40,25,0.3)_0%,_rgba(5,5,7,1)_80%)] pointer-events-none" />
 
-      {/* TOP ROLEX HEADER BAR */}
+      {/* TOP HEADER BAR */}
       <div ref={textRef} className="max-w-7xl mx-auto w-full mb-12 flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b border-white/10 pb-8 z-20">
         <div>
           <div className="flex items-center gap-3 mb-3">
             <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
             <span className="text-xs font-mono tracking-[0.35em] text-[#10B981] uppercase font-bold">
-              ROLEX STANDARDS // CERTIFIED ALLOCATION 0{index + 1}
+              SUPERLATIVE SPEC // EDITION 0{index + 1}
             </span>
           </div>
           <h2 className="text-4xl sm:text-7xl lg:text-8xl font-black tracking-tight text-white leading-none uppercase drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
             {watch.model}
           </h2>
           <p className="text-sm font-mono tracking-[0.2em] uppercase text-white/50 mt-2">
-            {watch.brand} — SUPERLATIVE PRECISION
+            {watch.brand} — PRECISION HOROLOGY
           </p>
         </div>
 
@@ -136,12 +134,12 @@ export default function WatchSection({ watch, index, onClick }) {
             {watch.price}
           </span>
           <span className="text-[10px] font-mono tracking-widest text-[#10B981] uppercase block mt-1">
-            ✓ TAXES & WHITE GLOVE INSURED DELIVERY INCLUDED
+            ✓ TAXES & WHITE GLOVE DELIVERY INCLUDED
           </span>
         </div>
       </div>
 
-      {/* ROLEX 2-COLUMN DISPLAY: 4K REEL + CERAMIC PEDESTAL CARD */}
+      {/* 2-COLUMN DISPLAY: 4K REEL + DARK CERAMIC WATCH PEDESTAL */}
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center z-20">
         
         {/* COLUMN 1: 4K VIDEO STREAM REEL */}
@@ -160,10 +158,10 @@ export default function WatchSection({ watch, index, onClick }) {
           
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/30 pointer-events-none" />
 
-          {/* ROLEX CROWN SOUND PILL */}
+          {/* SOUND CONTROL PILL */}
           <button
             onClick={toggleAudio}
-            className="absolute bottom-8 left-8 z-30 px-6 py-3 rounded-full bg-black/60 hover:bg-black/80 border border-white/30 backdrop-blur-2xl transition-all duration-300 flex items-center gap-3 cursor-pointer shadow-2xl"
+            className="absolute bottom-8 left-8 z-30 px-6 py-3 rounded-full bg-black/70 hover:bg-black/90 border border-white/30 backdrop-blur-2xl transition-all duration-300 flex items-center gap-3 cursor-pointer shadow-2xl"
           >
             <span className={`w-2.5 h-2.5 rounded-full ${isAudioEnabled ? 'bg-[#10B981] animate-ping' : 'bg-white/50'}`} />
             <span className="text-xs font-mono tracking-[0.2em] font-semibold text-white uppercase">
@@ -172,23 +170,27 @@ export default function WatchSection({ watch, index, onClick }) {
           </button>
         </div>
 
-        {/* COLUMN 2: CERAMIC PEDESTAL WATCH CARD */}
+        {/* COLUMN 2: DARK SEAMLESS OBSIDIAN PEDESTAL CARD (NO WHITE BOX) */}
         <div
           ref={watchCardRef}
-          className={`relative h-[480px] sm:h-[580px] lg:h-[650px] rounded-[3rem] bg-[#0d0d12] border border-white/15 p-8 sm:p-12 flex flex-col justify-between shadow-[0_30px_70px_rgba(0,0,0,0.9)] overflow-hidden ${isEven ? 'lg:order-2' : 'lg:order-1'}`}
+          className={`relative h-[480px] sm:h-[580px] lg:h-[650px] rounded-[3rem] bg-[#0c0c11] border border-white/15 p-8 sm:p-12 flex flex-col justify-between shadow-[0_30px_70px_rgba(0,0,0,0.9)] overflow-hidden ${isEven ? 'lg:order-2' : 'lg:order-1'}`}
         >
-          {/* CERAMIC PEDESTAL BOX */}
-          <div className="relative w-full flex-1 flex items-center justify-center rounded-3xl bg-white p-8 overflow-hidden shadow-2xl group">
+          {/* SEAMLESS DARK PEDESTAL CONTAINER */}
+          <div className="relative w-full flex-1 flex items-center justify-center rounded-3xl bg-[#14141c] border border-white/10 p-8 overflow-hidden shadow-2xl group">
+            <div className="absolute w-64 h-64 bg-[#10B981]/10 rounded-full blur-3xl pointer-events-none animate-pulse" />
             <img
               src={watch.image}
               alt={`${watch.brand} ${watch.model}`}
               loading="lazy"
-              className="max-h-[300px] sm:max-h-[360px] w-auto object-contain transition-transform duration-700 group-hover:scale-105 cursor-pointer"
+              className="max-h-[300px] sm:max-h-[360px] w-auto object-contain transition-transform duration-700 group-hover:scale-105 cursor-pointer relative z-10"
+              style={{
+                filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.9))',
+              }}
               onClick={() => onClick(watch)}
             />
           </div>
 
-          {/* ROLEX TECHNICAL SPECIFICATIONS GRID & BUY ACTION */}
+          {/* TECHNICAL SPECIFICATIONS GRID & BUY ACTION */}
           <div className="mt-8 space-y-6">
             
             {/* Tech Badges */}
@@ -209,7 +211,7 @@ export default function WatchSection({ watch, index, onClick }) {
               </div>
             )}
 
-            {/* Apple / Rolex Style Purchase Button */}
+            {/* Apple Style Order Button */}
             <div>
               {watch.outOfStock ? (
                 <span className="block text-center w-full py-5 rounded-full bg-white/5 border border-white/10 text-white/40 text-xs font-mono tracking-[0.25em] uppercase">
