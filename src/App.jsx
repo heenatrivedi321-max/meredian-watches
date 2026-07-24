@@ -11,6 +11,7 @@ import ProductSchema from './components/ProductSchema';
 import InstagramFeed from './components/InstagramFeed';
 import BrandFilm from './components/BrandFilm';
 import IntroSplash from './components/IntroSplash';
+import CinemaIntermission from './components/CinemaIntermission';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -555,6 +556,12 @@ export default function App() {
 
         <InstagramFeed />
         <BrandFilm />
+        <CinemaIntermission 
+          videoSrc="/Porsche_driving_through_tunnel_202606281316.mp4" 
+          tag="NIGHT DRIVE // ARCHIVAL REEL" 
+          title="Born from speed. Crafted for eternity." 
+          subtitle="PURE KINETIC HOROLOGY" 
+        />
         <CollectionShowcase onSelectWatch={setSelectedWatch} />
         <ProductOverlay watch={selectedWatch} onClose={() => setSelectedWatch(null)} />
       </div>

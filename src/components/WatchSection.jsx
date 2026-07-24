@@ -155,6 +155,7 @@ export default function WatchSection({ watch, index, onClick }) {
         >
           <video
             ref={videoRef}
+            autoPlay
             muted
             loop
             playsInline

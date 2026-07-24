@@ -10,7 +10,7 @@ export const WATCHES = [
     amazonLink: "https://www.amazon.in/dp/B07T84V4P8",
     shopifyVariantId: "44408773935147",
     video: "/porsche_raw.mp4",
-    cinematicVideo: "/Rose-gold_men's_watch_202607141839.mp4",
+    cinematicVideo: "/Rose_gold_mens_watch_202607141839.mp4",
     image: "/watches_new/OLEVS Watches for Men Original Analog Quartz Stylish Brown Leather Luxury Business Chronograph Waterproof Date Mens Wrist Watch.jpg",
     gallery: [
       "/watches_new/OLEVS Watches for Men Original Analog Quartz Stylish Brown Leather Luxury Business Chronograph Waterproof Date Mens Wrist Watch.jpg",
