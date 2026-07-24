@@ -78,13 +78,30 @@ export default function WatchSection({ watch, index, onClick }) {
   }, [index]);
 
   const toggleAudio = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     const vid = videoRef.current;
     if (!vid) return;
 
-    vid.muted = !vid.muted;
-    setIsAudioEnabled(!vid.muted);
+    if (vid.muted) {
+      vid.muted = false;
+      vid.volume = 1.0;
+      const playPromise = vid.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          setIsAudioEnabled(true);
+        }).catch(() => {
+          setIsAudioEnabled(false);
+        });
+      } else {
+        setIsAudioEnabled(true);
+      }
+    } else {
+      vid.muted = true;
+      setIsAudioEnabled(false);
+    }
   }, []);
 
   // 3D Parallax Mouse Physics

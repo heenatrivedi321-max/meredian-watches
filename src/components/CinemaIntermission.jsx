@@ -65,13 +65,30 @@ export default function CinemaIntermission({ videoSrc, tag, title, subtitle, sou
   }, [soundDefault]);
 
   const toggleAudio = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     const vid = videoRef.current;
     if (!vid) return;
 
-    vid.muted = !vid.muted;
-    setIsAudioEnabled(!vid.muted);
+    if (vid.muted) {
+      vid.muted = false;
+      vid.volume = 1.0;
+      const playPromise = vid.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          setIsAudioEnabled(true);
+        }).catch(() => {
+          setIsAudioEnabled(false);
+        });
+      } else {
+        setIsAudioEnabled(true);
+      }
+    } else {
+      vid.muted = true;
+      setIsAudioEnabled(false);
+    }
   };
 
   return (
