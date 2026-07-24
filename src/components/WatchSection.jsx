@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { createCheckout } from '../shopify';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,6 +11,7 @@ export default function WatchSection({ watch, index, onClick }) {
   const watchCardRef = useRef(null);
   const textRef = useRef(null);
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   useEffect(() => {
     const vid = videoRef.current;
@@ -102,12 +104,26 @@ export default function WatchSection({ watch, index, onClick }) {
     }
   }, []);
 
+  // Direct Instant Shopify Checkout Handler
+  const handleBuyNow = async (e) => {
+    e.stopPropagation();
+    if (isRedirecting) return;
+    setIsRedirecting(true);
+    try {
+      const cart = await createCheckout(watch.shopifyVariantId);
+      window.location.href = cart.checkoutUrl;
+    } catch (err) {
+      console.warn("Direct checkout redirect fallback:", err);
+      window.location.href = `https://smgnhj-dr.myshopify.com/cart/${watch.shopifyVariantId}:1`;
+    }
+  };
+
   const isEven = index % 2 === 0;
 
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-screen bg-[#050507] text-white flex flex-col justify-center py-24 px-4 sm:px-8 lg:px-16 border-b border-white/10 overflow-hidden"
+      className="relative w-full min-h-screen bg-[#050507] text-white flex flex-col justify-center py-24 px-4 sm:px-8 lg:px-16 border-b border-white/10 overflow-hidden pointer-events-auto"
     >
       {/* ROLEX DEEP EMERALD & OBSIDIAN AMBIENT LIGHTING */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,_rgba(10,40,25,0.3)_0%,_rgba(5,5,7,1)_80%)] pointer-events-none" />
@@ -175,22 +191,27 @@ export default function WatchSection({ watch, index, onClick }) {
           ref={watchCardRef}
           className={`relative h-[480px] sm:h-[580px] lg:h-[650px] rounded-[3rem] bg-[#0c0c11] border border-white/15 p-8 sm:p-12 flex flex-col justify-between shadow-[0_30px_70px_rgba(0,0,0,0.9)] overflow-hidden ${isEven ? 'lg:order-2' : 'lg:order-1'}`}
         >
-          {/* SEAMLESS DARK PEDESTAL CONTAINER */}
-          <div className="relative w-full flex-1 flex items-center justify-center rounded-3xl bg-[#14141c] border border-white/10 p-8 overflow-hidden shadow-2xl group">
+          {/* SEAMLESS DARK PEDESTAL CONTAINER — CLICK OPENS PRODUCT OVERLAY */}
+          <div 
+            onClick={() => onClick(watch)}
+            className="relative w-full flex-1 flex items-center justify-center rounded-3xl bg-[#14141c] border border-white/10 p-8 overflow-hidden shadow-2xl group cursor-pointer"
+          >
             <div className="absolute w-64 h-64 bg-[#10B981]/10 rounded-full blur-3xl pointer-events-none animate-pulse" />
             <img
               src={watch.image}
               alt={`${watch.brand} ${watch.model}`}
               loading="lazy"
-              className="max-h-[300px] sm:max-h-[360px] w-auto object-contain transition-transform duration-700 group-hover:scale-105 cursor-pointer relative z-10"
+              className="max-h-[300px] sm:max-h-[360px] w-auto object-contain transition-transform duration-700 group-hover:scale-105 relative z-10"
               style={{
                 filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.9))',
               }}
-              onClick={() => onClick(watch)}
             />
+            <span className="absolute bottom-4 right-4 text-[10px] font-mono tracking-widest text-white/40 uppercase bg-black/60 px-3 py-1 rounded-full backdrop-blur-md">
+              CLICK FOR DETAILS 🔍
+            </span>
           </div>
 
-          {/* TECHNICAL SPECIFICATIONS GRID & BUY ACTION */}
+          {/* TECHNICAL SPECIFICATIONS GRID & INSTANT SHOPIFY BUY BUTTON */}
           <div className="mt-8 space-y-6">
             
             {/* Tech Badges */}
@@ -211,7 +232,7 @@ export default function WatchSection({ watch, index, onClick }) {
               </div>
             )}
 
-            {/* Apple Style Order Button */}
+            {/* Apple / Shopify Direct Checkout Button */}
             <div>
               {watch.outOfStock ? (
                 <span className="block text-center w-full py-5 rounded-full bg-white/5 border border-white/10 text-white/40 text-xs font-mono tracking-[0.25em] uppercase">
@@ -219,11 +240,21 @@ export default function WatchSection({ watch, index, onClick }) {
                 </span>
               ) : (
                 <button
-                  onClick={(e) => { e.stopPropagation(); onClick(watch); }}
-                  className="w-full py-5 rounded-full bg-white text-black hover:bg-white/90 active:scale-[0.98] transition-all duration-300 text-sm font-extrabold tracking-[0.2em] uppercase flex items-center justify-center gap-3 shadow-[0_15px_40px_rgba(255,255,255,0.2)] cursor-pointer"
+                  onClick={handleBuyNow}
+                  disabled={isRedirecting}
+                  className="w-full py-5 rounded-full bg-white text-black hover:bg-white/90 active:scale-[0.98] transition-all duration-300 text-sm font-extrabold tracking-[0.2em] uppercase flex items-center justify-center gap-3 shadow-[0_15px_40px_rgba(255,255,255,0.2)] cursor-pointer disabled:opacity-50 disabled:cursor-wait"
                 >
-                  <span>ORDER TIMEPIECE — {watch.price}</span>
-                  <span className="text-lg">→</span>
+                  {isRedirecting ? (
+                    <span className="flex items-center gap-3">
+                      <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                      REDIRECTING TO CHECKOUT...
+                    </span>
+                  ) : (
+                    <>
+                      <span>ORDER TIMEPIECE — {watch.price}</span>
+                      <span className="text-lg">→</span>
+                    </>
+                  )}
                 </button>
               )}
             </div>

@@ -344,7 +344,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
         </section>
 
         {/* Product Grid Section — Full-Screen Watch Sections */}
-        <div className="relative z-20 pointer-events-none">
+        <div className="relative z-20 pointer-events-auto">
           {WATCHES.map((watch, idx) => (
             <WatchSection key={watch.id} watch={watch} index={idx} onClick={onSelectWatch} />
           ))}
