@@ -31,34 +31,38 @@ export default function CinemaIntermission({ videoSrc, tag, title, subtitle, sou
     );
     observer.observe(section);
 
-    // Dynamic Zoom Effect on Scroll
-    gsap.fromTo(vid,
-      { scale: 1.2, filter: "brightness(0.5) blur(6px)" },
-      {
-        scale: 1,
-        filter: "brightness(1) blur(0px)",
-        scrollTrigger: {
-          trigger: section,
-          start: "top 85%",
-          end: "center center",
-          scrub: 0.8,
-        }
+    // ============================================
+    // ROLEX / APPLE CINEMATIC TIMELINE:
+    // 1. Text enters with impact as section scrolls in
+    // 2. Text dissolves out with blur + scale-up as video plays fully
+    // ============================================
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top top",
+        end: "+=150%",
+        scrub: 0.8,
+        pin: true,
       }
+    });
+
+    // Step 1: Video clears from dark blur to full 4K brightness
+    tl.fromTo(vid,
+      { scale: 1.25, filter: "brightness(0.4) blur(8px)" },
+      { scale: 1.0, filter: "brightness(1) blur(0px)", ease: "none", duration: 1 }
     );
 
-    // Text Reveal Animation
-    gsap.fromTo(textRef.current,
-      { autoAlpha: 0, y: 50, scale: 0.95 },
-      {
-        autoAlpha: 1, y: 0, scale: 1,
-        duration: 1.5,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: section,
-          start: "top 55%",
-          toggleActions: "play none none reverse"
-        }
-      }
+    // Step 2: Text title enters prominently
+    tl.fromTo(textRef.current,
+      { autoAlpha: 0, scale: 0.9, y: 40 },
+      { autoAlpha: 1, scale: 1, y: 0, ease: "power3.out", duration: 0.8 },
+      0.2
+    );
+
+    // Step 3: Text DISSOLVES OUT with scale + blur, revealing the full video uninterrupted!
+    tl.to(textRef.current,
+      { autoAlpha: 0, scale: 1.3, filter: "blur(12px)", y: -60, ease: "power2.inOut", duration: 1 },
+      1.2
     );
 
     return () => observer.disconnect();
@@ -109,9 +113,9 @@ export default function CinemaIntermission({ videoSrc, tag, title, subtitle, sou
         <source src={videoSrc} type="video/mp4" />
       </video>
 
-      {/* LUXURY GRADIENT OVERLAYS */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/60 pointer-events-none z-10" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/40 to-black pointer-events-none z-10" />
+      {/* DYNAMIC LUXURY GRADIENT OVERLAYS */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60 pointer-events-none z-10" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/30 to-black pointer-events-none z-10" />
 
       {/* GLASSMORPHISM AUDIO CONTROL PILL */}
       <div className="absolute top-8 right-8 sm:top-12 sm:right-12 z-30">
@@ -134,28 +138,28 @@ export default function CinemaIntermission({ videoSrc, tag, title, subtitle, sou
         </button>
       </div>
 
-      {/* HERO OVERLAY TEXT — APPLE/CINEMA STYLE */}
+      {/* HERO OVERLAY TEXT — DISSOLVES ON SCROLL REVEALING FULL VIDEO */}
       <div
         ref={textRef}
-        className="relative z-20 text-center px-6 max-w-4xl mx-auto flex flex-col items-center pointer-events-none"
+        className="relative z-20 text-center px-6 max-w-5xl mx-auto flex flex-col items-center pointer-events-none"
       >
         <div className="inline-flex items-center gap-3 mb-6 px-5 py-2 rounded-full border border-white/30 bg-black/60 backdrop-blur-xl">
           <span className="w-2 h-2 rounded-full bg-white animate-ping" />
           <span className="text-xs font-mono tracking-[0.4em] uppercase text-white font-semibold">{tag}</span>
         </div>
 
-        <h2 className="text-4xl sm:text-7xl md:text-8xl lg:text-[7rem] font-extrabold tracking-tighter text-white leading-none uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)] mb-6">
+        <h2 className="text-4xl sm:text-7xl md:text-8xl lg:text-[7.5rem] font-black tracking-tighter text-white leading-none uppercase drop-shadow-[0_20px_60px_rgba(0,0,0,1)] mb-6">
           {title}
         </h2>
 
         {subtitle && (
-          <p className="text-xs sm:text-base font-mono tracking-[0.35em] uppercase text-white/70 max-w-2xl bg-black/40 px-6 py-2 rounded-full backdrop-blur-md border border-white/10">
+          <p className="text-xs sm:text-base font-mono tracking-[0.35em] uppercase text-white/80 max-w-2xl bg-black/50 px-6 py-2 rounded-full backdrop-blur-md border border-white/10">
             {subtitle}
           </p>
         )}
       </div>
 
-      {/* TOP/BOTTOM SCANLINES */}
+      {/* SCANLINE BORDERS */}
       <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none z-20" />
       <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none z-20" />
     </section>
