@@ -139,25 +139,25 @@ export default function CinemaIntermission({ videoSrc, tag, title, subtitle, sou
         ref={textRef}
         className="relative z-20 text-center px-6 max-w-4xl mx-auto flex flex-col items-center pointer-events-none"
       >
-        <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full border border-white/20 bg-black/40 backdrop-blur-md">
-          <span className="w-1.5 h-1.5 rounded-full bg-white" />
-          <span className="text-[10px] font-mono tracking-[0.4em] uppercase text-white/80">{tag}</span>
+        <div className="inline-flex items-center gap-3 mb-6 px-5 py-2 rounded-full border border-white/30 bg-black/60 backdrop-blur-xl">
+          <span className="w-2 h-2 rounded-full bg-white animate-ping" />
+          <span className="text-xs font-mono tracking-[0.4em] uppercase text-white font-semibold">{tag}</span>
         </div>
 
-        <h2 className="text-3xl sm:text-5xl md:text-7xl font-extralight tracking-tight text-white leading-[1.1] mb-6">
+        <h2 className="text-4xl sm:text-7xl md:text-8xl lg:text-[7rem] font-extrabold tracking-tighter text-white leading-none uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)] mb-6">
           {title}
         </h2>
 
         {subtitle && (
-          <p className="text-xs sm:text-sm font-mono tracking-[0.3em] uppercase text-white/50 max-w-lg">
+          <p className="text-xs sm:text-base font-mono tracking-[0.35em] uppercase text-white/70 max-w-2xl bg-black/40 px-6 py-2 rounded-full backdrop-blur-md border border-white/10">
             {subtitle}
           </p>
         )}
       </div>
 
-      {/* TOP/BOTTOM LIGHT SCANLINES */}
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none z-20" />
-      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none z-20" />
+      {/* TOP/BOTTOM SCANLINES */}
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none z-20" />
+      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none z-20" />
     </section>
   );
 }
