@@ -42,5 +42,11 @@ export async function createCheckout(variantId) {
     throw new Error(data.cartCreate.userErrors[0].message);
   }
 
-  return data.cartCreate.cart;
+  const cart = data.cartCreate.cart;
+  // If the custom domain is still propagating, fall back to the myshopify domain to ensure checkout always opens
+  if (cart && cart.checkoutUrl && cart.checkoutUrl.includes('shop.meredianwatches.store')) {
+    cart.checkoutUrl = cart.checkoutUrl.replace('shop.meredianwatches.store', SHOPIFY_DOMAIN);
+  }
+
+  return cart;
 }

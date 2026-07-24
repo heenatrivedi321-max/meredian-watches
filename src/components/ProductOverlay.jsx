@@ -300,7 +300,7 @@ export default function ProductOverlay({ watch, onClose }) {
                       window.location.href = cart.checkoutUrl;
                     } catch (err) {
                       console.warn("Checkout failed:", err);
-                      window.location.href = `https://shop.meredianwatches.store/cart/${watch.shopifyVariantId}:1`;
+                      window.location.href = `https://smgnhj-dr.myshopify.com/cart/${watch.shopifyVariantId}:1`;
                     }
                   }}
                   disabled={isRedirecting}
