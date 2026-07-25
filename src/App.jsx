@@ -12,7 +12,6 @@ import InstagramFeed from './components/InstagramFeed';
 import BrandFilm from './components/BrandFilm';
 import IntroSplash from './components/IntroSplash';
 import CinemaIntermission from './components/CinemaIntermission';
-import WatchConfigurator from './components/WatchConfigurator';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -389,22 +388,14 @@ export default function App() {
             <img src="/logo.jpg" alt="Meridian Logo" className="h-10 sm:h-14 lg:h-20 w-auto object-contain drop-shadow-[0_0_15px_rgba(201,169,110,0.4)] hover:scale-105 transition-transform cursor-pointer" />
           </div>
 
-          <div className="hidden md:flex flex-1 items-center justify-end gap-6">
-            <button 
-              onClick={() => setShowConfigurator(true)} 
-              className="px-4 py-2 rounded-full border border-white/20 bg-black/40 backdrop-blur-md text-[10px] sm:text-[11px] tracking-[0.25em] font-mono uppercase hover:bg-white hover:text-black transition-all cursor-pointer shadow-lg"
-            >
-              🛠️ BESPOKE BUILDER
-            </button>
-            <div 
-              onClick={() => {
-                const grid = document.querySelector('.max-w-screen-2xl');
-                if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
-              className="text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] font-light uppercase hover:opacity-50 transition-opacity cursor-pointer"
-            >
-              Collection
-            </div>
+          <div 
+            onClick={() => {
+              const grid = document.querySelector('.max-w-screen-2xl');
+              if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }}
+            className="hidden md:block flex-1 text-right text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] font-light uppercase hover:opacity-50 transition-opacity cursor-pointer"
+          >
+            Collection
           </div>
 
           {/* Mobile: Hamburger */}
@@ -592,9 +583,6 @@ export default function App() {
 
       {/* Brand Story Overlay */}
       {showBrand && <BrandStory onClose={() => setShowBrand(false)} />}
-
-      {/* Rolex Bespoke Watch Configurator Modal */}
-      {showConfigurator && <WatchConfigurator onClose={() => setShowConfigurator(false)} />}
     </>
   );
 }
