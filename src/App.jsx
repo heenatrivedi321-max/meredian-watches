@@ -264,6 +264,7 @@ export default function App() {
         }
       });
       porscheTl.to(".bg-liquid", { autoAlpha: 0, duration: 1, ease: "none" }, 0);
+      porscheTl.to(".bg-porsche", { autoAlpha: 0.9, duration: 1, ease: "none" }, 0);
 
       // Typewriter for porsche lines
       const porscheLines = gsap.utils.toArray(".porsche-line");
@@ -309,6 +310,17 @@ export default function App() {
           trigger: ".porsche-spacer",
           start: "bottom 60%",
           end: "bottom 20%",
+          scrub: true,
+        }
+      });
+
+      // Fade out Porsche video smoothly before products
+      gsap.to(".bg-porsche", {
+        autoAlpha: 0,
+        scrollTrigger: {
+          trigger: ".product-reveal",
+          start: "top 90%",
+          end: "top 40%",
           scrub: true,
         }
       });
