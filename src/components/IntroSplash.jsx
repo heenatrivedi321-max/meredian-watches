@@ -155,7 +155,7 @@ export default function IntroSplash({ onComplete }) {
 
           {/* Monolithic Meridian Headline */}
           <h1 
-            className="text-4xl sm:text-7xl lg:text-8xl font-normal tracking-[0.15em] text-gemini-gradient uppercase text-center drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
+            className="text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-normal tracking-[0.1em] sm:tracking-[0.15em] text-gemini-gradient uppercase text-center max-w-[90vw] drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
             style={{ fontFamily: "'Cinzel', Georgia, serif" }}
           >
             Meridian
@@ -183,27 +183,27 @@ export default function IntroSplash({ onComplete }) {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* Ambient Gemini Live Mesh Background */}
-          <div className="absolute inset-0 gemini-aurora-bg pointer-events-none opacity-40" />
+          <div className="absolute inset-0 gemini-aurora-bg pointer-events-none opacity-60" />
 
-          {/* Anamorphic Gemini Live Horizontal Beam */}
+          {/* Electrifying Gemini Live Laser Aura & Anamorphic Beam */}
           <motion.div
-            className="absolute top-1/2 -translate-y-1/2 h-[1px] pointer-events-none z-10"
+            className="absolute top-1/2 -translate-y-1/2 h-[2px] pointer-events-none z-10"
             style={{
-              background: 'linear-gradient(90deg, transparent 0%, #4285F4 20%, #9B51E0 50%, #FF4081 80%, transparent 100%)',
-              boxShadow: '0 0 35px #9B51E0, 0 0 70px #00F0FF',
+              background: 'linear-gradient(90deg, transparent 0%, #4285F4 20%, #9B51E0 50%, #FF4081 80%, #00F0FF 90%, transparent 100%)',
+              boxShadow: '0 0 40px #9B51E0, 0 0 90px #00F0FF, 0 0 140px #FF4081',
             }}
             initial={{ width: 0, opacity: 0 }}
             animate={{
-              width: phase >= 1 ? '70vw' : 0,
+              width: phase >= 1 ? ['0vw', '95vw', '85vw'] : 0,
               opacity: phase >= 1 ? [0, 1, 0.8] : 0,
             }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           />
 
           {/* Monolithic Meridian Typography */}
-          <div className="relative z-20 flex flex-col items-center justify-center text-center px-4">
+          <div className="relative z-20 flex flex-col items-center justify-center text-center px-4 max-w-[95vw] mx-auto overflow-hidden">
             <motion.h1
-              className="text-5xl sm:text-8xl md:text-[9rem] lg:text-[11rem] font-normal tracking-[0.2em] text-gemini-gradient uppercase drop-shadow-[0_30px_70px_rgba(0,0,0,0.95)]"
+              className="text-3xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-normal tracking-[0.08em] sm:tracking-[0.15em] text-gemini-gradient gemini-laser-glow uppercase drop-shadow-[0_30px_70px_rgba(0,0,0,0.95)] max-w-full"
               style={{ fontFamily: "'Cinzel', Georgia, serif" }}
               initial={{ opacity: 0, scale: 0.95, filter: 'blur(16px)' }}
               animate={phase >= 1 ? { opacity: 1, scale: 1, filter: 'blur(0px)' } : {}}
@@ -214,7 +214,7 @@ export default function IntroSplash({ onComplete }) {
 
             {/* Subtext */}
             <motion.p
-              className="mt-6 sm:mt-10 text-sm sm:text-xl md:text-2xl tracking-[0.4em] uppercase font-light text-white/80 drop-shadow-[0_10px_20px_rgba(0,0,0,0.9)]"
+              className="mt-6 sm:mt-10 text-xs sm:text-lg md:text-xl tracking-[0.3em] sm:tracking-[0.4em] uppercase font-light text-white/80 drop-shadow-[0_10px_20px_rgba(0,0,0,0.9)] max-w-full"
               style={{ fontFamily: "'Inter', sans-serif" }}
               initial={{ opacity: 0, y: 20 }}
               animate={phase >= 2 ? { opacity: 1, y: 0 } : {}}
