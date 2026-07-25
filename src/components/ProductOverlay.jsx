@@ -89,13 +89,13 @@ export default function ProductOverlay({ watch, onClose }) {
                   <span>{watch.brand}</span>
                 </p>
                 <h1 
-                  className="text-[2.5rem] sm:text-[3.5rem] md:text-[4rem] lg:text-[6.5rem] leading-[1.1] font-extrabold tracking-tight uppercase mb-4 sm:mb-8 text-black"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
+                  className="text-[2.5rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[6.5rem] leading-[1.05] font-normal tracking-[0.06em] uppercase mb-4 sm:mb-8 text-black drop-shadow-sm"
+                  style={{ fontFamily: "'Cinzel', Georgia, serif" }}
                 >
-                  {watch?.model}
+                  {watch.model}
                 </h1>
                 <p 
-                  className="text-[1.5rem] sm:text-[2.2rem] lg:text-[3.2rem] text-black/90 leading-[1.15] font-bold tracking-tight"
+                  className="text-base sm:text-xl lg:text-2xl text-black/60 font-light max-w-xl leading-relaxed"
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   "{watch?.quotes?.[0] || 'A masterpiece of precision.'}"

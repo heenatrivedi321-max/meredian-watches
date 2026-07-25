@@ -174,13 +174,14 @@ export default function WatchSection({ watch, index, onClick }) {
         {/* COLUMN 2: SEAMLESS ROLEX OYSTER CERAMIC PEDESTAL CARD — CLICK OPENS DEDICATED PRODUCT PAGE OVERLAY */}
         <div
           ref={watchCardRef}
-          className={`relative h-[480px] sm:h-[580px] lg:h-[650px] rounded-[3rem] bg-[#0c0c11] border border-white/15 p-8 sm:p-12 flex flex-col justify-between shadow-[0_30px_70px_rgba(0,0,0,0.9)] overflow-hidden ${isEven ? 'lg:order-2' : 'lg:order-1'}`}
+          className={`relative h-[480px] sm:h-[580px] lg:h-[650px] rounded-[3rem] bg-[#0c0c11] border border-white/10 p-8 sm:p-12 flex flex-col justify-between shadow-[0_30px_70px_rgba(0,0,0,0.9)] overflow-hidden group hover:border-[#C9A96E]/40 transition-all duration-500 ${isEven ? 'lg:order-2' : 'lg:order-1'}`}
         >
           {/* ROLEX OYSTER CERAMIC PEDESTAL — CLICK OPENS SPECIFIC PRODUCT OVERLAY */}
           <div 
             onClick={() => onClick(watch)}
             className="relative w-full flex-1 flex items-center justify-center rounded-3xl bg-[#eaeaee] p-8 overflow-hidden shadow-2xl group cursor-pointer border border-white/20"
           >
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(201,169,110,0.15)_0%,transparent_70%)] pointer-events-none" />
             <img
               src={watch.image}
               alt={`${watch.brand} ${watch.model}`}
@@ -190,8 +191,8 @@ export default function WatchSection({ watch, index, onClick }) {
                 mixBlendMode: 'multiply',
               }}
             />
-            <span className="absolute bottom-4 right-4 text-[10px] font-mono tracking-widest text-black/70 uppercase bg-white/80 px-3.5 py-1.5 rounded-full backdrop-blur-md font-semibold border border-black/10 shadow-sm">
-              CLICK FOR FULL PRODUCT PAGE 🔍
+            <span className="absolute bottom-4 right-4 text-[9px] font-mono tracking-widest text-black/80 uppercase bg-white/90 px-4 py-2 rounded-full backdrop-blur-md font-semibold border border-black/10 shadow-md">
+              VIEW TIMEPIECE 🔍
             </span>
           </div>
 
@@ -201,17 +202,17 @@ export default function WatchSection({ watch, index, onClick }) {
             {/* Tech Badges */}
             {watch.specs && (
               <div className="grid grid-cols-3 gap-2 text-center">
-                <div className="px-3 py-2 rounded-2xl bg-white/5 border border-white/10">
+                <div className="px-3 py-2.5 rounded-2xl bg-white/5 border border-white/10 group-hover:border-white/20 transition-colors">
                   <span className="text-[9px] font-mono tracking-widest text-white/40 uppercase block">MOVEMENT</span>
-                  <span className="text-[11px] font-mono text-white font-bold block mt-0.5">{watch.specs.movement}</span>
+                  <span className="text-[11px] font-mono text-white font-semibold block mt-0.5">{watch.specs.movement}</span>
                 </div>
-                <div className="px-3 py-2 rounded-2xl bg-white/5 border border-white/10">
+                <div className="px-3 py-2.5 rounded-2xl bg-white/5 border border-white/10 group-hover:border-white/20 transition-colors">
                   <span className="text-[9px] font-mono tracking-widest text-white/40 uppercase block">RATING</span>
-                  <span className="text-[11px] font-mono text-[#10B981] font-bold block mt-0.5">{watch.specs.waterResistance}</span>
+                  <span className="text-[11px] font-mono text-[#C9A96E] font-semibold block mt-0.5">{watch.specs.waterResistance}</span>
                 </div>
-                <div className="px-3 py-2 rounded-2xl bg-white/5 border border-white/10">
+                <div className="px-3 py-2.5 rounded-2xl bg-white/5 border border-white/10 group-hover:border-white/20 transition-colors">
                   <span className="text-[9px] font-mono tracking-widest text-white/40 uppercase block">CRYSTAL</span>
-                  <span className="text-[11px] font-mono text-white font-bold block mt-0.5">{watch.specs.glass}</span>
+                  <span className="text-[11px] font-mono text-white font-semibold block mt-0.5">{watch.specs.glass}</span>
                 </div>
               </div>
             )}
@@ -225,10 +226,10 @@ export default function WatchSection({ watch, index, onClick }) {
               ) : (
                 <button
                   onClick={(e) => { e.stopPropagation(); onClick(watch); }}
-                  className="w-full py-5 rounded-full bg-white text-black hover:bg-white/90 active:scale-[0.98] transition-all duration-300 text-sm font-extrabold tracking-[0.2em] uppercase flex items-center justify-center gap-3 shadow-[0_15px_40px_rgba(255,255,255,0.2)] cursor-pointer"
+                  className="w-full py-5 rounded-full bg-gradient-to-r from-[#C9A96E] via-[#F5E5CE] to-[#C9A96E] text-black font-semibold text-xs tracking-[0.25em] uppercase hover:shadow-[0_0_30px_rgba(201,169,110,0.5)] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3 cursor-pointer"
                 >
-                  <span>VIEW PRODUCT PAGE — {watch.price}</span>
-                  <span className="text-lg">→</span>
+                  <span>EXPLORE TIMEPIECE — {watch.price}</span>
+                  <span className="text-sm">→</span>
                 </button>
               )}
             </div>

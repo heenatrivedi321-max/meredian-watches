@@ -469,29 +469,51 @@ export default function App() {
         {/* SCROLLING CONTENT LAYER */}
         <div className="relative z-50 w-full pointer-events-none">
 
-          {/* HERO — clean: just title on video */}
+          {/* HERO — Ultra-Luxury Presentation */}
           <section className="hero-spacer relative w-full h-screen flex flex-col items-center justify-center pointer-events-auto">
-            <div className="hero-content flex flex-col items-center text-center pointer-events-auto px-4">
+            <div className="hero-content flex flex-col items-center text-center pointer-events-auto px-4 space-y-4">
+              <span 
+                className="text-[10px] sm:text-xs font-mono tracking-[0.6em] uppercase text-[#C9A96E]/80 font-light"
+              >
+                HAUTE HOROLOGY • GENEVA ATELIER
+              </span>
+
               <h1 
-                className="hero-title text-[3rem] sm:text-7xl md:text-[7rem] lg:text-[9rem] font-extralight tracking-[-0.03em] leading-none text-white" 
+                className="hero-title text-[3.5rem] sm:text-7xl md:text-[7.5rem] lg:text-[9.5rem] font-normal tracking-[0.1em] leading-none text-white uppercase drop-shadow-[0_20px_60px_rgba(0,0,0,0.95)]" 
+                style={{ fontFamily: "'Cinzel', Georgia, serif" }}
               >
                 Meridian
               </h1>
+
+              <div className="w-16 h-[1px] bg-gradient-to-r from-transparent via-[#C9A96E]/60 to-transparent my-2" />
+
+              <p 
+                className="text-xs sm:text-sm font-light tracking-[0.3em] uppercase text-white/50 max-w-md"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                Uncompromising Precision. Timeless Legacy.
+              </p>
+            </div>
+
+            {/* Scroll Indicator */}
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none opacity-60">
+              <span className="text-[9px] font-mono tracking-[0.4em] uppercase text-white/40">SCROLL</span>
+              <div className="w-[1px] h-8 bg-gradient-to-b from-[#C9A96E] to-transparent animate-pulse" />
             </div>
 
             {/* Sound toggle — minimal */}
             <button 
               onClick={toggleSound}
-              className="absolute bottom-8 right-6 sm:right-10 w-8 h-8 flex items-center justify-center rounded-full border border-white/10 hover:border-white/30 transition-all duration-300 pointer-events-auto z-[60] cursor-pointer"
+              className="absolute bottom-8 right-6 sm:right-10 w-9 h-9 flex items-center justify-center rounded-full border border-white/10 hover:border-[#C9A96E]/40 hover:bg-white/5 transition-all duration-300 pointer-events-auto z-[60] cursor-pointer"
               aria-label={soundOn ? "Mute sound" : "Play sound"}
             >
               {soundOn ? (
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-white/60">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-white/70">
                   <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="currentColor" opacity="0.3" />
                   <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
                 </svg>
               ) : (
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-white/20">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-white/30">
                   <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="currentColor" opacity="0.2" />
                   <line x1="23" y1="9" x2="17" y2="15" />
                   <line x1="17" y1="9" x2="23" y2="15" />
