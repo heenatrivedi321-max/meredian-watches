@@ -133,26 +133,14 @@ export default function BrandFilm() {
         </button>
       </div>
 
-      {/* HERO OVERLAY TEXT — ROLEX CINEMATIC STYLE */}
+      {/* HERO OVERLAY TEXT — PURE MASSIVE ICONIC STATEMENT */}
       <div
         ref={textRef}
-        className="relative z-20 text-center px-6 max-w-4xl mx-auto flex flex-col items-center pointer-events-none"
+        className="relative z-20 text-center px-6 max-w-5xl mx-auto flex flex-col items-center pointer-events-none"
       >
-        <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full border border-[#C9A96E]/30 bg-black/40 backdrop-blur-md">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#C9A96E]" />
-          <span className="text-[10px] font-mono tracking-[0.4em] uppercase text-[#C9A96E]">THE CINEMATIC MANIFESTO</span>
-        </div>
-
-        <h2 className="text-3xl sm:text-5xl md:text-7xl font-extralight tracking-tight text-white leading-[1.1] mb-6">
-          We don't follow legends.<br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C9A96E] via-[#F3E5AB] to-[#C9A96E] font-normal italic">
-            We time them.
-          </span>
+        <h2 className="text-4xl sm:text-7xl md:text-8xl font-black tracking-tighter text-white leading-none uppercase drop-shadow-[0_20px_60px_rgba(0,0,0,1)]">
+          I'M THE KING OF THE WORLD.
         </h2>
-
-        <p className="text-xs sm:text-sm font-mono tracking-[0.3em] uppercase text-white/40 max-w-lg">
-          MERIDIAN // ARCHIVAL HOROLOGY IN MOTION
-        </p>
       </div>
 
       {/* BOTTOM GOLD SCANLINES */}

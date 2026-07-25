@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function CinemaIntermission({ videoSrc, tag, title, subtitle, soundDefault = false }) {
+export default function CinemaIntermission({ videoSrc, title, soundDefault = false }) {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
   const textRef = useRef(null);
@@ -31,27 +31,25 @@ export default function CinemaIntermission({ videoSrc, tag, title, subtitle, sou
     );
     observer.observe(section);
 
-    // TEXT REVEALS ON SCROLL ENTRY, THEN FADES OUT SO THE VIDEO IS 100% UNCOVERED!
+    // CLEAN FADE IN ON ENTRY, THEN DISSOLVE OUT ON SCROLL FOR 100% UNCOVERED 4K VIDEO
     if (textRef.current) {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: "top 80%",
+          start: "top 85%",
           end: "bottom 20%",
           scrub: 0.5,
         }
       });
 
-      // Text enters cleanly
       tl.fromTo(textRef.current,
-        { autoAlpha: 0, y: 50, scale: 0.95 },
+        { autoAlpha: 0, y: 60, scale: 0.9 },
         { autoAlpha: 1, y: 0, scale: 1, ease: "power2.out" }
       );
 
-      // Text fades out completely, leaving 4K video 100% UNCOVERED!
       tl.to(textRef.current,
         { autoAlpha: 0, y: -60, scale: 1.05, ease: "power2.in" },
-        "+=0.4"
+        "+=0.5"
       );
     }
 
@@ -90,7 +88,7 @@ export default function CinemaIntermission({ videoSrc, tag, title, subtitle, sou
       ref={sectionRef}
       className="relative w-full h-screen overflow-hidden bg-black flex items-center justify-center border-y border-white/10"
     >
-      {/* 100% CRISP, NON-BLURRED FULL-SCREEN VIDEO */}
+      {/* 4K CRISP FULL-SCREEN CINEMATIC VIDEO */}
       <video
         ref={videoRef}
         autoPlay
@@ -103,7 +101,7 @@ export default function CinemaIntermission({ videoSrc, tag, title, subtitle, sou
         <source src={videoSrc} type="video/mp4" />
       </video>
 
-      {/* DYNAMIC DARK LUXURY GRADIENT OVERLAYS */}
+      {/* LUXURY GRADIENT OVERLAY */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/70 pointer-events-none z-10" />
 
       {/* GLASSMORPHISM AUDIO CONTROL PILL */}
@@ -127,25 +125,14 @@ export default function CinemaIntermission({ videoSrc, tag, title, subtitle, sou
         </button>
       </div>
 
-      {/* HERO OVERLAY TEXT — FADES OUT ON SCROLL REVEALING 100% UNCOVERED VIDEO */}
+      {/* PURE MASSIVE ICONIC QUOTE — NO CLUTTER, NO TAGS, NO SUBTITLES */}
       <div
         ref={textRef}
-        className="relative z-20 text-center px-6 max-w-5xl mx-auto flex flex-col items-center pointer-events-none"
+        className="relative z-20 text-center px-6 max-w-6xl mx-auto flex flex-col items-center pointer-events-none"
       >
-        <div className="inline-flex items-center gap-3 mb-6 px-5 py-2 rounded-full border border-white/30 bg-black/60 backdrop-blur-xl">
-          <span className="w-2 h-2 rounded-full bg-white animate-ping" />
-          <span className="text-xs font-mono tracking-[0.4em] uppercase text-white font-semibold">{tag}</span>
-        </div>
-
-        <h2 className="text-4xl sm:text-7xl md:text-8xl font-black tracking-tighter text-white leading-none uppercase drop-shadow-[0_20px_60px_rgba(0,0,0,1)] mb-6">
+        <h2 className="text-5xl sm:text-8xl md:text-9xl lg:text-[8.5rem] font-black tracking-tighter text-white leading-[0.95] uppercase drop-shadow-[0_30px_70px_rgba(0,0,0,1)]">
           {title}
         </h2>
-
-        {subtitle && (
-          <p className="text-xs sm:text-base font-mono tracking-[0.35em] uppercase text-white/80 max-w-2xl bg-black/50 px-6 py-2 rounded-full backdrop-blur-md border border-white/10">
-            {subtitle}
-          </p>
-        )}
       </div>
 
       {/* SCANLINE BORDERS */}

@@ -561,17 +561,13 @@ export default function App() {
         {/* CINEMA TAKEOVER 2: WOLF OF WALL STREET */}
         <CinemaIntermission 
           videoSrc="/wolf-of-wall-street.mp4" 
-          tag="THE WEALTH MANIFESTO // 02" 
           title="I choose rich every single time." 
-          subtitle="UNAPOLOGETIC LUXURY // MERIDIAN ARCHIVE" 
         />
 
         {/* CINEMA TAKEOVER 3: THE DARK KNIGHT */}
         <CinemaIntermission 
           videoSrc="/dark-knight.mp4" 
-          tag="NIGHT CHASE // BRUTALIST POWER" 
           title="Born from shadow. Built for supremacy." 
-          subtitle="PRECISION ENGINEERING IN MOTION" 
         />
 
         <CollectionShowcase onSelectWatch={setSelectedWatch} />
