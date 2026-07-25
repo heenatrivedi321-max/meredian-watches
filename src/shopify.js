@@ -17,9 +17,18 @@ async function shopifyFetch(query, variables = {}) {
   return json.data;
 }
 
-export async function createCheckout(variantId) {
+export async function createCheckout(variantId, customNote = '') {
   const gid = variantId.startsWith('gid://') ? variantId : `gid://shopify/ProductVariant/${variantId}`;
   
+  const input = {
+    lines: [{ merchandiseId: gid, quantity: 1 }],
+  };
+
+  if (customNote && customNote.trim()) {
+    input.attributes = [{ key: "Who Are You / Drive", value: customNote.trim() }];
+    input.note = customNote.trim();
+  }
+
   const data = await shopifyFetch(`
     mutation cartCreate($input: CartInput!) {
       cartCreate(input: $input) {
@@ -32,11 +41,7 @@ export async function createCheckout(variantId) {
         }
       }
     }
-  `, {
-    input: {
-      lines: [{ merchandiseId: gid, quantity: 1 }],
-    },
-  });
+  `, { input });
 
   if (data.cartCreate.userErrors.length > 0) {
     throw new Error(data.cartCreate.userErrors[0].message);
