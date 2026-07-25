@@ -31,29 +31,29 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
     );
     observer.observe(section);
 
-    // CLEAN GSAP TYPEWRITER REVEAL & DISSOLVE FADE OUT ON SCROLL
+    // CLEAN GSAP SCROLL TEXT DISSOLVE OUT — UNCOVERS 100% OF 4K VIDEO
     if (textRef.current) {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: "top 75%",
-          end: "bottom 30%",
+          start: "top 80%",
+          end: "top 20%",
           scrub: true,
         }
       });
 
-      // 1. Text enters smoothly
+      // 1. Enter text
       tl.fromTo(textRef.current,
         { autoAlpha: 0, y: 40 },
-        { autoAlpha: 1, y: 0, duration: 0.4, ease: "power2.out" }
+        { autoAlpha: 1, y: 0, duration: 0.3, ease: "power2.out" }
       );
 
-      // 2. Hold clear in middle
-      tl.to(textRef.current, { autoAlpha: 1, duration: 0.4 });
+      // 2. Hold in middle
+      tl.to(textRef.current, { autoAlpha: 1, duration: 0.3 });
 
-      // 3. Text completely fades out so video is 100% uncovered
+      // 3. Completely fade out and blur so video is 100% clear
       tl.to(textRef.current,
-        { autoAlpha: 0, y: -40, duration: 0.4, ease: "power2.in" }
+        { autoAlpha: 0, y: -40, filter: "blur(8px)", duration: 0.4, ease: "power2.in" }
       );
     }
 
