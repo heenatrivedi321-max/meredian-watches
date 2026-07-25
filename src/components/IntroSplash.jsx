@@ -5,30 +5,61 @@ const LETTERS = "MERIDIAN".split('');
 
 function playIntroSound() {
   try {
-    const audio = new Audio('/ta-dum.mp3');
+    // Attempt DOM element first if present
+    const domAudio = document.getElementById('ta-dum-audio');
+    if (domAudio) {
+      domAudio.volume = 1.0;
+      domAudio.currentTime = 0;
+      const p = domAudio.play();
+      if (p !== undefined) {
+        p.catch(() => playFallbackAudio());
+      }
+      return;
+    }
+    playFallbackAudio();
+  } catch (e) {
+    playFallbackAudio();
+  }
+}
+
+function playFallbackAudio() {
+  try {
+    const audio = new Audio('/ta-dum.wav');
     audio.volume = 1.0;
     audio.currentTime = 0;
     const promise = audio.play();
     if (promise !== undefined) {
       promise.catch(() => {
-        // Fallback Web Audio API if autoplay blocked
         try {
           const ctx = new (window.AudioContext || window.webkitAudioContext)();
           if (ctx.state === 'suspended') ctx.resume();
-          const osc = ctx.createOscillator();
+          const osc1 = ctx.createOscillator();
+          const osc2 = ctx.createOscillator();
           const gain = ctx.createGain();
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(80, ctx.currentTime);
-          osc.frequency.exponentialRampToValueAtTime(32, ctx.currentTime + 2.0);
-          gain.gain.setValueAtTime(0.8, ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2.2);
-          osc.connect(gain).connect(ctx.destination);
-          osc.start();
-          osc.stop(ctx.currentTime + 2.3);
+
+          osc1.type = 'triangle';
+          osc1.frequency.setValueAtTime(120, ctx.currentTime);
+          osc1.frequency.exponentialRampToValueAtTime(32, ctx.currentTime + 1.8);
+
+          osc2.type = 'sine';
+          osc2.frequency.setValueAtTime(60, ctx.currentTime);
+          osc2.frequency.exponentialRampToValueAtTime(25, ctx.currentTime + 1.8);
+
+          gain.gain.setValueAtTime(0.9, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2.0);
+
+          osc1.connect(gain);
+          osc2.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc1.start();
+          osc2.start();
+          osc1.stop(ctx.currentTime + 2.1);
+          osc2.stop(ctx.currentTime + 2.1);
         } catch (err) {}
       });
     }
-  } catch (e) {}
+  } catch (err) {}
 }
 
 function GoldParticles({ active }) {
