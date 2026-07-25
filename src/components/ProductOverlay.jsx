@@ -85,19 +85,20 @@ export default function ProductOverlay({ watch, onClose }) {
                 onViewportEnter={() => setActiveImageIndex(0)}
                 className="w-full min-h-[80vh] flex flex-col justify-center px-8 lg:px-24 py-24"
               >
-                <p className="text-[10px] lg:text-xs tracking-[0.4em] font-semibold text-black/40 uppercase mb-4 flex items-center gap-4">
+                <p className="text-[10px] lg:text-xs tracking-[0.4em] font-mono font-bold text-[#10B981] uppercase mb-4 flex items-center gap-4">
                   <span>{watch.brand}</span>
-                  <span className="w-8 h-[1px] bg-black/20"></span>
+                  <span className="w-8 h-[1px] bg-[#10B981]"></span>
+                  <span>SUPERLATIVE SPEC</span>
                 </p>
                 <h1 
-                  className="text-[2.5rem] sm:text-[3.5rem] md:text-[4rem] lg:text-[6.5rem] leading-[1.1] font-bold tracking-normal uppercase mb-4 sm:mb-8 rainbow-shimmer"
-                  style={{ fontFamily: "'Anton', 'Inter', sans-serif" }}
+                  className="text-[2.5rem] sm:text-[3.5rem] md:text-[4rem] lg:text-[6.5rem] leading-[1.1] font-extrabold tracking-tight uppercase mb-4 sm:mb-8 text-black"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   {watch?.model}
                 </h1>
                 <p 
-                  className="text-[1.2rem] sm:text-[1.75rem] lg:text-[3rem] text-black/80 leading-tight font-medium tracking-tighter"
-                  style={{ fontFamily: "'Inter', 'Helvetica Neue', sans-serif" }}
+                  className="text-[1.5rem] sm:text-[2.2rem] lg:text-[3.2rem] text-black/90 leading-[1.15] font-light italic tracking-[-0.01em]"
+                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                 >
                   "{watch?.quotes?.[0] || 'A masterpiece of precision.'}"
                 </p>
@@ -112,12 +113,12 @@ export default function ProductOverlay({ watch, onClose }) {
                 className="w-full min-h-[80vh] flex flex-col justify-center px-8 lg:px-24 py-24"
               >
                 <p 
-                  className="text-[1.5rem] sm:text-[2rem] lg:text-[3.5rem] text-black leading-tight font-medium tracking-tighter mb-8 sm:mb-12"
-                  style={{ fontFamily: "'Inter', 'Helvetica Neue', sans-serif" }}
+                  className="text-[1.8rem] sm:text-[2.5rem] lg:text-[3.8rem] text-black leading-[1.15] font-light italic tracking-[-0.01em] mb-8 sm:mb-12"
+                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                 >
                   "{watch?.quotes?.[1] || 'Unapologetic excellence.'}"
                 </p>
-                <p className="text-lg lg:text-xl text-black/60 leading-relaxed font-light" style={{ fontFamily: "'Inter', sans-serif" }}>
+                <p className="text-lg lg:text-xl text-black/70 leading-relaxed font-light" style={{ fontFamily: "'Inter', sans-serif" }}>
                   {watch?.description}
                 </p>
               </motion.div>
