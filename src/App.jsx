@@ -487,22 +487,31 @@ export default function App() {
             </button>
           </section>
 
-          {/* MANIFESTO — compressed, typewriter reveal */}
-          <section className="manifesto-spacer relative w-full h-[120vh] pointer-events-auto">
-            <div className="sticky top-0 left-0 w-full h-screen flex flex-col items-center justify-center">
+          {/* MANIFESTO — GASP 4K WATCH GEARS FORMING DIAL VIDEO */}
+          <section className="manifesto-spacer relative w-full h-[120vh] pointer-events-auto overflow-hidden bg-black">
+            {/* Scoped 4K Watch Gears Video Background */}
+            <video
+              autoPlay loop muted playsInline preload="auto"
+              className="absolute inset-0 w-full h-full object-cover opacity-50 pointer-events-none z-0"
+            >
+              <source src="/Watch_gears_forming_watch_dial_202606291025.mp4" type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black pointer-events-none z-5" />
+
+            <div className="sticky top-0 left-0 w-full h-screen flex flex-col items-center justify-center z-10">
               <div className="relative w-full max-w-[90rem] mx-auto px-4 md:px-8 text-center flex flex-col items-center justify-center space-y-4 sm:space-y-6 md:space-y-8" style={{ perspective: "1000px" }}>
                 <div className="w-full">
-                  <h2 className="manifesto-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-extralight tracking-[-0.02em] text-white select-none w-full leading-tight">
+                  <h2 className="manifesto-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-extralight tracking-[-0.02em] text-white select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
                     <SplitChars text="Your smartwatch just told you to stand up." />
                   </h2>
                 </div>
                 <div className="w-full">
-                  <h2 className="manifesto-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-extralight tracking-[-0.02em] text-white select-none w-full leading-tight">
+                  <h2 className="manifesto-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-extralight tracking-[-0.02em] text-white select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
                     <SplitChars text="Congrats on hitting 10,000 steps." />
                   </h2>
                 </div>
                 <div className="w-full">
-                  <h2 className="manifesto-line text-[1.5rem] sm:text-[2rem] md:text-[3rem] lg:text-[4rem] xl:text-[4.5rem] font-extralight tracking-[-0.02em] text-white/50 select-none w-full leading-tight">
+                  <h2 className="manifesto-line text-[1.5rem] sm:text-[2rem] md:text-[3rem] lg:text-[4rem] xl:text-[4.5rem] font-extralight tracking-[-0.02em] text-white/70 select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
                     <SplitChars text="Too bad your wrist looks like a tiny iPad." />
                   </h2>
                 </div>
@@ -510,22 +519,31 @@ export default function App() {
             </div>
           </section>
 
-          {/* PORSCHE — compressed, typewriter reveal */}
-          <section className="porsche-spacer relative w-full h-[120vh] pointer-events-auto">
-            <div className="sticky top-0 left-0 w-full h-screen flex flex-col items-center justify-center pt-24 pb-8 overflow-hidden">
+          {/* PORSCHE — GASP 4K PORSCHE TUNNEL VIDEO */}
+          <section className="porsche-spacer relative w-full h-[120vh] pointer-events-auto overflow-hidden bg-black">
+            {/* Scoped 4K Porsche Video Background */}
+            <video
+              autoPlay loop muted playsInline preload="auto"
+              className="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none z-0"
+            >
+              <source src="/Porsche_driving_through_tunnel_202606281316.mp4" type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black pointer-events-none z-5" />
+
+            <div className="sticky top-0 left-0 w-full h-screen flex flex-col items-center justify-center pt-24 pb-8 overflow-hidden z-10">
               <div className="relative w-full max-w-[90rem] mx-auto px-4 md:px-8 text-center flex flex-col items-center justify-center space-y-4 sm:space-y-6 md:space-y-8">
                 <div className="w-full">
-                  <h2 className="porsche-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-extralight tracking-[-0.02em] text-white select-none w-full leading-tight">
+                  <h2 className="porsche-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-extralight tracking-[-0.02em] text-white select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
                     <SplitChars text="You will inevitably perish." />
                   </h2>
                 </div>
                 <div className="w-full">
-                  <h2 className="porsche-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-extralight tracking-[-0.02em] text-white select-none w-full leading-tight">
+                  <h2 className="porsche-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-extralight tracking-[-0.02em] text-white select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
                     <SplitChars text="Your legacy will be forgotten." />
                   </h2>
                 </div>
                 <div className="w-full">
-                  <h2 className="porsche-line text-[1.5rem] sm:text-[2rem] md:text-[3rem] lg:text-[4rem] xl:text-[4.5rem] font-extralight tracking-[-0.02em] text-white/50 select-none w-full leading-tight">
+                  <h2 className="porsche-line text-[1.5rem] sm:text-[2rem] md:text-[3rem] lg:text-[4rem] xl:text-[4.5rem] font-extralight tracking-[-0.02em] text-white/70 select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
                     <SplitChars text="But hey, at least your wrist looks expensive." />
                   </h2>
                 </div>
