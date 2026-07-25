@@ -12,6 +12,7 @@ import InstagramFeed from './components/InstagramFeed';
 import BrandFilm from './components/BrandFilm';
 import IntroSplash from './components/IntroSplash';
 import CinemaIntermission from './components/CinemaIntermission';
+import PolicyModal from './components/PolicyModal';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -152,6 +153,8 @@ export default function App() {
   const [soundOn, setSoundOn] = useState(false);
   const audioRef = useRef(null);
   const handleIntroComplete = useCallback(() => setIntroDone(true), []);
+
+  const [activePolicy, setActivePolicy] = useState(null);
 
   const toggleSound = useCallback(() => {
     if (!audioRef.current) return;
@@ -579,6 +582,28 @@ export default function App() {
 
         <CollectionShowcase onSelectWatch={setSelectedWatch} />
         <ProductOverlay watch={selectedWatch} onClose={() => setSelectedWatch(null)} />
+
+        {/* LUXURY COMPLIANCE FOOTER */}
+        <footer className="w-full bg-[#050507] border-t border-white/10 py-12 px-6 text-center text-white/50 z-20 relative pointer-events-auto">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="text-left">
+              <span className="text-xs font-mono font-bold tracking-[0.3em] text-[#10B981] uppercase block mb-1">
+                MERIDIAN HOROLOGY © 2026
+              </span>
+              <p className="text-[11px] font-mono text-white/40">
+                ALL RIGHTS RESERVED // WHITE GLOVE INSURED DELIVERY
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center gap-6 text-[11px] font-mono tracking-widest uppercase">
+              <button onClick={() => setActivePolicy('terms')} className="hover:text-white transition-colors cursor-pointer">Terms</button>
+              <button onClick={() => setActivePolicy('privacy')} className="hover:text-white transition-colors cursor-pointer">Privacy</button>
+              <button onClick={() => setActivePolicy('refund')} className="hover:text-[#10B981] transition-colors cursor-pointer">Refund & Cancellation</button>
+              <button onClick={() => setActivePolicy('shipping')} className="hover:text-white transition-colors cursor-pointer">Shipping</button>
+              <button onClick={() => setActivePolicy('contact')} className="hover:text-white transition-colors cursor-pointer">Contact</button>
+            </div>
+          </div>
+        </footer>
       </div>
 
       {/* Floating UI — above everything */}
@@ -587,6 +612,9 @@ export default function App() {
 
       {/* Brand Story Overlay */}
       {showBrand && <BrandStory onClose={() => setShowBrand(false)} />}
+
+      {/* Official Policy Overlay Modal */}
+      {activePolicy && <PolicyModal type={activePolicy} onClose={() => setActivePolicy(null)} />}
     </>
   );
 }
