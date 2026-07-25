@@ -5,54 +5,30 @@ const LETTERS = "MERIDIAN".split('');
 
 function playIntroSound() {
   try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    if (ctx.state === 'suspended') {
-      ctx.resume();
+    const audio = new Audio('/ta-dum.mp3');
+    audio.volume = 1.0;
+    audio.currentTime = 0;
+    const promise = audio.play();
+    if (promise !== undefined) {
+      promise.catch(() => {
+        // Fallback Web Audio API if autoplay blocked
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          if (ctx.state === 'suspended') ctx.resume();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(80, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(32, ctx.currentTime + 2.0);
+          gain.gain.setValueAtTime(0.8, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2.2);
+          osc.connect(gain).connect(ctx.destination);
+          osc.start();
+          osc.stop(ctx.currentTime + 2.3);
+        } catch (err) {}
+      });
     }
-    const now = ctx.currentTime;
-
-    // 1. "TA" - Punchy 808 sub-bass thud + metallic gear click (t = 0.0s)
-    const oscTa = ctx.createOscillator();
-    const gainTa = ctx.createGain();
-    oscTa.type = 'sine';
-    oscTa.frequency.setValueAtTime(140, now);
-    oscTa.frequency.exponentialRampToValueAtTime(35, now + 0.15);
-    gainTa.gain.setValueAtTime(0.5, now);
-    gainTa.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
-    oscTa.connect(gainTa).connect(ctx.destination);
-    oscTa.start(now);
-    oscTa.stop(now + 0.2);
-
-    // 2. "DUMMMM" - Deep resonant Netflix-style luxury boom (t = 0.18s)
-    const oscDum = ctx.createOscillator();
-    const gainDum = ctx.createGain();
-    oscDum.type = 'triangle';
-    oscDum.frequency.setValueAtTime(85, now + 0.18);
-    oscDum.frequency.exponentialRampToValueAtTime(32, now + 2.2);
-    gainDum.gain.setValueAtTime(0, now + 0.18);
-    gainDum.gain.linearRampToValueAtTime(0.6, now + 0.22);
-    gainDum.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
-    oscDum.connect(gainDum).connect(ctx.destination);
-    oscDum.start(now + 0.18);
-    oscDum.stop(now + 2.6);
-
-    // High shimmer harmonic resonance overlay
-    const oscShimmer = ctx.createOscillator();
-    const gainShimmer = ctx.createGain();
-    oscShimmer.type = 'sine';
-    oscShimmer.frequency.setValueAtTime(440, now + 0.2);
-    oscShimmer.frequency.exponentialRampToValueAtTime(880, now + 0.5);
-    oscShimmer.frequency.exponentialRampToValueAtTime(220, now + 2.0);
-    gainShimmer.gain.setValueAtTime(0, now + 0.2);
-    gainShimmer.gain.linearRampToValueAtTime(0.12, now + 0.3);
-    gainShimmer.gain.exponentialRampToValueAtTime(0.001, now + 2.2);
-    oscShimmer.connect(gainShimmer).connect(ctx.destination);
-    oscShimmer.start(now + 0.2);
-    oscShimmer.stop(now + 2.3);
-
-  } catch (e) {
-    // Audio Context not allowed or failed
-  }
+  } catch (e) {}
 }
 
 function GoldParticles({ active }) {
