@@ -31,29 +31,29 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
     );
     observer.observe(section);
 
-    // CLEAN GSAP SCROLL TEXT DISSOLVE OUT — UNCOVERS 100% OF 4K VIDEO
+    // SLOW, WEIGHTLESS ELEGANT GSAP SCROLL TEXT DISSOLVE OUT
     if (textRef.current) {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: "top 80%",
-          end: "top 20%",
-          scrub: true,
+          start: "top 65%",
+          end: "bottom 35%",
+          scrub: 1.2,
         }
       });
 
-      // 1. Enter text
+      // 1. Enter text gracefully
       tl.fromTo(textRef.current,
-        { autoAlpha: 0, y: 40 },
-        { autoAlpha: 1, y: 0, duration: 0.3, ease: "power2.out" }
+        { autoAlpha: 0, y: 50, scale: 0.98 },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: "power1.out" }
       );
 
-      // 2. Hold in middle
-      tl.to(textRef.current, { autoAlpha: 1, duration: 0.3 });
+      // 2. Hold in center
+      tl.to(textRef.current, { autoAlpha: 1, duration: 0.5 });
 
-      // 3. Completely fade out and blur so video is 100% clear
+      // 3. Dissolve out super slowly and weightlessly into space
       tl.to(textRef.current,
-        { autoAlpha: 0, y: -40, filter: "blur(8px)", duration: 0.4, ease: "power2.in" }
+        { autoAlpha: 0, y: -60, scale: 1.05, filter: "blur(12px)", duration: 0.8, ease: "power1.inOut" }
       );
     }
 
@@ -130,14 +130,14 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
         </button>
       </div>
 
-      {/* BOLD CLEAN SAN-SERIF TYPOGRAPHY — SCROLL DISSOLVE FADE OUT */}
+      {/* ULTRA-THIN ELEGANT SANS-SERIF TYPOGRAPHY — SLOW DISSOLVE FADE OUT */}
       <div
         ref={textRef}
         className="relative z-20 text-center px-6 max-w-6xl mx-auto flex flex-col items-center pointer-events-none"
         style={{ opacity: 0 }}
       >
         <h2 
-          className="text-3xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-extrabold tracking-[-0.03em] text-white leading-[1.05] uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
+          className="text-3xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-extralight tracking-[-0.03em] text-white leading-[1.05] uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
           {title}

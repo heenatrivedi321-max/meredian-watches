@@ -121,7 +121,7 @@ export default function WatchSection({ watch, index, onClick }) {
               SUPERLATIVE SPEC // EDITION 0{index + 1}
             </span>
           </div>
-          <h2 className="text-4xl sm:text-7xl lg:text-8xl font-black tracking-tight text-white leading-none uppercase drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
+          <h2 className="text-4xl sm:text-7xl lg:text-8xl font-extralight tracking-tight text-white leading-none uppercase drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
             {watch.model}
           </h2>
           <p className="text-sm font-mono tracking-[0.2em] uppercase text-white/50 mt-2">
