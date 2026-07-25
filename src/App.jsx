@@ -469,42 +469,27 @@ export default function App() {
         {/* SCROLLING CONTENT LAYER */}
         <div className="relative z-50 w-full pointer-events-none">
 
-          {/* HERO — Ultra-Luxury Presentation */}
+          {/* HERO — Pure Minimalist Presentation */}
           <section className="hero-spacer relative w-full h-screen flex flex-col items-center justify-center pointer-events-auto">
             <div className="hero-content flex flex-col items-center text-center pointer-events-auto px-4 space-y-4">
-              <span 
-                className="text-[10px] sm:text-xs font-mono tracking-[0.6em] uppercase text-[#C9A96E]/80 font-light"
-              >
-                HAUTE HOROLOGY • GENEVA ATELIER
-              </span>
-
               <h1 
                 className="hero-title text-[3.5rem] sm:text-7xl md:text-[7.5rem] lg:text-[9.5rem] font-normal tracking-[0.1em] leading-none text-white uppercase drop-shadow-[0_20px_60px_rgba(0,0,0,0.95)]" 
                 style={{ fontFamily: "'Cinzel', Georgia, serif" }}
               >
                 Meridian
               </h1>
-
-              <div className="w-16 h-[1px] bg-gradient-to-r from-transparent via-[#C9A96E]/60 to-transparent my-2" />
-
-              <p 
-                className="text-xs sm:text-sm font-light tracking-[0.3em] uppercase text-white/50 max-w-md"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                Uncompromising Precision. Timeless Legacy.
-              </p>
             </div>
 
             {/* Scroll Indicator */}
-            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none opacity-60">
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none opacity-40">
               <span className="text-[9px] font-mono tracking-[0.4em] uppercase text-white/40">SCROLL</span>
-              <div className="w-[1px] h-8 bg-gradient-to-b from-[#C9A96E] to-transparent animate-pulse" />
+              <div className="w-[1px] h-8 bg-white/30 animate-pulse" />
             </div>
 
             {/* Sound toggle — minimal */}
             <button 
               onClick={toggleSound}
-              className="absolute bottom-8 right-6 sm:right-10 w-9 h-9 flex items-center justify-center rounded-full border border-white/10 hover:border-[#C9A96E]/40 hover:bg-white/5 transition-all duration-300 pointer-events-auto z-[60] cursor-pointer"
+              className="absolute bottom-8 right-6 sm:right-10 w-9 h-9 flex items-center justify-center rounded-full border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all duration-300 pointer-events-auto z-[60] cursor-pointer"
               aria-label={soundOn ? "Mute sound" : "Play sound"}
             >
               {soundOn ? (
