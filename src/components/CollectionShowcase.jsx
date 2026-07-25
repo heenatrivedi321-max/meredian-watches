@@ -306,39 +306,53 @@ export default function CollectionShowcase({ onSelectWatch }) {
       {/* ======================================== */}
       <div className="product-reveal relative z-0 w-full bg-black">
 
-        {/* Legacy Header Section */}
+        {/* Legacy Header Section with 4K Gold Skeleton Watch Video Background */}
         <section
           ref={taglineRef}
-          className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center pointer-events-none"
+          className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center pointer-events-none overflow-hidden bg-black"
         >
-          <p
-            className="legacy-text text-[10px] font-light tracking-[0.5em] uppercase text-white/30 mb-6"
+          {/* Scoped 4K Gold Skeleton Watch Video */}
+          <video
+            autoPlay loop muted playsInline preload="auto"
+            className="absolute inset-0 w-full h-full object-cover opacity-50 pointer-events-none z-0"
+            style={{ transform: 'translateZ(0)', willChange: 'transform' }}
           >
-            The Collection
-          </p>
-          <h2
-            className="legacy-text text-[2.5rem] sm:text-[4rem] md:text-[6rem] lg:text-[8rem] xl:text-[7rem] font-extralight tracking-[-0.03em] text-white text-center leading-none pb-4"
-          >
-            Choose Your<br />Legacy.
-          </h2>
+            <source src="/Gold_skeleton_watch_showcase_202606290837.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black pointer-events-none z-5" />
+
+          <div className="relative z-10 text-center px-4">
+            <p
+              className="legacy-text text-[10px] font-mono tracking-[0.6em] uppercase text-[#10B981] mb-6 font-bold"
+            >
+              ATELIER MERIDIAN // ARCHIVE 2026
+            </p>
+            <h2
+              className="legacy-text text-[3rem] sm:text-[5rem] md:text-[7rem] lg:text-[8.5rem] font-light italic tracking-[-0.01em] text-white text-center leading-[1.05] drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
+              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+            >
+              Choose Your<br />Legacy.
+            </h2>
+          </div>
         </section>
 
-        {/* Dedicated Story Section - Pinned & Scaled */}
+        {/* Dedicated Story Section - Pinned & Scaled with Rolex Light Serif */}
         <section
           ref={storyRef}
-          className="relative z-10 w-full h-screen flex flex-col items-center justify-center bg-transparent pointer-events-none"
+          className="relative z-10 w-full h-screen flex flex-col items-center justify-center bg-black pointer-events-none overflow-hidden"
         >
-          <div className="story-text-container text-center px-4">
+          <div className="story-text-container text-center px-6 max-w-5xl mx-auto">
             <p
-              className="text-[10px] lg:text-xs font-light tracking-[0.5em] uppercase text-white/25 mb-8"
+              className="text-[10px] lg:text-xs font-mono tracking-[0.5em] uppercase text-[#10B981] mb-8 font-bold"
             >
-              Meridian Archive
+              SWISS PRECISION // UNRIVALED CRAFTSMANSHIP
             </p>
             <h3
-              className="text-[2rem] md:text-[3.5rem] font-light tracking-[-0.02em] text-white leading-tight"
+              className="text-[2.5rem] sm:text-[4.5rem] md:text-[5.5rem] font-light italic tracking-[-0.01em] text-white leading-[1.1] drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
+              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
             >
-              Every piece tells a story.<br />
-              <span className="text-white/30 font-light">Find yours.</span>
+              Every timepiece tells a story.<br />
+              <span className="text-white/40 font-light italic">Find yours.</span>
             </h3>
           </div>
         </section>
