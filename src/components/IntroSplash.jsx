@@ -126,10 +126,10 @@ export default function IntroSplash({ onComplete }) {
     setStarted(true);
     playIntroSound();
     
-    setTimeout(() => setPhase(1), 150);
-    setTimeout(() => setPhase(2), 1100);
-    setTimeout(() => setPhase(3), 2500);
-    setTimeout(() => onComplete(), 3100);
+    setTimeout(() => setPhase(1), 200);
+    setTimeout(() => setPhase(2), 1500);
+    setTimeout(() => setPhase(3), 5000);
+    setTimeout(() => onComplete(), 5600);
   };
 
   return (
