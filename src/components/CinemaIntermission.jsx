@@ -107,11 +107,25 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
         <source src={videoSrc} type="video/mp4" />
       </video>
 
-      {/* LUXURY GRADIENT OVERLAY */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/70 pointer-events-none z-10" />
+      {/* IMAX 2.39:1 CINEMATIC TOP & BOTTOM LETTERBOX BARS */}
+      <div className="absolute top-0 left-0 w-full h-12 sm:h-16 lg:h-20 bg-black z-25 pointer-events-none border-b border-white/10" />
+      <div className="absolute bottom-0 left-0 w-full h-12 sm:h-16 lg:h-20 bg-black z-25 pointer-events-none border-t border-white/10" />
+
+      {/* LIVE AUDIO WAVEFORM ANIMATION */}
+      {isAudioEnabled && (
+        <div className="absolute bottom-6 left-8 sm:bottom-8 sm:left-12 z-30 flex items-center gap-1.5 pointer-events-none">
+          <span className="w-1 bg-[#00F0FF] rounded-full animate-pulse h-4" />
+          <span className="w-1 bg-[#9B51E0] rounded-full animate-bounce h-7" />
+          <span className="w-1 bg-[#FF4081] rounded-full animate-pulse h-5" />
+          <span className="w-1 bg-[#4285F4] rounded-full animate-bounce h-8" />
+          <span className="text-[10px] font-mono tracking-widest text-white/80 uppercase font-semibold ml-2">
+            IMAX 2.39:1 AUDIO ACTIVE
+          </span>
+        </div>
+      )}
 
       {/* GLASSMORPHISM AUDIO CONTROL PILL */}
-      <div className="absolute top-8 right-8 sm:top-12 sm:right-12 z-30">
+      <div className="absolute top-16 right-8 sm:top-20 sm:right-12 z-30">
         <button
           onClick={toggleAudio}
           className={`group relative px-6 py-3 rounded-full border backdrop-blur-xl transition-all duration-300 flex items-center gap-3 cursor-pointer ${

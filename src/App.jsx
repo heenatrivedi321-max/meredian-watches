@@ -156,6 +156,19 @@ export default function App() {
 
   const [activePolicy, setActivePolicy] = useState(null);
   const [showAi, setShowAi] = useState(false);
+  const [heroTilt, setHeroTilt] = useState({ x: 0, y: 0 });
+
+  const handleHeroMouseMove = useCallback((e) => {
+    const { clientX, clientY } = e;
+    const { innerWidth, innerHeight } = window;
+    const x = ((clientX / innerWidth) - 0.5) * 16;
+    const y = ((clientY / innerHeight) - 0.5) * -16;
+    setHeroTilt({ x, y });
+  }, []);
+
+  const handleHeroMouseLeave = useCallback(() => {
+    setHeroTilt({ x: 0, y: 0 });
+  }, []);
 
   const toggleSound = useCallback(() => {
     if (!audioRef.current) return;
@@ -444,17 +457,27 @@ export default function App() {
         {/* SCROLLING CONTENT LAYER */}
         <div className="relative z-50 w-full pointer-events-none">
 
-          {/* HERO — Gemini Iridescent Typography & Aurora Glow */}
-          <section className="hero-spacer relative w-full h-screen flex flex-col items-center justify-center pointer-events-auto">
+          {/* HERO — 3D Tilt-Shift Parallax & Gemini Iridescent Typography */}
+          <section 
+            onMouseMove={handleHeroMouseMove}
+            onMouseLeave={handleHeroMouseLeave}
+            className="hero-spacer relative w-full h-screen flex flex-col items-center justify-center pointer-events-auto overflow-hidden"
+            style={{ perspective: "1000px" }}
+          >
             {/* Ambient Gemini Aurora Fluid Glow */}
             <div className="absolute inset-0 gemini-aurora-bg pointer-events-none" />
 
-            <div className="hero-content relative z-10 flex flex-col items-center text-center pointer-events-auto px-4 space-y-3">
+            <div 
+              className="hero-content relative z-10 flex flex-col items-center text-center pointer-events-auto px-4 space-y-3 transition-transform duration-300 ease-out"
+              style={{
+                transform: `rotateX(${heroTilt.y}deg) rotateY(${heroTilt.x}deg) translateZ(40px)`
+              }}
+            >
               {/* Gemini Iridescent Accent Hairline */}
               <div className="w-24 h-[1.5px] bg-gradient-to-r from-[#4285F4] via-[#9B51E0] via-[#E91E63] to-[#00F0FF] rounded-full opacity-80 animate-pulse mb-1" />
 
               <h1 
-                className="hero-title text-[3.5rem] sm:text-7xl md:text-[7.5rem] lg:text-[9.5rem] font-normal tracking-[0.1em] leading-none text-gemini-gradient uppercase drop-shadow-[0_20px_60px_rgba(0,0,0,0.95)]" 
+                className="hero-title text-[3.5rem] sm:text-7xl md:text-[7.5rem] lg:text-[9.5rem] font-normal tracking-[0.1em] leading-none text-gemini-gradient uppercase drop-shadow-[0_20px_60px_rgba(0,0,0,0.95)] select-none" 
                 style={{ fontFamily: "'Cinzel', Georgia, serif" }}
               >
                 Meridian
