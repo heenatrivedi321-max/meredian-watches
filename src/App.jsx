@@ -469,21 +469,31 @@ export default function App() {
         {/* SCROLLING CONTENT LAYER */}
         <div className="relative z-50 w-full pointer-events-none">
 
-          {/* HERO — Pure Minimalist Presentation */}
+          {/* HERO — Gemini Aurora Ambient Elevation */}
           <section className="hero-spacer relative w-full h-screen flex flex-col items-center justify-center pointer-events-auto">
-            <div className="hero-content flex flex-col items-center text-center pointer-events-auto px-4 space-y-4">
+            {/* Ambient Gemini Aurora Backdrop Glow */}
+            <div className="absolute w-[600px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(66,133,244,0.18)_0%,rgba(155,81,224,0.15)_40%,rgba(0,240,255,0.08)_70%,transparent_100%)] blur-3xl pointer-events-none" />
+
+            <div className="hero-content relative z-10 flex flex-col items-center text-center pointer-events-auto px-4 space-y-3">
+              {/* Gemini Iridescent Accent Hairline */}
+              <div className="w-24 h-[1.5px] bg-gradient-to-r from-[#4285F4] via-[#9B51E0] via-[#E91E63] to-[#00F0FF] rounded-full opacity-80 animate-pulse mb-1" />
+
               <h1 
                 className="hero-title text-[3.5rem] sm:text-7xl md:text-[7.5rem] lg:text-[9.5rem] font-normal tracking-[0.1em] leading-none text-white uppercase drop-shadow-[0_20px_60px_rgba(0,0,0,0.95)]" 
                 style={{ fontFamily: "'Cinzel', Georgia, serif" }}
               >
                 Meridian
               </h1>
+
+              <span className="text-[10px] font-mono tracking-[0.5em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#4285F4] via-[#9B51E0] to-[#00F0FF] font-semibold opacity-90">
+                SWISS HOROLOGY // GEMENI EDITION
+              </span>
             </div>
 
-            {/* Scroll Indicator */}
-            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none opacity-40">
+            {/* Scroll Indicator with Gemini Gradient Line */}
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none opacity-60">
               <span className="text-[9px] font-mono tracking-[0.4em] uppercase text-white/40">SCROLL</span>
-              <div className="w-[1px] h-8 bg-white/30 animate-pulse" />
+              <div className="w-[1.5px] h-8 bg-gradient-to-b from-[#9B51E0] via-[#00F0FF] to-transparent animate-pulse" />
             </div>
 
             {/* Sound toggle — minimal */}

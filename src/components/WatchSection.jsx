@@ -174,13 +174,16 @@ export default function WatchSection({ watch, index, onClick }) {
         {/* COLUMN 2: SEAMLESS ROLEX OYSTER CERAMIC PEDESTAL CARD — CLICK OPENS DEDICATED PRODUCT PAGE OVERLAY */}
         <div
           ref={watchCardRef}
-          className={`relative h-[480px] sm:h-[580px] lg:h-[650px] rounded-[3rem] bg-[#0c0c11] border border-white/15 p-8 sm:p-12 flex flex-col justify-between shadow-[0_30px_70px_rgba(0,0,0,0.9)] overflow-hidden group hover:border-white/30 transition-all duration-500 ${isEven ? 'lg:order-2' : 'lg:order-1'}`}
+          className={`relative h-[480px] sm:h-[580px] lg:h-[650px] rounded-[3rem] bg-[#0c0c11] border border-white/15 p-8 sm:p-12 flex flex-col justify-between shadow-[0_30px_70px_rgba(0,0,0,0.9)] overflow-hidden group hover:border-[#9B51E0]/40 transition-all duration-500 ${isEven ? 'lg:order-2' : 'lg:order-1'}`}
         >
           {/* ROLEX OYSTER CERAMIC PEDESTAL — CLICK OPENS SPECIFIC PRODUCT OVERLAY */}
           <div 
             onClick={() => onClick(watch)}
             className="relative w-full flex-1 flex items-center justify-center rounded-3xl bg-[#eaeaee] p-8 overflow-hidden shadow-2xl group cursor-pointer border border-white/20"
           >
+            {/* Ambient Gemini Aurora Back-Glow */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(66,133,244,0.15)_0%,rgba(155,81,224,0.12)_40%,transparent_70%)] pointer-events-none" />
+
             <img
               src={watch.image}
               alt={`${watch.brand} ${watch.model}`}
