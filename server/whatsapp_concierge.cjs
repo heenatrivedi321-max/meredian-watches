@@ -3,6 +3,7 @@
  * 
  * Automatically captures new orders from Shopify (smgnhj-dr.myshopify.com)
  * and dispatches personalized, high-trust concierge WhatsApp messages directly to customers as Nirmeet.
+ * Prompts customers for their personal story/craft for the Amazon custom gift note.
  */
 
 const fs = require('fs');
@@ -65,7 +66,7 @@ function fetchRecentOrders() {
   });
 }
 
-// Format Natural Human Message from Nirmeet
+// Format Natural Human Message from Nirmeet with Story Prompt
 function formatConciergeMessage(order) {
   const firstName = order.customer ? (order.customer.first_name || order.customer.name || '').split(' ')[0] : '';
   const greeting = firstName ? `Hey ${firstName}` : `Hey there`;
@@ -78,10 +79,13 @@ function formatConciergeMessage(order) {
 
 Just saw your order ${orderNumber} for the ${itemName}. Thanks a lot man! 
 
-We are packing your watch right now for dispatch. If you need any wrist sizing adjustments, gift box, or have any questions, just reply to me here directly.
+Before we seal your watch box for dispatch: Tell me who you are and what drives you (what's your craft or story)? Preparing something special to put inside your box. ⏱️
 
-Appreciate you joining the Meridian family! ⏱️`;
+(If you'd rather keep it a mystery, no worries at all—we'll include our signature atelier note for you!)`;
 }
+
+// Default Signature Note for Non-Responders
+const DEFAULT_SIGNATURE_NOTE = `"For the late nights nobody saw and the battles fought in silence. Your time starts now. — Nirmeet"`;
 
 // Format Phone Number for WhatsApp (India +91 default)
 function formatPhoneNumber(phoneStr) {
@@ -110,7 +114,8 @@ async function processOrders() {
       console.log(`\n✨ NEW UNPROCESSED ORDER DETECTED: ${order.name}`);
       console.log(`👤 Customer: ${order.customer ? order.customer.name : 'N/A'}`);
       console.log(`📞 Phone: ${formattedPhone || 'No Phone Attached'}`);
-      console.log(`💬 Message Preview:\n${message}\n`);
+      console.log(`💬 WhatsApp Message:\n${message}\n`);
+      console.log(`🎁 Default Fallback Note (If no reply):\n${DEFAULT_SIGNATURE_NOTE}\n`);
       console.log(`🔗 Direct 1-Click Send Link:\nhttps://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}\n`);
 
       // Mark processed
@@ -132,9 +137,10 @@ if (args.includes('--test')) {
     line_items: [{ title: 'Meridian Oyster Perpetual' }]
   };
   const msg = formatConciergeMessage(dummyOrder);
-  console.log('\n--- TEST NIRMEET WHATSAPP MESSAGE ---');
+  console.log('\n--- TEST NIRMEET WHATSAPP STORY PROMPT ---');
   console.log(`Target Phone: +${testPhone}`);
   console.log(`Message:\n${msg}`);
+  console.log(`\n🎁 Default Fallback Note (If no reply):\n${DEFAULT_SIGNATURE_NOTE}`);
   console.log(`\n🔗 Test WhatsApp Link:\nhttps://wa.me/${testPhone}?text=${encodeURIComponent(msg)}\n`);
   process.exit(0);
 }
@@ -142,4 +148,4 @@ if (args.includes('--test')) {
 // Run initial check and set 30-second interval
 processOrders();
 setInterval(processOrders, 30000);
-console.log('🚀 Nirmeet 24/7 WhatsApp Concierge Engine is ACTIVE and polling Shopify Admin API every 30 seconds.');
+console.log('🚀 Nirmeet 24/7 WhatsApp Concierge & Story Prompt Engine is ACTIVE.');
