@@ -11,8 +11,6 @@ export default function ProductOverlay({ watch, onClose }) {
   const [isMuted, setIsMuted] = useState(true);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
-  const [userDrive, setUserDrive] = useState('');
-
   const allImages = watch?.gallery?.length ? watch.gallery : [watch?.image, watch?.image, watch?.image];
   const images = allImages.length >= 3 ? allImages.slice(0, 3) : [...allImages, ...Array(3 - allImages.length).fill(allImages[allImages.length - 1])];
   const activeImage = images[activeImageIndex] || watch?.image;
@@ -283,20 +281,6 @@ export default function ProductOverlay({ watch, onClose }) {
                   {watch.price}
                 </span>
               </div>
-
-              {/* WHO ARE YOU? CUSTOM INPUT FIELD */}
-              <div className="w-full max-w-md mx-auto space-y-2 text-left my-2">
-                <label className="text-[10px] font-mono tracking-[0.2em] uppercase font-bold text-black/70 flex items-center gap-2">
-                  <span className="text-[#8B6914]">✦</span> WHO ARE YOU? (TELL US WHAT DRIVES YOU)
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. 14yo equestrian chasing gold / launching a startup..."
-                  value={userDrive}
-                  onChange={(e) => setUserDrive(e.target.value)}
-                  className="w-full px-5 py-3.5 rounded-xl bg-black/5 border border-black/15 text-black placeholder:text-black/40 text-xs sm:text-sm font-sans focus:outline-none focus:border-black focus:bg-white transition-all shadow-inner"
-                />
-              </div>
               
               {watch.outOfStock ? (
                 <button 
@@ -311,7 +295,7 @@ export default function ProductOverlay({ watch, onClose }) {
                     if (isRedirecting) return;
                     setIsRedirecting(true);
                     try {
-                      const cart = await createCheckout(watch.shopifyVariantId, userDrive);
+                      const cart = await createCheckout(watch.shopifyVariantId);
                       window.location.href = cart.checkoutUrl;
                     } catch (err) {
                       console.warn("Checkout failed:", err);
