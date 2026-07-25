@@ -594,13 +594,13 @@ export default function App() {
         {/* CINEMA TAKEOVER 2: OSCAR WINNER (MICHAEL B. JORDAN) */}
         <CinemaIntermission 
           videoSrc="/wolf-of-wall-street.mp4" 
-          title='"Standing ovation. Zero extra time given."' 
+          title='"Everyone applauded. The watch kept ticking."' 
         />
 
         {/* CINEMA TAKEOVER 3: PINNACLE SPORTS (F1 / TENNIS / EQUESTRIAN) */}
         <CinemaIntermission 
           videoSrc="/dark-knight.mp4" 
-          title='"0.001 seconds decides history. You are still late for your meeting."' 
+          title='"0.001s for glory. Still late for your 9 AM."' 
         />
 
         <CollectionShowcase onSelectWatch={setSelectedWatch} />

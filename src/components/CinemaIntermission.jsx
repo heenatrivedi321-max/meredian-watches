@@ -17,43 +17,44 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
 
     vid.muted = !soundDefault;
 
+    // Instant video play on load
+    vid.play().catch(() => {});
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             vid.play().catch(() => {});
-          } else {
-            vid.pause();
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0 }
     );
     observer.observe(section);
 
-    // SLOW, WEIGHTLESS ELEGANT GSAP SCROLL TEXT DISSOLVE OUT
+    // SLOW, ELEGANT GSAP SCROLL TEXT FADE IN & DISSOLVE OUT
     if (textRef.current) {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: "top 65%",
-          end: "bottom 35%",
-          scrub: 1.2,
+          start: "top 80%",
+          end: "bottom 20%",
+          scrub: 1.5,
         }
       });
 
-      // 1. Enter text gracefully
+      // 1. Enter text slowly and elegantly
       tl.fromTo(textRef.current,
-        { autoAlpha: 0, y: 50, scale: 0.98 },
-        { autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: "power1.out" }
+        { autoAlpha: 0, y: 35, filter: "blur(10px)" },
+        { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.6, ease: "power2.out" }
       );
 
       // 2. Hold in center
-      tl.to(textRef.current, { autoAlpha: 1, duration: 0.5 });
+      tl.to(textRef.current, { autoAlpha: 1, duration: 0.6 });
 
-      // 3. Dissolve out super slowly and weightlessly into space
+      // 3. Dissolve out super slowly and gracefully
       tl.to(textRef.current,
-        { autoAlpha: 0, y: -60, scale: 1.05, filter: "blur(12px)", duration: 0.8, ease: "power1.inOut" }
+        { autoAlpha: 0, y: -40, filter: "blur(12px)", duration: 0.8, ease: "power1.inOut" }
       );
     }
 
