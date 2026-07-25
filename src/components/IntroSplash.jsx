@@ -89,47 +89,62 @@ function ShockRing({ active, delay = 0 }) {
 
 export default function IntroSplash({ onComplete }) {
   const [phase, setPhase] = useState(0);
-  const soundPlayed = useRef(false);
+  const [started, setStarted] = useState(false);
 
-  const handleStartAudio = () => {
-    if (!soundPlayed.current) {
-      soundPlayed.current = true;
-      playIntroSound();
-    }
+  const handleEnter = () => {
+    setStarted(true);
+    playIntroSound();
+    
+    setTimeout(() => setPhase(1), 200);
+    setTimeout(() => setPhase(2), 1200);
+    setTimeout(() => setPhase(3), 2600);
+    setTimeout(() => onComplete(), 3200);
   };
-
-  useEffect(() => {
-    const timers = [
-      setTimeout(() => setPhase(1), 300),
-      setTimeout(() => setPhase(2), 1400),
-      setTimeout(() => setPhase(3), 3000),
-      setTimeout(() => onComplete(), 3800),
-    ];
-
-    // Global tap/click listener to unlock audio on first interaction
-    const unlockAudio = () => {
-      handleStartAudio();
-      window.removeEventListener('click', unlockAudio);
-      window.removeEventListener('touchstart', unlockAudio);
-    };
-
-    window.addEventListener('click', unlockAudio);
-    window.addEventListener('touchstart', unlockAudio);
-
-    return () => {
-      timers.forEach(clearTimeout);
-      window.removeEventListener('click', unlockAudio);
-      window.removeEventListener('touchstart', unlockAudio);
-    };
-  }, [onComplete]);
 
   return (
     <AnimatePresence>
-      {phase < 3 && (
+      {!started ? (
+        <motion.div
+          key="enter-screen"
+          className="fixed inset-0 z-[99999] bg-[#020202] flex flex-col items-center justify-center space-y-8 px-4"
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          {/* Film grain */}
+          <div
+            className="absolute inset-0 opacity-[0.04] pointer-events-none mix-blend-overlay"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+              backgroundSize: '128px 128px',
+            }}
+          />
+
+          <div className="w-20 h-[1.5px] bg-gradient-to-r from-[#4285F4] via-[#9B51E0] to-[#00F0FF] rounded-full animate-pulse" />
+
+          <h1 
+            className="text-4xl sm:text-7xl font-normal tracking-[0.12em] text-gemini-gradient uppercase text-center drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
+            style={{ fontFamily: "'Cinzel', Georgia, serif" }}
+          >
+            Meridian
+          </h1>
+
+          <button
+            onClick={handleEnter}
+            className="group relative px-8 py-4 rounded-full border border-white/30 bg-white/10 hover:bg-white/20 hover:border-white/60 backdrop-blur-xl transition-all duration-300 flex items-center gap-3 cursor-pointer shadow-[0_0_40px_rgba(255,255,255,0.15)] active:scale-95 z-50"
+          >
+            <span className="text-xs font-mono tracking-[0.25em] uppercase font-semibold text-white">
+              ENTER EXPERIENCE 🔊
+            </span>
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00F0FF] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#00F0FF]" />
+            </span>
+          </button>
+        </motion.div>
+      ) : phase < 3 ? (
         <motion.div
           key="intro"
-          onClick={handleStartAudio}
-          className="fixed inset-0 z-[9999] bg-[#020202] flex flex-col items-center justify-center overflow-hidden cursor-pointer"
+          className="fixed inset-0 z-[9999] bg-[#020202] flex flex-col items-center justify-center overflow-hidden"
           exit={{ opacity: 0 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
@@ -230,16 +245,8 @@ export default function IntroSplash({ onComplete }) {
           >
             Your wrist called.
           </motion.p>
-
-          {/* Bottom progress bar */}
-          <motion.div
-            className="absolute bottom-0 left-0 h-[1px] bg-gradient-to-r from-[#C9A96E] via-[#e8d5a3] to-[#C9A96E]"
-            initial={{ width: '0%' }}
-            animate={{ width: '100%' }}
-            transition={{ duration: 3.5, ease: "linear" }}
-          />
         </motion.div>
-      )}
+      ) : null}
     </AnimatePresence>
   );
 }
