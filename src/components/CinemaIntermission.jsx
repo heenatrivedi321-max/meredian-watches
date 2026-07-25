@@ -125,12 +125,12 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
         </button>
       </div>
 
-      {/* PURE MASSIVE ICONIC QUOTE — NO CLUTTER, NO TAGS, NO SUBTITLES */}
+      {/* PURE STEVE JOBS APPLE LUXURY TYPOGRAPHY */}
       <div
         ref={textRef}
-        className="relative z-20 text-center px-6 max-w-6xl mx-auto flex flex-col items-center pointer-events-none"
+        className="relative z-20 text-center px-6 max-w-5xl mx-auto flex flex-col items-center pointer-events-none"
       >
-        <h2 className="text-5xl sm:text-8xl md:text-9xl lg:text-[8.5rem] font-black tracking-tighter text-white leading-[0.95] uppercase drop-shadow-[0_30px_70px_rgba(0,0,0,1)]">
+        <h2 className="text-3xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-semibold tracking-[-0.03em] text-white leading-[1.1] drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
           {title}
         </h2>
       </div>

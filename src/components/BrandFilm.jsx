@@ -138,8 +138,8 @@ export default function BrandFilm() {
         ref={textRef}
         className="relative z-20 text-center px-6 max-w-5xl mx-auto flex flex-col items-center pointer-events-none"
       >
-        <h2 className="text-4xl sm:text-7xl md:text-8xl font-black tracking-tighter text-white leading-none uppercase drop-shadow-[0_20px_60px_rgba(0,0,0,1)]">
-          I'M THE KING OF THE WORLD.
+        <h2 className="text-3xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-semibold tracking-[-0.03em] text-white leading-[1.1] drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
+          "I'm the king of the world."
         </h2>
       </div>
 

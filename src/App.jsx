@@ -561,13 +561,13 @@ export default function App() {
         {/* CINEMA TAKEOVER 2: WOLF OF WALL STREET */}
         <CinemaIntermission 
           videoSrc="/wolf-of-wall-street.mp4" 
-          title="I choose rich every single time." 
+          title='"I choose rich every single time."' 
         />
 
         {/* CINEMA TAKEOVER 3: THE DARK KNIGHT */}
         <CinemaIntermission 
           videoSrc="/dark-knight.mp4" 
-          title="Born from shadow. Built for supremacy." 
+          title='"Born from shadow. Built for supremacy."' 
         />
 
         <CollectionShowcase onSelectWatch={setSelectedWatch} />
