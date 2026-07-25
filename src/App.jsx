@@ -200,17 +200,6 @@ export default function App() {
       // ============================================================
       // 2. MANIFESTO — typewriter reveal, compressed to 120vh
       // ============================================================
-      // Crossfade: Stars → Liquid Video
-      const crossfadeTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: ".manifesto-spacer",
-          start: "top 90%",
-          end: "top 40%",
-          scrub: true,
-        }
-      });
-      crossfadeTl.to(".bg-liquid", { opacity: 0.9, duration: 1, ease: "none" });
-
       // Typewriter reveal for each manifesto line
       const manifestoLines = gsap.utils.toArray(".manifesto-line");
       manifestoLines.forEach((line, i) => {
@@ -375,24 +364,6 @@ export default function App() {
           <audio ref={audioRef} loop preload="auto">
             <source src="/ambient.mp3" type="audio/mpeg" />
           </audio>
-
-          {/* Liquid Explosion Watch Video */}
-          <video 
-            autoPlay loop muted playsInline preload="none"
-            className="manifesto-video bg-liquid absolute inset-0 w-full h-full object-cover z-10"
-            style={{ opacity: 0, transform: 'scale(1.3) translateZ(0)', willChange: 'transform, opacity' }}
-          >
-            <source src="/Watch_rotating_in_liquid_explosion_202607141039.mp4" type="video/mp4" />
-          </video>
-
-          {/* Porsche Tunnel Video */}
-          <video 
-            autoPlay loop muted playsInline preload="none"
-            className="bg-porsche absolute inset-0 w-full h-full object-cover z-15 pointer-events-none"
-            style={{ opacity: 0, transform: 'scale(1.3) translateZ(0)', willChange: 'transform, opacity' }}
-          >
-            <source src="/Porsche_driving_through_tunnel_202606281316.mp4" type="video/mp4" />
-          </video>
 
           <div className="video-dimmer absolute inset-0 bg-black z-25 pointer-events-none" style={{ opacity: 0 }} />
 
