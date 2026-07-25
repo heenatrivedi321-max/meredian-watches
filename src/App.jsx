@@ -207,93 +207,68 @@ export default function App() {
       });
 
       // ============================================================
-      // 2. MANIFESTO — typewriter reveal, compressed to 120vh
+      // 2. MANIFESTO — Super Smooth Motion Blur Reveal
       // ============================================================
-      // Typewriter reveal with 3D perspective rotation for each manifesto line
       const manifestoLines = gsap.utils.toArray(".manifesto-line");
       manifestoLines.forEach((line, i) => {
-        const chars = line.querySelectorAll(".char");
-        if (chars.length === 0) return;
-
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: ".manifesto-spacer",
-            start: `top ${65 - i * 18}%`,
-            end: `top ${35 - i * 18}%`,
-            scrub: 0.8,
+            start: `top ${70 - i * 20}%`,
+            end: `top ${25 - i * 20}%`,
+            scrub: 1.2,
           }
         });
 
-        // 3D Flip reveal characters one by one
-        tl.fromTo(chars,
-          { autoAlpha: 0, rotationX: -90, y: 50, z: -100 },
-          { autoAlpha: 1, rotationX: 0, y: 0, z: 0, duration: 0.05, stagger: 0.02, ease: "back.out(1.7)" }
+        // Enter smoothly with elegant motion blur
+        tl.fromTo(line,
+          { autoAlpha: 0, y: 60, filter: "blur(12px)", scale: 0.96 },
+          { autoAlpha: 1, y: 0, filter: "blur(0px)", scale: 1, duration: 0.6, ease: "power2.out" }
         );
 
-        // Hold, then dissolve line up and away with blur
+        // Hold
+        tl.to(line, { autoAlpha: 1, duration: 0.4 });
+
+        // Exit gracefully into space
         tl.to(line, {
           autoAlpha: 0,
-          y: -60,
-          scale: 1.08,
-          filter: "blur(8px)",
-          duration: 0.4,
-          ease: "power2.in"
-        }, "+=0.3");
-      });
-
-      // Show liquid video when manifesto ends
-      gsap.to(".manifesto-video", {
-        autoAlpha: 1,
-        scrollTrigger: {
-          trigger: ".manifesto-spacer",
-          start: "bottom 60%",
-          end: "bottom 20%",
-          scrub: true,
-        }
+          y: -50,
+          scale: 1.04,
+          filter: "blur(10px)",
+          duration: 0.6,
+          ease: "power1.inOut"
+        });
       });
 
       // ============================================================
-      // 3. PORSCHE — typewriter reveal, compressed to 120vh
+      // 3. PORSCHE — Super Smooth Motion Blur Reveal
       // ============================================================
-      const porscheTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: ".porsche-spacer",
-          start: "top 80%",
-          end: "top 30%",
-          scrub: true,
-        }
-      });
-      porscheTl.to(".bg-liquid", { autoAlpha: 0, duration: 1, ease: "none" }, 0);
-      porscheTl.to(".bg-porsche", { autoAlpha: 0.9, duration: 1, ease: "none" }, 0);
-
-      // Typewriter for porsche lines with 3D depth flip
       const porscheLines = gsap.utils.toArray(".porsche-line");
       porscheLines.forEach((line, i) => {
-        const chars = line.querySelectorAll(".char");
-        if (chars.length === 0) return;
-
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: ".porsche-spacer",
-            start: `top ${65 - i * 18}%`,
-            end: `top ${35 - i * 18}%`,
-            scrub: 0.8,
+            start: `top ${70 - i * 20}%`,
+            end: `top ${25 - i * 20}%`,
+            scrub: 1.2,
           }
         });
 
-        tl.fromTo(chars,
-          { autoAlpha: 0, rotationX: 90, y: 50, z: -100 },
-          { autoAlpha: 1, rotationX: 0, y: 0, z: 0, duration: 0.05, stagger: 0.02, ease: "back.out(1.7)" }
+        tl.fromTo(line,
+          { autoAlpha: 0, y: 60, filter: "blur(12px)", scale: 0.96 },
+          { autoAlpha: 1, y: 0, filter: "blur(0px)", scale: 1, duration: 0.6, ease: "power2.out" }
         );
+
+        tl.to(line, { autoAlpha: 1, duration: 0.4 });
 
         tl.to(line, {
           autoAlpha: 0,
-          y: -60,
-          scale: 1.08,
-          filter: "blur(8px)",
-          duration: 0.4,
-          ease: "power2.in"
-        }, "+=0.3");
+          y: -50,
+          scale: 1.04,
+          filter: "blur(10px)",
+          duration: 0.6,
+          ease: "power1.inOut"
+        });
       });
 
       // Dimmer for porsche section
@@ -525,20 +500,20 @@ export default function App() {
             <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black pointer-events-none z-5" />
 
             <div className="sticky top-0 left-0 w-full h-screen flex flex-col items-center justify-center z-10">
-              <div className="relative w-full max-w-[90rem] mx-auto px-4 md:px-8 text-center flex flex-col items-center justify-center space-y-4 sm:space-y-6 md:space-y-8" style={{ perspective: "1000px" }}>
+              <div className="relative w-full max-w-[90rem] mx-auto px-4 md:px-8 text-center flex flex-col items-center justify-center space-y-4 sm:space-y-6 md:space-y-8">
                 <div className="w-full">
-                  <h2 className="manifesto-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-extralight tracking-[-0.02em] text-white select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
-                    <SplitChars text="Your smartwatch just told you to stand up." />
+                  <h2 className="manifesto-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-normal tracking-[-0.02em] select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
+                    Your smartwatch just told you to stand up.
                   </h2>
                 </div>
                 <div className="w-full">
-                  <h2 className="manifesto-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-extralight tracking-[-0.02em] text-white select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
-                    <SplitChars text="Congrats on hitting 10,000 steps." />
+                  <h2 className="manifesto-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-normal tracking-[-0.02em] select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
+                    Congrats on hitting 10,000 steps.
                   </h2>
                 </div>
                 <div className="w-full">
-                  <h2 className="manifesto-line text-[1.5rem] sm:text-[2rem] md:text-[3rem] lg:text-[4rem] xl:text-[4.5rem] font-extralight tracking-[-0.02em] text-white/70 select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
-                    <SplitChars text="Too bad your wrist looks like a tiny iPad." />
+                  <h2 className="manifesto-line text-[1.5rem] sm:text-[2rem] md:text-[3rem] lg:text-[4rem] xl:text-[4.5rem] font-normal tracking-[-0.02em] select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
+                    Too bad your wrist looks like a tiny iPad.
                   </h2>
                 </div>
               </div>
@@ -559,18 +534,18 @@ export default function App() {
             <div className="sticky top-0 left-0 w-full h-screen flex flex-col items-center justify-center pt-24 pb-8 overflow-hidden z-10">
               <div className="relative w-full max-w-[90rem] mx-auto px-4 md:px-8 text-center flex flex-col items-center justify-center space-y-4 sm:space-y-6 md:space-y-8">
                 <div className="w-full">
-                  <h2 className="porsche-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-extralight tracking-[-0.02em] text-white select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
-                    <SplitChars text="You will inevitably perish." />
+                  <h2 className="porsche-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-normal tracking-[-0.02em] select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
+                    You will inevitably perish.
                   </h2>
                 </div>
                 <div className="w-full">
-                  <h2 className="porsche-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-extralight tracking-[-0.02em] text-white select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
-                    <SplitChars text="Your legacy will be forgotten." />
+                  <h2 className="porsche-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-normal tracking-[-0.02em] select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
+                    Your legacy will be forgotten.
                   </h2>
                 </div>
                 <div className="w-full">
-                  <h2 className="porsche-line text-[1.5rem] sm:text-[2rem] md:text-[3rem] lg:text-[4rem] xl:text-[4.5rem] font-extralight tracking-[-0.02em] text-white/70 select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
-                    <SplitChars text="But hey, at least your wrist looks expensive." />
+                  <h2 className="porsche-line text-[1.5rem] sm:text-[2rem] md:text-[3rem] lg:text-[4rem] xl:text-[4.5rem] font-normal tracking-[-0.02em] select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
+                    But hey, at least your wrist looks expensive.
                   </h2>
                 </div>
               </div>
