@@ -2,12 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { createCheckout } from '../shopify';
-import UpiCheckoutModal from './UpiCheckoutModal';
 
 export default function ProductOverlay({ watch, onClose }) {
   const containerRef = useRef(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
-  const [showUpiCheckout, setShowUpiCheckout] = useState(false);
 
   // State for Video Audio and Image Gallery
   const [isMuted, setIsMuted] = useState(true);
@@ -293,45 +291,33 @@ export default function ProductOverlay({ watch, onClose }) {
                   Notify Me — WhatsApp
                 </button>
               ) : (
-                <div className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-xl">
-                  <button 
-                    onClick={() => setShowUpiCheckout(true)}
-                    className="flex-1 w-full py-6 px-8 bg-[#10B981] text-black hover:bg-[#10B981]/90 hover:scale-[1.01] active:scale-[0.99] rounded-full text-xs sm:text-sm tracking-[0.2em] uppercase font-mono font-extrabold transition-all duration-300 flex items-center justify-center gap-3 shadow-[0_15px_40px_rgba(16,185,129,0.3)] cursor-pointer"
-                  >
-                    ⚡ INSTANT PREPAID UPI QR
-                  </button>
-
-                  <button 
-                    onClick={async () => {
-                      if (isRedirecting) return;
-                      setIsRedirecting(true);
-                      try {
-                        const cart = await createCheckout(watch.shopifyVariantId);
-                        window.location.href = cart.checkoutUrl;
-                      } catch (err) {
-                        console.warn("Checkout failed:", err);
-                        window.location.href = `https://smgnhj-dr.myshopify.com/cart/${watch.shopifyVariantId}:1`;
-                      }
-                    }}
-                    disabled={isRedirecting}
-                    className="flex-1 w-full py-6 px-8 bg-black text-white hover:bg-black/80 hover:scale-[1.01] active:scale-[0.99] rounded-full text-xs sm:text-sm tracking-[0.2em] uppercase font-mono font-bold transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-wait cursor-pointer"
-                  >
-                    {isRedirecting ? 'REDIRECTING...' : 'SHOPIFY CHECKOUT →'}
-                  </button>
-                </div>
+                <button 
+                  onClick={async () => {
+                    if (isRedirecting) return;
+                    setIsRedirecting(true);
+                    try {
+                      const cart = await createCheckout(watch.shopifyVariantId);
+                      window.location.href = cart.checkoutUrl;
+                    } catch (err) {
+                      console.warn("Checkout failed:", err);
+                      window.location.href = `https://smgnhj-dr.myshopify.com/cart/${watch.shopifyVariantId}:1`;
+                    }
+                  }}
+                  disabled={isRedirecting}
+                  className="px-10 sm:px-16 py-6 bg-black text-white hover:bg-black/80 hover:scale-[1.01] active:scale-[0.99] rounded-full text-xs sm:text-sm tracking-[0.2em] uppercase font-bold transition-all duration-300 flex items-center justify-center gap-3 sm:gap-4 disabled:opacity-50 disabled:cursor-wait cursor-pointer shadow-2xl"
+                >
+                  {isRedirecting ? (
+                    <span className="flex items-center gap-3">
+                      <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      REDIRECTING TO CHECKOUT...
+                    </span>
+                  ) : `BUY TIME — ${watch.price} →`}
+                </button>
               )}
             </motion.div>
           </div>
 
         </div>
-
-        {/* SUPREME INSTANT PREPAID UPI CHECKOUT MODAL */}
-        {showUpiCheckout && (
-          <UpiCheckoutModal 
-            watch={watch} 
-            onClose={() => setShowUpiCheckout(false)} 
-          />
-        )}
       </motion.div>
     </AnimatePresence>
   );
