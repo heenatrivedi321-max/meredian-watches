@@ -155,7 +155,7 @@ export default function WatchSection({ watch, index, onClick }) {
         </div>
       </div>
 
-      {/* 2-COLUMN DISPLAY: 4K REEL + DARK CERAMIC WATCH PEDESTAL */}
+      {/* 2-COLUMN DISPLAY: 4K REEL + ROLEX CERAMIC PEDESTAL */}
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center z-20">
         
         {/* COLUMN 1: 4K VIDEO STREAM REEL */}
@@ -186,27 +186,26 @@ export default function WatchSection({ watch, index, onClick }) {
           </button>
         </div>
 
-        {/* COLUMN 2: DARK SEAMLESS OBSIDIAN PEDESTAL CARD (NO WHITE BOX) */}
+        {/* COLUMN 2: SEAMLESS ROLEX OYSTER CERAMIC PEDESTAL CARD (ZERO SQUARE JPEG BORDERS) */}
         <div
           ref={watchCardRef}
           className={`relative h-[480px] sm:h-[580px] lg:h-[650px] rounded-[3rem] bg-[#0c0c11] border border-white/15 p-8 sm:p-12 flex flex-col justify-between shadow-[0_30px_70px_rgba(0,0,0,0.9)] overflow-hidden ${isEven ? 'lg:order-2' : 'lg:order-1'}`}
         >
-          {/* SEAMLESS DARK PEDESTAL CONTAINER — CLICK OPENS PRODUCT OVERLAY */}
+          {/* ROLEX OYSTER CERAMIC PEDESTAL — MULTIPLY BLEND MODE ELIMINATES ALL JPEG LIGHT SQUARES */}
           <div 
             onClick={() => onClick(watch)}
-            className="relative w-full flex-1 flex items-center justify-center rounded-3xl bg-[#14141c] border border-white/10 p-8 overflow-hidden shadow-2xl group cursor-pointer"
+            className="relative w-full flex-1 flex items-center justify-center rounded-3xl bg-[#eaeaee] p-8 overflow-hidden shadow-2xl group cursor-pointer border border-white/20"
           >
-            <div className="absolute w-64 h-64 bg-[#10B981]/10 rounded-full blur-3xl pointer-events-none animate-pulse" />
             <img
               src={watch.image}
               alt={`${watch.brand} ${watch.model}`}
               loading="lazy"
               className="max-h-[300px] sm:max-h-[360px] w-auto object-contain transition-transform duration-700 group-hover:scale-105 relative z-10"
               style={{
-                filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.9))',
+                mixBlendMode: 'multiply',
               }}
             />
-            <span className="absolute bottom-4 right-4 text-[10px] font-mono tracking-widest text-white/40 uppercase bg-black/60 px-3 py-1 rounded-full backdrop-blur-md">
+            <span className="absolute bottom-4 right-4 text-[10px] font-mono tracking-widest text-black/70 uppercase bg-white/80 px-3.5 py-1.5 rounded-full backdrop-blur-md font-semibold border border-black/10 shadow-sm">
               CLICK FOR DETAILS 🔍
             </span>
           </div>
