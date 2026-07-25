@@ -130,15 +130,15 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
         </button>
       </div>
 
-      {/* ELEGANT ROLEX LIGHT SERIF TYPOGRAPHY — SCROLL DISSOLVE FADE OUT */}
+      {/* BOLD CLEAN SAN-SERIF TYPOGRAPHY — SCROLL DISSOLVE FADE OUT */}
       <div
         ref={textRef}
-        className="relative z-20 text-center px-6 max-w-5xl mx-auto flex flex-col items-center pointer-events-none"
+        className="relative z-20 text-center px-6 max-w-6xl mx-auto flex flex-col items-center pointer-events-none"
         style={{ opacity: 0 }}
       >
         <h2 
-          className="text-3xl sm:text-5xl md:text-6xl lg:text-[4.5rem] font-light italic tracking-[-0.01em] text-white leading-[1.15] drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)]"
-          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+          className="text-3xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-extrabold tracking-[-0.03em] text-white leading-[1.05] uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
+          style={{ fontFamily: "'Inter', sans-serif" }}
         >
           {title}
         </h2>

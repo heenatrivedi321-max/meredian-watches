@@ -328,15 +328,15 @@ export default function CollectionShowcase({ onSelectWatch }) {
               ATELIER MERIDIAN // ARCHIVE 2026
             </p>
             <h2
-              className="legacy-text text-[3rem] sm:text-[5rem] md:text-[7rem] lg:text-[8.5rem] font-light italic tracking-[-0.01em] text-white text-center leading-[1.05] drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
-              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+              className="legacy-text text-[3rem] sm:text-[5rem] md:text-[7rem] lg:text-[8.5rem] font-black tracking-[-0.03em] text-white text-center leading-[1.05] uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
               Choose Your<br />Legacy.
             </h2>
           </div>
         </section>
 
-        {/* Dedicated Story Section - Pinned & Scaled with Rolex Light Serif */}
+        {/* Dedicated Story Section - Pinned & Scaled with Bold Sans-Serif */}
         <section
           ref={storyRef}
           className="relative z-10 w-full h-screen flex flex-col items-center justify-center bg-black pointer-events-none overflow-hidden"
@@ -348,11 +348,11 @@ export default function CollectionShowcase({ onSelectWatch }) {
               SWISS PRECISION // UNRIVALED CRAFTSMANSHIP
             </p>
             <h3
-              className="text-[2.5rem] sm:text-[4.5rem] md:text-[5.5rem] font-light italic tracking-[-0.01em] text-white leading-[1.1] drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
-              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+              className="text-[2.5rem] sm:text-[4.5rem] md:text-[5.5rem] font-extrabold tracking-[-0.02em] text-white leading-[1.1] uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
               Every timepiece tells a story.<br />
-              <span className="text-white/40 font-light italic">Find yours.</span>
+              <span className="text-white/40 font-bold">Find yours.</span>
             </h3>
           </div>
         </section>

@@ -97,8 +97,8 @@ export default function ProductOverlay({ watch, onClose }) {
                   {watch?.model}
                 </h1>
                 <p 
-                  className="text-[1.5rem] sm:text-[2.2rem] lg:text-[3.2rem] text-black/90 leading-[1.15] font-light italic tracking-[-0.01em]"
-                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  className="text-[1.5rem] sm:text-[2.2rem] lg:text-[3.2rem] text-black/90 leading-[1.15] font-bold tracking-tight"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   "{watch?.quotes?.[0] || 'A masterpiece of precision.'}"
                 </p>
@@ -113,8 +113,8 @@ export default function ProductOverlay({ watch, onClose }) {
                 className="w-full min-h-[80vh] flex flex-col justify-center px-8 lg:px-24 py-24"
               >
                 <p 
-                  className="text-[1.8rem] sm:text-[2.5rem] lg:text-[3.8rem] text-black leading-[1.15] font-light italic tracking-[-0.01em] mb-8 sm:mb-12"
-                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  className="text-[1.8rem] sm:text-[2.5rem] lg:text-[3.8rem] text-black leading-[1.15] font-bold tracking-tight mb-8 sm:mb-12"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   "{watch?.quotes?.[1] || 'Unapologetic excellence.'}"
                 </p>
