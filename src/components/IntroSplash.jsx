@@ -8,65 +8,47 @@ function playIntroSound() {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const now = ctx.currentTime;
 
-    // Main shimmer — metallic sweep
-    const osc1 = ctx.createOscillator();
-    const gain1 = ctx.createGain();
-    osc1.type = 'sine';
-    osc1.frequency.setValueAtTime(800, now);
-    osc1.frequency.exponentialRampToValueAtTime(2400, now + 0.15);
-    osc1.frequency.exponentialRampToValueAtTime(600, now + 0.6);
-    gain1.gain.setValueAtTime(0, now);
-    gain1.gain.linearRampToValueAtTime(0.12, now + 0.05);
-    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
-    osc1.connect(gain1).connect(ctx.destination);
-    osc1.start(now);
-    osc1.stop(now + 0.7);
+    // 1. "TA" - Punchy 808 sub-bass thud + metallic gear click (t = 0.0s)
+    const oscTa = ctx.createOscillator();
+    const gainTa = ctx.createGain();
+    oscTa.type = 'sine';
+    oscTa.frequency.setValueAtTime(140, now);
+    oscTa.frequency.exponentialRampToValueAtTime(35, now + 0.15);
+    gainTa.gain.setValueAtTime(0.35, now);
+    gainTa.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+    oscTa.connect(gainTa).connect(ctx.destination);
+    oscTa.start(now);
+    oscTa.stop(now + 0.2);
 
-    // Sparkle layer — high freq ticks
-    for (let i = 0; i < 6; i++) {
-      const osc = ctx.createOscillator();
-      const g = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(3000 + Math.random() * 2000, now + i * 0.08);
-      osc.frequency.exponentialRampToValueAtTime(1500, now + i * 0.08 + 0.12);
-      g.gain.setValueAtTime(0, now + i * 0.08);
-      g.gain.linearRampToValueAtTime(0.04, now + i * 0.08 + 0.02);
-      g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.15);
-      osc.connect(g).connect(ctx.destination);
-      osc.start(now + i * 0.08);
-      osc.stop(now + i * 0.08 + 0.2);
-    }
+    // 2. "DUMMMM" - Deep resonant Netflix-style luxury boom (t = 0.18s)
+    const oscDum = ctx.createOscillator();
+    const gainDum = ctx.createGain();
+    oscDum.type = 'triangle';
+    oscDum.frequency.setValueAtTime(85, now + 0.18);
+    oscDum.frequency.exponentialRampToValueAtTime(32, now + 2.2);
+    gainDum.gain.setValueAtTime(0, now + 0.18);
+    gainDum.gain.linearRampToValueAtTime(0.45, now + 0.22);
+    gainDum.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
+    oscDum.connect(gainDum).connect(ctx.destination);
+    oscDum.start(now + 0.18);
+    oscDum.stop(now + 2.6);
 
-    // Deep thud — impact
-    const osc2 = ctx.createOscillator();
-    const gain2 = ctx.createGain();
-    osc2.type = 'sine';
-    osc2.frequency.setValueAtTime(80, now);
-    osc2.frequency.exponentialRampToValueAtTime(40, now + 0.3);
-    gain2.gain.setValueAtTime(0.15, now);
-    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
-    osc2.connect(gain2).connect(ctx.destination);
-    osc2.start(now);
-    osc2.stop(now + 0.4);
+    // High shimmer harmonic resonance overlay
+    const oscShimmer = ctx.createOscillator();
+    const gainShimmer = ctx.createGain();
+    oscShimmer.type = 'sine';
+    oscShimmer.frequency.setValueAtTime(440, now + 0.2);
+    oscShimmer.frequency.exponentialRampToValueAtTime(880, now + 0.5);
+    oscShimmer.frequency.exponentialRampToValueAtTime(220, now + 2.0);
+    gainShimmer.gain.setValueAtTime(0, now + 0.2);
+    gainShimmer.gain.linearRampToValueAtTime(0.09, now + 0.3);
+    gainShimmer.gain.exponentialRampToValueAtTime(0.001, now + 2.2);
+    oscShimmer.connect(gainShimmer).connect(ctx.destination);
+    oscShimmer.start(now + 0.2);
+    oscShimmer.stop(now + 2.3);
 
-    // Tagline whoosh
-    const osc3 = ctx.createOscillator();
-    const gain3 = ctx.createGain();
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.frequency.value = 2000;
-    filter.Q.value = 2;
-    osc3.type = 'sawtooth';
-    osc3.frequency.setValueAtTime(200, now + 1.2);
-    osc3.frequency.exponentialRampToValueAtTime(800, now + 1.5);
-    gain3.gain.setValueAtTime(0, now + 1.2);
-    gain3.gain.linearRampToValueAtTime(0.06, now + 1.3);
-    gain3.gain.exponentialRampToValueAtTime(0.001, now + 1.7);
-    osc3.connect(filter).connect(gain3).connect(ctx.destination);
-    osc3.start(now + 1.2);
-    osc3.stop(now + 1.8);
   } catch (e) {
-    // silently fail if audio not available
+    // Audio Context not allowed or failed
   }
 }
 
