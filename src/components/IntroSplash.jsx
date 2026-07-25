@@ -6,6 +6,9 @@ const LETTERS = "MERIDIAN".split('');
 function playIntroSound() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if (ctx.state === 'suspended') {
+      ctx.resume();
+    }
     const now = ctx.currentTime;
 
     // 1. "TA" - Punchy 808 sub-bass thud + metallic gear click (t = 0.0s)
@@ -14,7 +17,7 @@ function playIntroSound() {
     oscTa.type = 'sine';
     oscTa.frequency.setValueAtTime(140, now);
     oscTa.frequency.exponentialRampToValueAtTime(35, now + 0.15);
-    gainTa.gain.setValueAtTime(0.35, now);
+    gainTa.gain.setValueAtTime(0.5, now);
     gainTa.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
     oscTa.connect(gainTa).connect(ctx.destination);
     oscTa.start(now);
@@ -27,7 +30,7 @@ function playIntroSound() {
     oscDum.frequency.setValueAtTime(85, now + 0.18);
     oscDum.frequency.exponentialRampToValueAtTime(32, now + 2.2);
     gainDum.gain.setValueAtTime(0, now + 0.18);
-    gainDum.gain.linearRampToValueAtTime(0.45, now + 0.22);
+    gainDum.gain.linearRampToValueAtTime(0.6, now + 0.22);
     gainDum.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
     oscDum.connect(gainDum).connect(ctx.destination);
     oscDum.start(now + 0.18);
@@ -41,7 +44,7 @@ function playIntroSound() {
     oscShimmer.frequency.exponentialRampToValueAtTime(880, now + 0.5);
     oscShimmer.frequency.exponentialRampToValueAtTime(220, now + 2.0);
     gainShimmer.gain.setValueAtTime(0, now + 0.2);
-    gainShimmer.gain.linearRampToValueAtTime(0.09, now + 0.3);
+    gainShimmer.gain.linearRampToValueAtTime(0.12, now + 0.3);
     gainShimmer.gain.exponentialRampToValueAtTime(0.001, now + 2.2);
     oscShimmer.connect(gainShimmer).connect(ctx.destination);
     oscShimmer.start(now + 0.2);
@@ -100,13 +103,9 @@ function ShockRing({ active, delay = 0 }) {
   return (
     <motion.div
       className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#C9A96E]/40"
-      initial={{ width: 0, height: 0, opacity: 0 }}
-      animate={active ? {
-        width: [0, '130vw'],
-        height: [0, '130vw'],
-        opacity: [0.7, 0],
-        borderWidth: [2, 0.3],
-      } : {}}
+      style={{ width: '40vw', height: '40vw' }}
+      initial={{ scale: 0.1, opacity: 0 }}
+      animate={active ? { scale: [0.1, 2.5], opacity: [0.8, 0] } : {}}
       transition={{ duration: 1.6, delay, ease: [0.16, 1, 0.3, 1] }}
     />
   );
@@ -116,18 +115,36 @@ export default function IntroSplash({ onComplete }) {
   const [phase, setPhase] = useState(0);
   const soundPlayed = useRef(false);
 
-  useEffect(() => {
+  const handleStartAudio = () => {
     if (!soundPlayed.current) {
       soundPlayed.current = true;
       playIntroSound();
     }
+  };
+
+  useEffect(() => {
     const timers = [
       setTimeout(() => setPhase(1), 300),
       setTimeout(() => setPhase(2), 1400),
       setTimeout(() => setPhase(3), 3000),
       setTimeout(() => onComplete(), 3800),
     ];
-    return () => timers.forEach(clearTimeout);
+
+    // Global tap/click listener to unlock audio on first interaction
+    const unlockAudio = () => {
+      handleStartAudio();
+      window.removeEventListener('click', unlockAudio);
+      window.removeEventListener('touchstart', unlockAudio);
+    };
+
+    window.addEventListener('click', unlockAudio);
+    window.addEventListener('touchstart', unlockAudio);
+
+    return () => {
+      timers.forEach(clearTimeout);
+      window.removeEventListener('click', unlockAudio);
+      window.removeEventListener('touchstart', unlockAudio);
+    };
   }, [onComplete]);
 
   return (
@@ -135,7 +152,8 @@ export default function IntroSplash({ onComplete }) {
       {phase < 3 && (
         <motion.div
           key="intro"
-          className="fixed inset-0 z-[9999] bg-[#020202] flex flex-col items-center justify-center overflow-hidden"
+          onClick={handleStartAudio}
+          className="fixed inset-0 z-[9999] bg-[#020202] flex flex-col items-center justify-center overflow-hidden cursor-pointer"
           exit={{ opacity: 0 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
