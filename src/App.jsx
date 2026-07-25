@@ -205,7 +205,7 @@ export default function App() {
       // ============================================================
       // 2. MANIFESTO — typewriter reveal, compressed to 120vh
       // ============================================================
-      // Typewriter reveal for each manifesto line
+      // Typewriter reveal with 3D perspective rotation for each manifesto line
       const manifestoLines = gsap.utils.toArray(".manifesto-line");
       manifestoLines.forEach((line, i) => {
         const chars = line.querySelectorAll(".char");
@@ -214,23 +214,25 @@ export default function App() {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: ".manifesto-spacer",
-            start: `top ${60 - i * 15}%`,
-            end: `top ${30 - i * 15}%`,
-            scrub: 0.5,
+            start: `top ${65 - i * 18}%`,
+            end: `top ${35 - i * 18}%`,
+            scrub: 0.8,
           }
         });
 
-        // Reveal characters one by one
+        // 3D Flip reveal characters one by one
         tl.fromTo(chars,
-          { autoAlpha: 0 },
-          { autoAlpha: 1, duration: 0.02, stagger: 0.01, ease: "none" }
+          { autoAlpha: 0, rotationX: -90, y: 50, z: -100 },
+          { autoAlpha: 1, rotationX: 0, y: 0, z: 0, duration: 0.05, stagger: 0.02, ease: "back.out(1.7)" }
         );
 
-        // Hold, then fade entire line up and out
+        // Hold, then dissolve line up and away with blur
         tl.to(line, {
           autoAlpha: 0,
-          y: -40,
-          duration: 0.3,
+          y: -60,
+          scale: 1.08,
+          filter: "blur(8px)",
+          duration: 0.4,
           ease: "power2.in"
         }, "+=0.3");
       });
@@ -260,7 +262,7 @@ export default function App() {
       porscheTl.to(".bg-liquid", { autoAlpha: 0, duration: 1, ease: "none" }, 0);
       porscheTl.to(".bg-porsche", { autoAlpha: 0.9, duration: 1, ease: "none" }, 0);
 
-      // Typewriter for porsche lines
+      // Typewriter for porsche lines with 3D depth flip
       const porscheLines = gsap.utils.toArray(".porsche-line");
       porscheLines.forEach((line, i) => {
         const chars = line.querySelectorAll(".char");
@@ -269,21 +271,23 @@ export default function App() {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: ".porsche-spacer",
-            start: `top ${60 - i * 15}%`,
-            end: `top ${30 - i * 15}%`,
-            scrub: 0.5,
+            start: `top ${65 - i * 18}%`,
+            end: `top ${35 - i * 18}%`,
+            scrub: 0.8,
           }
         });
 
         tl.fromTo(chars,
-          { autoAlpha: 0 },
-          { autoAlpha: 1, duration: 0.02, stagger: 0.01, ease: "none" }
+          { autoAlpha: 0, rotationX: 90, y: 50, z: -100 },
+          { autoAlpha: 1, rotationX: 0, y: 0, z: 0, duration: 0.05, stagger: 0.02, ease: "back.out(1.7)" }
         );
 
         tl.to(line, {
           autoAlpha: 0,
-          y: -40,
-          duration: 0.3,
+          y: -60,
+          scale: 1.08,
+          filter: "blur(8px)",
+          duration: 0.4,
           ease: "power2.in"
         }, "+=0.3");
       });
