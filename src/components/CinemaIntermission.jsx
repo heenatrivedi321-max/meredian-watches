@@ -31,25 +31,29 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
     );
     observer.observe(section);
 
-    // CLEAN FADE IN ON ENTRY, THEN DISSOLVE OUT ON SCROLL FOR 100% UNCOVERED 4K VIDEO
+    // CLEAN GSAP TYPEWRITER REVEAL & DISSOLVE FADE OUT ON SCROLL
     if (textRef.current) {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: "top 85%",
-          end: "bottom 20%",
-          scrub: 0.5,
+          start: "top 75%",
+          end: "bottom 30%",
+          scrub: true,
         }
       });
 
+      // 1. Text enters smoothly
       tl.fromTo(textRef.current,
-        { autoAlpha: 0, y: 60, scale: 0.9 },
-        { autoAlpha: 1, y: 0, scale: 1, ease: "power2.out" }
+        { autoAlpha: 0, y: 40 },
+        { autoAlpha: 1, y: 0, duration: 0.4, ease: "power2.out" }
       );
 
+      // 2. Hold clear in middle
+      tl.to(textRef.current, { autoAlpha: 1, duration: 0.4 });
+
+      // 3. Text completely fades out so video is 100% uncovered
       tl.to(textRef.current,
-        { autoAlpha: 0, y: -60, scale: 1.05, ease: "power2.in" },
-        "+=0.5"
+        { autoAlpha: 0, y: -40, duration: 0.4, ease: "power2.in" }
       );
     }
 
@@ -126,12 +130,16 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
         </button>
       </div>
 
-      {/* PURE STEVE JOBS APPLE LUXURY TYPOGRAPHY */}
+      {/* ELEGANT ROLEX LIGHT SERIF TYPOGRAPHY — SCROLL DISSOLVE FADE OUT */}
       <div
         ref={textRef}
         className="relative z-20 text-center px-6 max-w-5xl mx-auto flex flex-col items-center pointer-events-none"
+        style={{ opacity: 0 }}
       >
-        <h2 className="text-3xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-semibold tracking-[-0.03em] text-white leading-[1.1] drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
+        <h2 
+          className="text-3xl sm:text-5xl md:text-6xl lg:text-[4.5rem] font-light italic tracking-[-0.01em] text-white leading-[1.15] drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)]"
+          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+        >
           {title}
         </h2>
       </div>
