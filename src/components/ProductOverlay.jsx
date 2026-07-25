@@ -85,10 +85,8 @@ export default function ProductOverlay({ watch, onClose }) {
                 onViewportEnter={() => setActiveImageIndex(0)}
                 className="w-full min-h-[80vh] flex flex-col justify-center px-8 lg:px-24 py-24"
               >
-                <p className="text-[10px] lg:text-xs tracking-[0.4em] font-mono font-bold text-[#10B981] uppercase mb-4 flex items-center gap-4">
+                <p className="text-[10px] lg:text-xs tracking-[0.4em] font-mono text-black/40 uppercase mb-4 flex items-center gap-4">
                   <span>{watch.brand}</span>
-                  <span className="w-8 h-[1px] bg-[#10B981]"></span>
-                  <span>SUPERLATIVE SPEC</span>
                 </p>
                 <h1 
                   className="text-[2.5rem] sm:text-[3.5rem] md:text-[4rem] lg:text-[6.5rem] leading-[1.1] font-extrabold tracking-tight uppercase mb-4 sm:mb-8 text-black"

@@ -115,12 +115,9 @@ export default function WatchSection({ watch, index, onClick }) {
       {/* TOP HEADER BAR */}
       <div ref={textRef} className="max-w-7xl mx-auto w-full mb-12 flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b border-white/10 pb-8 z-20">
         <div>
-          <div className="flex items-center gap-3 mb-3">
-            <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
-            <span className="text-xs font-mono tracking-[0.35em] text-[#10B981] uppercase font-bold">
-              SUPERLATIVE SPEC // EDITION 0{index + 1}
-            </span>
-          </div>
+          <span className="text-[10px] font-mono tracking-[0.4em] text-white/40 uppercase block mb-2">
+            EDITION 0{index + 1}
+          </span>
           <h2 
             className="text-3xl sm:text-6xl lg:text-7xl font-normal tracking-[0.08em] text-white leading-none uppercase drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]"
             style={{ fontFamily: "'Cinzel', Georgia, serif" }}
@@ -136,8 +133,8 @@ export default function WatchSection({ watch, index, onClick }) {
           <span className="text-3xl sm:text-5xl font-light text-white tracking-tight block">
             {watch.price}
           </span>
-          <span className="text-[10px] font-mono tracking-widest text-[#10B981] uppercase block mt-1">
-            ✓ TAXES & WHITE GLOVE DELIVERY INCLUDED
+          <span className="text-[10px] font-mono tracking-widest text-white/40 uppercase block mt-1">
+            COMPLIMENTARY DISPATCH
           </span>
         </div>
       </div>

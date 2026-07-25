@@ -322,11 +322,6 @@ export default function CollectionShowcase({ onSelectWatch }) {
           <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black pointer-events-none z-5" />
 
           <div className="relative z-10 text-center px-4">
-            <p
-              className="legacy-text text-[10px] font-mono tracking-[0.6em] uppercase text-[#10B981] mb-6 font-bold"
-            >
-              ATELIER MERIDIAN // ARCHIVE 2026
-            </p>
             <h2
               className="legacy-text text-[2.5rem] sm:text-[4.5rem] md:text-[6rem] lg:text-[7.5rem] font-normal tracking-[0.08em] text-white text-center leading-[1.1] uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
               style={{ fontFamily: "'Cinzel', Georgia, serif" }}
@@ -336,17 +331,12 @@ export default function CollectionShowcase({ onSelectWatch }) {
           </div>
         </section>
 
-        {/* Dedicated Story Section - Pinned & Scaled with Rolex Cinzel */}
+        {/* Dedicated Story Section - Pinned & Scaled with Pure Minimalist Cinzel */}
         <section
           ref={storyRef}
           className="relative z-10 w-full h-screen flex flex-col items-center justify-center bg-black pointer-events-none overflow-hidden"
         >
           <div className="story-text-container text-center px-6 max-w-5xl mx-auto">
-            <p
-              className="text-[10px] lg:text-xs font-mono tracking-[0.5em] uppercase text-[#10B981] mb-8 font-bold"
-            >
-              SWISS PRECISION // UNRIVALED CRAFTSMANSHIP
-            </p>
             <h3
               className="text-[2.2rem] sm:text-[3.8rem] md:text-[4.8rem] font-normal tracking-[0.06em] text-white leading-[1.15] uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
               style={{ fontFamily: "'Cinzel', Georgia, serif" }}

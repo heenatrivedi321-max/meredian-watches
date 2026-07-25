@@ -13,7 +13,6 @@ import BrandFilm from './components/BrandFilm';
 import IntroSplash from './components/IntroSplash';
 import CinemaIntermission from './components/CinemaIntermission';
 import PolicyModal from './components/PolicyModal';
-import AiConciergeModal from './components/AiConciergeModal';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -612,30 +611,11 @@ export default function App() {
       <WhatsAppButton />
       <ScrollToTop />
 
-      {/* FLOATING AI HOROLOGY CONCIERGE BUTTON */}
-      <div className="fixed bottom-6 left-6 z-[120] pointer-events-auto">
-        <button
-          onClick={() => setShowAi(true)}
-          className="group relative px-5 py-3 rounded-full bg-black/80 hover:bg-black border border-[#10B981]/50 backdrop-blur-2xl transition-all duration-300 flex items-center gap-3 cursor-pointer shadow-[0_10px_30px_rgba(16,185,129,0.3)] hover:scale-105"
-        >
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75" />
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#10B981]" />
-          </span>
-          <span className="text-xs font-mono tracking-[0.2em] uppercase font-bold text-white group-hover:text-[#10B981] transition-colors">
-            ✦ ASK AI CONCIERGE
-          </span>
-        </button>
-      </div>
-
       {/* Brand Story Overlay */}
       {showBrand && <BrandStory onClose={() => setShowBrand(false)} />}
 
       {/* Official Policy Overlay Modal */}
       {activePolicy && <PolicyModal type={activePolicy} onClose={() => setActivePolicy(null)} />}
-
-      {/* AI Concierge Modal */}
-      <AiConciergeModal isOpen={showAi} onClose={() => setShowAi(false)} onSelectWatch={setSelectedWatch} />
     </>
   );
 }
