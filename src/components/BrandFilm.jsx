@@ -94,7 +94,7 @@ export default function BrandFilm() {
   return (
     <div
       ref={sectionRef}
-      className="relative w-full h-screen overflow-hidden bg-black flex items-center justify-center border-y border-[#C9A96E]/20"
+      className="relative w-full h-screen overflow-hidden bg-black flex items-center justify-center border-y border-white/10"
     >
       {/* 4K CINEMATIC TITANIC / BRAND FILM */}
       <video
@@ -109,26 +109,25 @@ export default function BrandFilm() {
         <source src="/brand-film.mp4" type="video/mp4" />
       </video>
 
-      {/* LUXURY GRADIENT & GOLD GLOW OVERLAYS */}
+      {/* LUXURY GRADIENT OVERLAYS */}
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/60 pointer-events-none z-10" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/40 to-black pointer-events-none z-10" />
 
-      {/* ROLEX-STYLE GLASSMORPHISM AUDIO CONTROL PILL */}
+      {/* MINIMALIST GLASSMORPHISM AUDIO CONTROL PILL */}
       <div className="absolute top-8 right-8 sm:top-12 sm:right-12 z-30">
         <button
           onClick={toggleAudio}
-          className={`group relative px-6 py-3 rounded-full border backdrop-blur-xl transition-all duration-500 flex items-center gap-3 cursor-pointer ${
+          className={`group relative px-6 py-3 rounded-full border backdrop-blur-xl transition-all duration-300 flex items-center gap-3 cursor-pointer ${
             isAudioEnabled
-              ? 'bg-[#C9A96E]/20 border-[#C9A96E] shadow-[0_0_30px_rgba(201,169,110,0.5)]'
-              : 'bg-black/60 border-white/20 hover:border-[#C9A96E]/50 hover:bg-black/80'
+              ? 'bg-white/20 border-white shadow-[0_0_30px_rgba(255,255,255,0.3)]'
+              : 'bg-black/60 border-white/20 hover:border-white/50 hover:bg-black/80'
           }`}
         >
           <span className="relative flex h-2.5 w-2.5">
-            <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${isAudioEnabled ? 'bg-[#C9A96E]' : 'bg-white/40'}`} />
-            <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${isAudioEnabled ? 'bg-[#C9A96E]' : 'bg-white/60'}`} />
+            <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${isAudioEnabled ? 'bg-white' : 'bg-white/40'}`} />
+            <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${isAudioEnabled ? 'bg-white' : 'bg-white/60'}`} />
           </span>
           
-          <span className="text-xs font-mono tracking-[0.2em] uppercase font-semibold text-white group-hover:text-[#C9A96E] transition-colors">
+          <span className="text-xs font-mono tracking-[0.2em] uppercase font-semibold text-white transition-colors">
             {isAudioEnabled ? 'AUDIO LIVE 🔊' : 'ENABLE SOUND 🔇'}
           </span>
         </button>
@@ -139,14 +138,13 @@ export default function BrandFilm() {
         ref={textRef}
         className="relative z-20 text-center px-6 max-w-5xl mx-auto flex flex-col items-center pointer-events-none"
       >
-        <h2 className="text-3xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-semibold tracking-[-0.03em] text-white leading-[1.1] drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
+        <h2 
+          className="text-3xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-normal tracking-[0.06em] uppercase text-white leading-[1.1] drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)]"
+          style={{ fontFamily: "'Cinzel', Georgia, serif" }}
+        >
           "I'm the king of the world."
         </h2>
       </div>
-
-      {/* BOTTOM GOLD SCANLINES */}
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#C9A96E]/40 to-transparent pointer-events-none z-20" />
-      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#C9A96E]/40 to-transparent pointer-events-none z-20" />
     </div>
   );
 }
