@@ -323,7 +323,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
 
           <div className="relative z-10 text-center px-4">
             <h2
-              className="legacy-text text-[2.5rem] sm:text-[4.5rem] md:text-[6rem] lg:text-[7.5rem] font-normal tracking-[0.08em] text-white text-center leading-[1.1] uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
+              className="legacy-text text-[2.5rem] sm:text-[4.5rem] md:text-[6rem] lg:text-[7.5rem] font-normal tracking-[0.08em] text-gemini-gradient text-center leading-[1.1] uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
               style={{ fontFamily: "'Cinzel', Georgia, serif" }}
             >
               Choose Your<br />Legacy.
@@ -331,18 +331,21 @@ export default function CollectionShowcase({ onSelectWatch }) {
           </div>
         </section>
 
-        {/* Dedicated Story Section - Pinned & Scaled with Pure Minimalist Cinzel */}
+        {/* Dedicated Story Section - Animated Gemini Aurora Mesh & Iridescent Gradient Typography */}
         <section
           ref={storyRef}
           className="relative z-10 w-full h-screen flex flex-col items-center justify-center bg-black pointer-events-none overflow-hidden"
         >
-          <div className="story-text-container text-center px-6 max-w-5xl mx-auto">
+          {/* Animated Gemini Aurora Fluid Backdrop */}
+          <div className="absolute inset-0 gemini-aurora-bg pointer-events-none" />
+
+          <div className="story-text-container relative z-10 text-center px-6 max-w-6xl mx-auto">
             <h3
-              className="text-[2.2rem] sm:text-[3.8rem] md:text-[4.8rem] font-normal tracking-[0.06em] text-white leading-[1.15] uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
+              className="text-[2.2rem] sm:text-[3.8rem] md:text-[4.8rem] lg:text-[5.5rem] font-normal tracking-[0.06em] leading-[1.15] uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)] text-gemini-gradient"
               style={{ fontFamily: "'Cinzel', Georgia, serif" }}
             >
               Every timepiece tells a story.<br />
-              <span className="text-white/40 font-normal">Find yours.</span>
+              <span className="text-white/50 font-normal">Find yours.</span>
             </h3>
           </div>
         </section>

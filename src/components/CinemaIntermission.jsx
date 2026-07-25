@@ -131,23 +131,23 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
         </button>
       </div>
 
-      {/* ROLEX CROWN SERIF TYPOGRAPHY — SLOW DISSOLVE FADE OUT */}
+      {/* GEMINI IRIDESCENT TYPOGRAPHY — SLOW DISSOLVE FADE OUT */}
       <div
         ref={textRef}
         className="relative z-20 text-center px-6 max-w-6xl mx-auto flex flex-col items-center pointer-events-none"
         style={{ opacity: 0 }}
       >
         <h2 
-          className="text-2xl sm:text-5xl md:text-6xl lg:text-[4.5rem] font-normal tracking-[0.08em] text-white leading-[1.1] uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
+          className="text-2xl sm:text-5xl md:text-6xl lg:text-[4.5rem] font-normal tracking-[0.08em] text-gemini-gradient leading-[1.1] uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
           style={{ fontFamily: "'Cinzel', Georgia, serif" }}
         >
           {title}
         </h2>
       </div>
 
-      {/* SCANLINE BORDERS */}
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none z-20" />
-      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none z-20" />
+      {/* GEMINI AURORA SCANLINE BORDERS */}
+      <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#4285F4] via-[#9B51E0] to-transparent pointer-events-none z-20 opacity-60" />
+      <div className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#9B51E0] via-[#00F0FF] to-transparent pointer-events-none z-20 opacity-60" />
     </section>
   );
 }
