@@ -2,7 +2,7 @@
  * MERIDIAN LUXURY HOROLOGY — 24/7 AUTOMATED WHATSAPP ORDER CONCIERGE ENGINE
  * 
  * Automatically captures new orders from Shopify (smgnhj-dr.myshopify.com)
- * and dispatches personalized, high-trust concierge WhatsApp messages directly to customers.
+ * and dispatches personalized, high-trust concierge WhatsApp messages directly to customers as Nirmeet.
  */
 
 const fs = require('fs');
@@ -65,19 +65,22 @@ function fetchRecentOrders() {
   });
 }
 
-// Format Personalized WhatsApp Message
+// Format Natural Human Message from Nirmeet
 function formatConciergeMessage(order) {
-  const customerName = order.customer ? (order.customer.first_name || order.customer.name || 'Valued Customer') : 'Valued Customer';
+  const firstName = order.customer ? (order.customer.first_name || order.customer.name || '').split(' ')[0] : '';
+  const greeting = firstName ? `Hey ${firstName}` : `Hey there`;
   const orderNumber = order.name || `#${order.order_number}`;
   const itemName = order.line_items && order.line_items.length > 0 
     ? order.line_items[0].title 
-    : 'Meridian Timepiece';
+    : 'Meridian Watch';
 
-  return `Hi ${customerName}! 👋 This is the Meridian Horology Atelier in India.
+  return `${greeting}! Nirmeet here from Meridian.
 
-I just personally received your order ${orderNumber} for the *${itemName}*. Our master team is white-glove inspecting your timepiece right now before dispatching via express air courier.
+Just saw your order ${orderNumber} for the ${itemName}. Thanks a lot man! 
 
-If you need any custom wrist sizing, gift wrapping, or shipping instructions before we seal the box, just reply directly to me right here! ⏱️`;
+We are packing your watch right now for dispatch. If you need any wrist sizing adjustments, gift box, or have any questions, just reply to me here directly.
+
+Appreciate you joining the Meridian family! ⏱️`;
 }
 
 // Format Phone Number for WhatsApp (India +91 default)
@@ -129,7 +132,7 @@ if (args.includes('--test')) {
     line_items: [{ title: 'Meridian Oyster Perpetual' }]
   };
   const msg = formatConciergeMessage(dummyOrder);
-  console.log('\n--- TEST WHATSAPP CONCIERGE MESSAGE ---');
+  console.log('\n--- TEST NIRMEET WHATSAPP MESSAGE ---');
   console.log(`Target Phone: +${testPhone}`);
   console.log(`Message:\n${msg}`);
   console.log(`\n🔗 Test WhatsApp Link:\nhttps://wa.me/${testPhone}?text=${encodeURIComponent(msg)}\n`);
@@ -139,4 +142,4 @@ if (args.includes('--test')) {
 // Run initial check and set 30-second interval
 processOrders();
 setInterval(processOrders, 30000);
-console.log('🚀 Meridian 24/7 WhatsApp Concierge Engine is ACTIVE and polling Shopify Admin API every 30 seconds.');
+console.log('🚀 Nirmeet 24/7 WhatsApp Concierge Engine is ACTIVE and polling Shopify Admin API every 30 seconds.');
