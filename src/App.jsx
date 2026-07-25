@@ -355,9 +355,6 @@ export default function App() {
       {/* Scroll Progress */}
       <ScrollProgress />
 
-      {/* Global WebGL Fluid Background */}
-      {introDone && <FluidBackground />}
-
       {/* Product Schema for SEO */}
       <ProductSchema watch={selectedWatch} />
 
