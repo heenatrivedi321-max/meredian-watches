@@ -182,8 +182,38 @@ export default function IntroSplash({ onComplete }) {
           exit={{ opacity: 0, filter: 'blur(12px)' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
+          {/* 4 VOLUMETRIC CORNER AMBIENT GLOW AURAS */}
+          <motion.div 
+            className="absolute -top-32 -left-32 w-96 h-96 rounded-full pointer-events-none z-0"
+            style={{ background: 'radial-gradient(circle, rgba(66, 133, 244, 0.45) 0%, rgba(0, 240, 255, 0.2) 50%, transparent 70%)', filter: 'blur(70px)' }}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={phase >= 1 ? { opacity: [0, 1, 0.85], scale: [0.5, 1.25, 1] } : {}}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+          />
+          <motion.div 
+            className="absolute -top-32 -right-32 w-96 h-96 rounded-full pointer-events-none z-0"
+            style={{ background: 'radial-gradient(circle, rgba(155, 81, 224, 0.45) 0%, rgba(255, 64, 129, 0.2) 50%, transparent 70%)', filter: 'blur(70px)' }}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={phase >= 1 ? { opacity: [0, 1, 0.85], scale: [0.5, 1.25, 1] } : {}}
+            transition={{ duration: 1.5, delay: 0.15, ease: "easeOut" }}
+          />
+          <motion.div 
+            className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full pointer-events-none z-0"
+            style={{ background: 'radial-gradient(circle, rgba(0, 230, 118, 0.4) 0%, rgba(0, 240, 255, 0.2) 50%, transparent 70%)', filter: 'blur(70px)' }}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={phase >= 1 ? { opacity: [0, 1, 0.85], scale: [0.5, 1.25, 1] } : {}}
+            transition={{ duration: 1.5, delay: 0.3, ease: "easeOut" }}
+          />
+          <motion.div 
+            className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full pointer-events-none z-0"
+            style={{ background: 'radial-gradient(circle, rgba(255, 64, 129, 0.45) 0%, rgba(155, 81, 224, 0.2) 50%, transparent 70%)', filter: 'blur(70px)' }}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={phase >= 1 ? { opacity: [0, 1, 0.85], scale: [0.5, 1.25, 1] } : {}}
+            transition={{ duration: 1.5, delay: 0.45, ease: "easeOut" }}
+          />
+
           {/* Ambient Gemini Live Mesh Background */}
-          <div className="absolute inset-0 gemini-aurora-bg pointer-events-none opacity-60" />
+          <div className="absolute inset-0 gemini-aurora-bg pointer-events-none opacity-60 z-0" />
 
           {/* Electrifying Gemini Live Laser Aura & Anamorphic Beam */}
           <motion.div
@@ -214,13 +244,13 @@ export default function IntroSplash({ onComplete }) {
 
             {/* Subtext */}
             <motion.p
-              className="mt-6 sm:mt-10 text-xs sm:text-lg md:text-xl tracking-[0.3em] sm:tracking-[0.4em] uppercase font-light text-white/80 drop-shadow-[0_10px_20px_rgba(0,0,0,0.9)] max-w-full"
+              className="mt-6 sm:mt-10 text-xs sm:text-lg md:text-xl tracking-[0.25em] sm:tracking-[0.35em] uppercase font-light text-white/80 drop-shadow-[0_10px_20px_rgba(0,0,0,0.9)] max-w-full"
               style={{ fontFamily: "'Inter', sans-serif" }}
               initial={{ opacity: 0, y: 20 }}
               animate={phase >= 2 ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              Your wrist called.
+              Time flies. Look expensive while it perishes.
             </motion.p>
           </div>
         </motion.div>
