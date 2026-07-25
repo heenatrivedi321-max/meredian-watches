@@ -15,6 +15,11 @@ import CinemaIntermission from './components/CinemaIntermission';
 
 gsap.registerPlugin(ScrollTrigger);
 
+ScrollTrigger.config({
+  limitCallbacks: true,
+  ignoreMobileResize: true,
+});
+
 // Split text into individual character spans for typewriter effect
 function SplitChars({ text, className = '' }) {
   return (

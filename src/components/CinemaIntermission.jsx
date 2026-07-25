@@ -97,6 +97,7 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
         playsInline
         preload="auto"
         className="absolute inset-0 w-full h-full object-cover"
+        style={{ transform: 'scale(1.02) translateZ(0)', willChange: 'transform' }}
       >
         <source src={videoSrc} type="video/mp4" />
       </video>
