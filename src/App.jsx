@@ -561,16 +561,16 @@ export default function App() {
         <InstagramFeed />
         <BrandFilm />
         
-        {/* CINEMA TAKEOVER 2: WOLF OF WALL STREET */}
+        {/* CINEMA TAKEOVER 2: OSCAR WINNER (MICHAEL B. JORDAN) */}
         <CinemaIntermission 
           videoSrc="/wolf-of-wall-street.mp4" 
-          title='"I choose rich every single time."' 
+          title='"Standing ovation. Zero extra time given."' 
         />
 
-        {/* CINEMA TAKEOVER 3: THE DARK KNIGHT */}
+        {/* CINEMA TAKEOVER 3: PINNACLE SPORTS (F1 / TENNIS / EQUESTRIAN) */}
         <CinemaIntermission 
           videoSrc="/dark-knight.mp4" 
-          title='"Born from shadow. Built for supremacy."' 
+          title='"0.001 seconds decides history. You are still late for your meeting."' 
         />
 
         <CollectionShowcase onSelectWatch={setSelectedWatch} />
