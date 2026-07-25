@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { createCheckout } from '../shopify';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,7 +10,6 @@ export default function WatchSection({ watch, index, onClick }) {
   const watchCardRef = useRef(null);
   const textRef = useRef(null);
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
-  const [isRedirecting, setIsRedirecting] = useState(false);
 
   useEffect(() => {
     const vid = videoRef.current;
@@ -104,20 +102,6 @@ export default function WatchSection({ watch, index, onClick }) {
     }
   }, []);
 
-  // Direct Instant Shopify Checkout Handler
-  const handleBuyNow = async (e) => {
-    e.stopPropagation();
-    if (isRedirecting) return;
-    setIsRedirecting(true);
-    try {
-      const cart = await createCheckout(watch.shopifyVariantId);
-      window.location.href = cart.checkoutUrl;
-    } catch (err) {
-      console.warn("Direct checkout redirect fallback:", err);
-      window.location.href = `https://smgnhj-dr.myshopify.com/cart/${watch.shopifyVariantId}:1`;
-    }
-  };
-
   const isEven = index % 2 === 0;
 
   return (
@@ -168,6 +152,7 @@ export default function WatchSection({ watch, index, onClick }) {
             playsInline
             preload="auto"
             className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-1000"
+            style={{ transform: 'translateZ(0)', willChange: 'transform' }}
           >
             <source src={watch.cinematicVideo || watch.video} type="video/mp4" />
           </video>
@@ -186,12 +171,12 @@ export default function WatchSection({ watch, index, onClick }) {
           </button>
         </div>
 
-        {/* COLUMN 2: SEAMLESS ROLEX OYSTER CERAMIC PEDESTAL CARD (ZERO SQUARE JPEG BORDERS) */}
+        {/* COLUMN 2: SEAMLESS ROLEX OYSTER CERAMIC PEDESTAL CARD — CLICK OPENS DEDICATED PRODUCT PAGE OVERLAY */}
         <div
           ref={watchCardRef}
           className={`relative h-[480px] sm:h-[580px] lg:h-[650px] rounded-[3rem] bg-[#0c0c11] border border-white/15 p-8 sm:p-12 flex flex-col justify-between shadow-[0_30px_70px_rgba(0,0,0,0.9)] overflow-hidden ${isEven ? 'lg:order-2' : 'lg:order-1'}`}
         >
-          {/* ROLEX OYSTER CERAMIC PEDESTAL — MULTIPLY BLEND MODE ELIMINATES ALL JPEG LIGHT SQUARES */}
+          {/* ROLEX OYSTER CERAMIC PEDESTAL — CLICK OPENS SPECIFIC PRODUCT OVERLAY */}
           <div 
             onClick={() => onClick(watch)}
             className="relative w-full flex-1 flex items-center justify-center rounded-3xl bg-[#eaeaee] p-8 overflow-hidden shadow-2xl group cursor-pointer border border-white/20"
@@ -206,11 +191,11 @@ export default function WatchSection({ watch, index, onClick }) {
               }}
             />
             <span className="absolute bottom-4 right-4 text-[10px] font-mono tracking-widest text-black/70 uppercase bg-white/80 px-3.5 py-1.5 rounded-full backdrop-blur-md font-semibold border border-black/10 shadow-sm">
-              CLICK FOR DETAILS 🔍
+              CLICK FOR FULL PRODUCT PAGE 🔍
             </span>
           </div>
 
-          {/* TECHNICAL SPECIFICATIONS GRID & INSTANT SHOPIFY BUY BUTTON */}
+          {/* TECHNICAL SPECIFICATIONS GRID & VIEW PRODUCT BUTTON */}
           <div className="mt-8 space-y-6">
             
             {/* Tech Badges */}
@@ -231,7 +216,7 @@ export default function WatchSection({ watch, index, onClick }) {
               </div>
             )}
 
-            {/* Apple / Shopify Direct Checkout Button */}
+            {/* View Specific Product Page Button */}
             <div>
               {watch.outOfStock ? (
                 <span className="block text-center w-full py-5 rounded-full bg-white/5 border border-white/10 text-white/40 text-xs font-mono tracking-[0.25em] uppercase">
@@ -239,21 +224,11 @@ export default function WatchSection({ watch, index, onClick }) {
                 </span>
               ) : (
                 <button
-                  onClick={handleBuyNow}
-                  disabled={isRedirecting}
-                  className="w-full py-5 rounded-full bg-white text-black hover:bg-white/90 active:scale-[0.98] transition-all duration-300 text-sm font-extrabold tracking-[0.2em] uppercase flex items-center justify-center gap-3 shadow-[0_15px_40px_rgba(255,255,255,0.2)] cursor-pointer disabled:opacity-50 disabled:cursor-wait"
+                  onClick={(e) => { e.stopPropagation(); onClick(watch); }}
+                  className="w-full py-5 rounded-full bg-white text-black hover:bg-white/90 active:scale-[0.98] transition-all duration-300 text-sm font-extrabold tracking-[0.2em] uppercase flex items-center justify-center gap-3 shadow-[0_15px_40px_rgba(255,255,255,0.2)] cursor-pointer"
                 >
-                  {isRedirecting ? (
-                    <span className="flex items-center gap-3">
-                      <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-                      REDIRECTING TO CHECKOUT...
-                    </span>
-                  ) : (
-                    <>
-                      <span>ORDER TIMEPIECE — {watch.price}</span>
-                      <span className="text-lg">→</span>
-                    </>
-                  )}
+                  <span>VIEW PRODUCT PAGE — {watch.price}</span>
+                  <span className="text-lg">→</span>
                 </button>
               )}
             </div>
