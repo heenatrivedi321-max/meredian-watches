@@ -213,30 +213,62 @@ export default function ProductOverlay({ watch, onClose }) {
                 </ul>
               </motion.div>
 
-              {/* Specs Grid */}
-              <div className="w-full lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-y-16 gap-x-16">
+              {/* Tactile 3D Sapphire Spec Sheet Cards */}
+              <div className="w-full lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[
-                  { label: "Engine", value: watch.specs?.movement },
-                  { label: "Architecture", value: watch.specs?.caseMaterial },
-                  { label: "Proportions", value: `${watch.specs?.diameter} / ${watch.specs?.thickness}` },
-                  { label: "Shield", value: watch.specs?.glass },
-                  { label: "Resistance", value: watch.specs?.waterResistance },
-                  { label: "Band", value: watch.specs?.strap }
+                  { icon: "⚙️", label: "Engine", value: watch.specs?.movement },
+                  { icon: "🛡️", label: "Architecture", value: watch.specs?.caseMaterial },
+                  { icon: "📐", label: "Proportions", value: `${watch.specs?.diameter} / ${watch.specs?.thickness}` },
+                  { icon: "💎", label: "Shield", value: watch.specs?.glass },
+                  { icon: "💧", label: "Resistance", value: watch.specs?.waterResistance },
+                  { icon: "🔗", label: "Band", value: watch.specs?.strap }
                 ].map((spec, idx) => (
                   <motion.div 
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ root: containerRef, amount: 0.3 }}
-                    transition={{ delay: idx * 0.1, duration: 0.6, ease: "easeOut" }}
+                    transition={{ delay: idx * 0.08, duration: 0.5, ease: "easeOut" }}
+                    whileHover={{ y: -4, scale: 1.02 }}
                     key={idx} 
-                    className="flex flex-col border-b border-white/5 pb-6 group hover:border-[#8B6914]/50 transition-colors duration-500 cursor-default"
+                    className="p-6 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 hover:border-white/30 backdrop-blur-2xl transition-all duration-300 flex flex-col justify-between shadow-[0_15px_35px_rgba(0,0,0,0.5)] group cursor-default"
                   >
-                    <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#8B6914]/70 mb-3 group-hover:text-[#8B6914] transition-colors duration-300">{spec.label}</span>
-                    <span className="text-xl lg:text-2xl font-light text-white/80 group-hover:text-white transition-colors duration-300" style={{ fontFamily: "'Inter', sans-serif" }}>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#8B6914] group-hover:text-white transition-colors">
+                        {spec.label}
+                      </span>
+                      <span className="text-lg opacity-80 group-hover:scale-110 transition-transform">
+                        {spec.icon}
+                      </span>
+                    </div>
+                    <span className="text-lg lg:text-xl font-light text-white/90 group-hover:text-white transition-colors text-left" style={{ fontFamily: "'Inter', sans-serif" }}>
                       {spec.value}
                     </span>
                   </motion.div>
                 ))}
+
+                {/* Anchor Story Preview Card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ root: containerRef, amount: 0.3 }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
+                  className="md:col-span-2 p-6 rounded-2xl bg-gradient-to-r from-white/[0.04] via-white/[0.08] to-white/[0.04] border border-[#8B6914]/40 backdrop-blur-2xl flex flex-col gap-3 shadow-[0_20px_45px_rgba(0,0,0,0.6)] text-left"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-gemini-gradient flex items-center gap-2">
+                      <span>📜</span> YOUR TIME ANCHOR NOTE (INCLUDED IN BOX)
+                    </span>
+                    <span className="text-[9px] font-mono tracking-widest text-white/50 uppercase border border-white/20 px-2.5 py-0.5 rounded-full">
+                      FREE GIFT CARD
+                    </span>
+                  </div>
+                  <p className="text-sm italic text-white/80 font-light leading-relaxed">
+                    "For the late nights nobody saw and the battles fought in silence. Your time starts now. — Nirmeet"
+                  </p>
+                  <span className="text-[10px] text-white/40 tracking-wider font-mono uppercase">
+                    ✦ Reply to Nirmeet's WhatsApp concierge text after ordering to customize your note
+                  </span>
+                </motion.div>
               </div>
               
             </div>
