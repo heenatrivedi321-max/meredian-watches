@@ -3,7 +3,7 @@
  * 
  * Automatically captures new orders from Shopify (smgnhj-dr.myshopify.com)
  * and dispatches personalized, high-trust concierge WhatsApp messages directly to customers as Nirmeet.
- * Prompts customers for their personal story/craft for the Amazon custom gift note.
+ * Includes official WhatsApp Community invite link to Meredian Atelier Circle.
  */
 
 const fs = require('fs');
@@ -14,6 +14,7 @@ const https = require('https');
 const SHOPIFY_DOMAIN = "smgnhj-dr.myshopify.com";
 const SHOPIFY_ADMIN_TOKEN = "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";
 const PROCESSED_ORDERS_FILE = path.join(__dirname, 'processed_orders.json');
+const WHATSAPP_COMMUNITY_LINK = "https://chat.whatsapp.com/CaN5A27mQD54Fg3aJJAwES";
 
 // Load Processed Orders
 function getProcessedOrders() {
@@ -66,7 +67,7 @@ function fetchRecentOrders() {
   });
 }
 
-// Format Natural Human Message from Nirmeet with Story Prompt
+// Format Natural Human Message from Nirmeet with Story Prompt + Community Invite
 function formatConciergeMessage(order) {
   const firstName = order.customer ? (order.customer.first_name || order.customer.name || '').split(' ')[0] : '';
   const greeting = firstName ? `Hey ${firstName}` : `Hey there`;
@@ -81,7 +82,9 @@ Just saw your order ${orderNumber} for the ${itemName}. Thanks a lot man!
 
 Before we seal your watch box for dispatch: Tell me who you are and what drives you (what's your craft or story)? Preparing something special to put inside your box. ⏱️
 
-(If you'd rather keep it a mystery, no worries at all—we'll include our signature atelier note for you!)`;
+Also, here is your VIP invite to join our Meredian Atelier Circle community: ${WHATSAPP_COMMUNITY_LINK}
+
+(If you'd rather keep your story a mystery, no worries at all—we'll include our signature atelier note for you!)`;
 }
 
 // Default Signature Note for Non-Responders
@@ -137,7 +140,7 @@ if (args.includes('--test')) {
     line_items: [{ title: 'Meridian Oyster Perpetual' }]
   };
   const msg = formatConciergeMessage(dummyOrder);
-  console.log('\n--- TEST NIRMEET WHATSAPP STORY PROMPT ---');
+  console.log('\n--- TEST NIRMEET WHATSAPP CONCIERGE & COMMUNITY INVITE ---');
   console.log(`Target Phone: +${testPhone}`);
   console.log(`Message:\n${msg}`);
   console.log(`\n🎁 Default Fallback Note (If no reply):\n${DEFAULT_SIGNATURE_NOTE}`);
@@ -148,4 +151,4 @@ if (args.includes('--test')) {
 // Run initial check and set 30-second interval
 processOrders();
 setInterval(processOrders, 30000);
-console.log('🚀 Nirmeet 24/7 WhatsApp Concierge & Story Prompt Engine is ACTIVE.');
+console.log('🚀 Nirmeet 24/7 WhatsApp Concierge & Community Engine is ACTIVE.');
