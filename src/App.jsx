@@ -220,68 +220,45 @@ export default function App() {
       });
 
       // ============================================================
-      // 2. MANIFESTO — Super Smooth Motion Blur Reveal
+      // 2. MANIFESTO — Butter-Smooth 120 FPS Reveal
       // ============================================================
       const manifestoLines = gsap.utils.toArray(".manifesto-line");
       manifestoLines.forEach((line, i) => {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: ".manifesto-spacer",
-            start: `top ${70 - i * 20}%`,
-            end: `top ${25 - i * 20}%`,
-            scrub: 1.2,
+        gsap.fromTo(line,
+          { autoAlpha: 0, y: 50, scale: 0.98 },
+          {
+            autoAlpha: 1, y: 0, scale: 1,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: ".manifesto-spacer",
+              start: `top ${75 - i * 15}%`,
+              end: `top ${40 - i * 15}%`,
+              scrub: 0.5,
+            }
           }
-        });
-
-        // Enter smoothly with elegant motion blur
-        tl.fromTo(line,
-          { autoAlpha: 0, y: 60, filter: "blur(12px)", scale: 0.96 },
-          { autoAlpha: 1, y: 0, filter: "blur(0px)", scale: 1, duration: 0.6, ease: "power2.out" }
         );
-
-        // Hold
-        tl.to(line, { autoAlpha: 1, duration: 0.4 });
-
-        // Exit gracefully into space
-        tl.to(line, {
-          autoAlpha: 0,
-          y: -50,
-          scale: 1.04,
-          filter: "blur(10px)",
-          duration: 0.6,
-          ease: "power1.inOut"
-        });
       });
 
       // ============================================================
-      // 3. PORSCHE — Super Smooth Motion Blur Reveal
+      // 3. PORSCHE — Butter-Smooth 120 FPS Reveal
       // ============================================================
       const porscheLines = gsap.utils.toArray(".porsche-line");
       porscheLines.forEach((line, i) => {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: ".porsche-spacer",
-            start: `top ${70 - i * 20}%`,
-            end: `top ${25 - i * 20}%`,
-            scrub: 1.2,
+        gsap.fromTo(line,
+          { autoAlpha: 0, y: 50, scale: 0.98 },
+          {
+            autoAlpha: 1, y: 0, scale: 1,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: ".porsche-spacer",
+              start: `top ${75 - i * 15}%`,
+              end: `top ${40 - i * 15}%`,
+              scrub: 0.5,
+            }
           }
-        });
-
-        tl.fromTo(line,
-          { autoAlpha: 0, y: 60, filter: "blur(12px)", scale: 0.96 },
-          { autoAlpha: 1, y: 0, filter: "blur(0px)", scale: 1, duration: 0.6, ease: "power2.out" }
         );
-
-        tl.to(line, { autoAlpha: 1, duration: 0.4 });
-
-        tl.to(line, {
-          autoAlpha: 0,
-          y: -50,
-          scale: 1.04,
-          filter: "blur(10px)",
-          duration: 0.6,
-          ease: "power1.inOut"
-        });
       });
 
       // Dimmer for porsche section
