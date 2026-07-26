@@ -273,19 +273,21 @@ export default function CollectionShowcase({ onSelectWatch }) {
         }
       );
 
-      // Dedicated Story Section — Butter-smooth 120 FPS GPU accelerated reveal
+      // 3D Fly-Through Zoom Portal Transition into Product Grid
       gsap.fromTo(".story-text-container",
-        { scale: 0.95, opacity: 0.3, y: 40 },
+        { scale: 1, opacity: 1, y: 0 },
         {
-          scale: 1.1,
-          opacity: 1,
-          y: -40,
-          ease: "none",
+          scale: 12,
+          opacity: 0,
+          y: -80,
+          ease: "power1.in",
           scrollTrigger: {
             trigger: storyRef.current,
-            start: "top 85%",
-            end: "bottom 15%",
+            start: "top top",
+            end: "+=120%",
             scrub: 0.5,
+            pin: true,
+            anticipatePin: 1
           }
         }
       );
@@ -336,7 +338,10 @@ export default function CollectionShowcase({ onSelectWatch }) {
           {/* Animated Gemini Aurora Fluid Backdrop */}
           <div className="absolute inset-0 gemini-aurora-bg pointer-events-none" />
 
-          <div className="story-text-container relative z-10 text-center px-6 max-w-6xl mx-auto">
+          <div 
+            className="story-text-container relative z-10 text-center px-6 max-w-6xl mx-auto"
+            style={{ transform: "translateZ(0)", willChange: "transform, opacity" }}
+          >
             <h3
               className="text-[2.2rem] sm:text-[3.8rem] md:text-[4.8rem] lg:text-[5.5rem] font-normal tracking-[0.06em] leading-[1.15] uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)] text-gemini-gradient"
               style={{ fontFamily: "'Cinzel', Georgia, serif" }}
