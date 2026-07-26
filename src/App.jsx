@@ -13,6 +13,7 @@ import BrandFilm from './components/BrandFilm';
 import IntroSplash from './components/IntroSplash';
 import CinemaIntermission from './components/CinemaIntermission';
 import PolicyModal from './components/PolicyModal';
+import LiquidMetalTrail from './components/LiquidMetalTrail';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -326,6 +327,9 @@ export default function App() {
       <ProductSchema watch={selectedWatch} />
 
       <div ref={mainRef} className="w-full bg-black min-h-screen text-white font-sans overflow-x-hidden selection:bg-[#C9A96E] selection:text-black">
+        
+        {/* OBSIDIAN LIQUID METAL EMBER CURSOR TRAIL CANVAS */}
+        <LiquidMetalTrail />
         
         {/* FIXED BACKGROUND MEDIA LAYER */}
         <div className="fixed inset-0 w-full h-screen z-0 pointer-events-none bg-black overflow-hidden">
