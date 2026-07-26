@@ -14,6 +14,7 @@ import IntroSplash from './components/IntroSplash';
 import CinemaIntermission from './components/CinemaIntermission';
 import PolicyModal from './components/PolicyModal';
 import LiquidMetalTrail from './components/LiquidMetalTrail';
+import CelestialConstellation from './components/CelestialConstellation';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -330,6 +331,9 @@ export default function App() {
         
         {/* OBSIDIAN LIQUID METAL EMBER CURSOR TRAIL CANVAS */}
         <LiquidMetalTrail />
+        
+        {/* CELESTIAL STARLIGHT CONSTELLATION MESH */}
+        <CelestialConstellation />
         
         {/* FIXED BACKGROUND MEDIA LAYER */}
         <div className="fixed inset-0 w-full h-screen z-0 pointer-events-none bg-black overflow-hidden">
