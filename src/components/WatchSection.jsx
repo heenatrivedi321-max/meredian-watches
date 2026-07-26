@@ -179,22 +179,24 @@ export default function WatchSection({ watch, index, onClick }) {
           {/* ROLEX OYSTER CERAMIC PEDESTAL — CLICK OPENS SPECIFIC PRODUCT OVERLAY */}
           <div 
             onClick={() => onClick(watch)}
-            className="relative w-full flex-1 flex items-center justify-center rounded-3xl bg-[#eaeaee] p-8 overflow-hidden shadow-2xl group cursor-pointer border border-white/20"
+            className="relative w-full flex-1 flex items-center justify-center rounded-3xl bg-[#eaeaee] p-8 overflow-hidden shadow-2xl group cursor-pointer border border-white/20 transition-all duration-500 hover:shadow-[0_30px_70px_rgba(0,0,0,0.8),0_0_40px_rgba(255,215,0,0.2)]"
+            style={{ perspective: '1000px' }}
           >
             {/* Ambient Gemini Aurora Back-Glow */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(66,133,244,0.15)_0%,rgba(155,81,224,0.12)_40%,transparent_70%)] pointer-events-none" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(66,133,244,0.18)_0%,rgba(155,81,224,0.15)_40%,transparent_70%)] pointer-events-none" />
 
             <img
               src={watch.image}
               alt={`${watch.brand} ${watch.model}`}
               loading="lazy"
-              className="max-h-[300px] sm:max-h-[360px] w-auto object-contain transition-transform duration-700 group-hover:scale-105 relative z-10"
+              className="max-h-[300px] sm:max-h-[360px] w-auto object-contain transition-all duration-500 group-hover:scale-120 group-hover:-rotate-2 group-hover:drop-shadow-[0_25px_35px_rgba(0,0,0,0.8)] relative z-10"
               style={{
                 mixBlendMode: 'multiply',
+                filter: 'contrast(1.08) saturate(1.15)'
               }}
             />
-            <span className="absolute bottom-4 right-4 text-[9px] font-mono tracking-widest text-black/80 uppercase bg-white/90 px-4 py-2 rounded-full backdrop-blur-md font-semibold border border-black/10 shadow-md">
-              VIEW TIMEPIECE 🔍
+            <span className="absolute bottom-4 right-4 text-[9px] font-mono tracking-widest text-black/80 uppercase bg-white/90 px-4 py-2 rounded-full backdrop-blur-md font-semibold border border-black/10 shadow-md transition-all group-hover:bg-black group-hover:text-white">
+              INSPECT TIMEPIECE 🔍
             </span>
           </div>
 

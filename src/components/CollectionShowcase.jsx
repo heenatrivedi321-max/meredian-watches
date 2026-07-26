@@ -95,11 +95,12 @@ function ProductCard({ watch, index, onClick }) {
         setIsHovered(true);
         if (videoRef.current) videoRef.current.play();
         gsap.to(cardRef.current, {
-          z: 50,
-          scale: 1.02,
-          boxShadow: '0 25px 60px rgba(0,0,0,0.5)',
+          z: 120,
+          scale: 1.08,
+          rotateX: -6,
+          boxShadow: '0 40px 90px rgba(0,0,0,0.85), 0 0 50px rgba(255,215,0,0.2)',
           duration: 0.4,
-          ease: 'power2.out',
+          ease: 'power3.out',
         });
       }}
       onMouseLeave={() => {
@@ -108,6 +109,7 @@ function ProductCard({ watch, index, onClick }) {
         gsap.to(cardRef.current, {
           z: 0,
           scale: 1,
+          rotateX: 0,
           boxShadow: '0 0px 0px rgba(0,0,0,0)',
           duration: 0.5,
           ease: 'power2.out',
@@ -149,8 +151,14 @@ function ProductCard({ watch, index, onClick }) {
         </p>
       </div>
 
-      {/* Watch Image — Floating, no white BG */}
-      <div className="absolute inset-0 flex items-center justify-center z-10 p-12">
+      {/* Watch Image — 3D POP-OUT FLY TO FACE EFFECT */}
+      <div 
+        className="absolute inset-0 flex items-center justify-center z-10 p-12 transition-transform duration-500 ease-out"
+        style={{
+          transform: isHovered ? 'translateZ(90px) scale(1.22)' : 'translateZ(0px) scale(1)',
+          willChange: 'transform'
+        }}
+      >
         {!imgLoaded && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-32 h-32 rounded-full bg-white/5 animate-pulse" />
@@ -161,10 +169,10 @@ function ProductCard({ watch, index, onClick }) {
           alt={`${watch.brand} ${watch.model}`}
           loading="lazy"
           onLoad={() => setImgLoaded(true)}
-          className="w-full h-full object-contain transition-all duration-700 group-hover:scale-[1.03]"
+          className="w-full h-full object-contain transition-all duration-700 drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]"
           style={{
             mixBlendMode: 'multiply',
-            filter: 'contrast(1.05) saturate(1.1)',
+            filter: 'contrast(1.08) saturate(1.15)',
             opacity: imgLoaded ? 1 : 0,
           }}
         />

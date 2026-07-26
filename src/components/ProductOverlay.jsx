@@ -263,10 +263,10 @@ export default function ProductOverlay({ watch, onClose }) {
                     </span>
                   </div>
                   <p className="text-sm italic text-white/80 font-light leading-relaxed">
-                    "For the late nights nobody saw and the battles fought in silence. Your time starts now. — Nirmeet"
+                    "For the late nights nobody saw and the battles fought in silence. Your time starts now."
                   </p>
                   <span className="text-[10px] text-white/40 tracking-wider font-mono uppercase">
-                    ✦ Reply to Nirmeet's WhatsApp concierge text after ordering to customize your note
+                    ✦ Reply to our WhatsApp concierge text after ordering to customize your note
                   </span>
                 </motion.div>
               </div>
@@ -308,17 +308,6 @@ export default function ProductOverlay({ watch, onClose }) {
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="relative z-10 flex flex-col items-center gap-8"
             >
-              {/* Live Inventory Radar Pulse Badge */}
-              <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 border border-black/10">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-radar-pulse absolute inline-flex h-full w-full rounded-full bg-[#00FF88] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#00FF88]"></span>
-                </span>
-                <span className="text-[10px] font-mono tracking-[0.25em] text-black/80 uppercase font-bold">
-                  IN STOCK — EXPRESS DISPATCH READY
-                </span>
-              </div>
-
               <div className="flex flex-col items-center">
                 <span className="text-[3rem] sm:text-[5rem] lg:text-[7rem] leading-none text-black font-light tracking-tighter" style={{ fontFamily: "'Inter', sans-serif" }}>
                   {watch.price}
