@@ -349,7 +349,9 @@ export default function App() {
         </div>
 
         {/* NAVIGATION */}
-        <nav className="fixed top-0 left-0 w-full h-16 sm:h-20 lg:h-24 z-50 flex items-center justify-between px-4 sm:px-8 lg:px-12 pointer-events-auto mix-blend-difference">
+        <nav className="relative flex items-center justify-between px-6 sm:px-12 md:px-20 py-4 sm:py-6 overflow-hidden pointer-events-auto mix-blend-difference">
+          {/* Magnetic Specular Sweep Hairline */}
+          <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#00F0FF] to-transparent animate-navbar-sweep opacity-70" />
           <button 
             onClick={() => setShowBrand(true)} 
             className="hidden md:block flex-1 text-left text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] font-semibold uppercase hover:opacity-80 transition-opacity cursor-pointer gemini-rainbow-subtext"

@@ -306,8 +306,19 @@ export default function ProductOverlay({ watch, onClose }) {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ root: containerRef, amount: 0.5 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="relative z-10 flex flex-col items-center gap-12"
+              className="relative z-10 flex flex-col items-center gap-8"
             >
+              {/* Live Inventory Radar Pulse Badge */}
+              <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 border border-black/10">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-radar-pulse absolute inline-flex h-full w-full rounded-full bg-[#00FF88] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#00FF88]"></span>
+                </span>
+                <span className="text-[10px] font-mono tracking-[0.25em] text-black/80 uppercase font-bold">
+                  IN STOCK — EXPRESS DISPATCH READY
+                </span>
+              </div>
+
               <div className="flex flex-col items-center">
                 <span className="text-[3rem] sm:text-[5rem] lg:text-[7rem] leading-none text-black font-light tracking-tighter" style={{ fontFamily: "'Inter', sans-serif" }}>
                   {watch.price}
@@ -335,8 +346,11 @@ export default function ProductOverlay({ watch, onClose }) {
                     }
                   }}
                   disabled={isRedirecting}
-                  className="px-10 sm:px-16 py-6 bg-black text-white hover:bg-black/80 hover:scale-[1.01] active:scale-[0.99] rounded-full text-xs sm:text-sm tracking-[0.2em] uppercase font-bold transition-all duration-300 flex items-center justify-center gap-3 sm:gap-4 disabled:opacity-50 disabled:cursor-wait cursor-pointer shadow-2xl"
+                  className="group relative overflow-hidden px-10 sm:px-16 py-6 bg-black text-white hover:bg-black/90 hover:scale-[1.02] active:scale-[0.99] rounded-full text-xs sm:text-sm tracking-[0.2em] uppercase font-bold transition-all duration-300 flex items-center justify-center gap-3 sm:gap-4 disabled:opacity-50 disabled:cursor-wait cursor-pointer shadow-[0_20px_50px_rgba(0,0,0,0.4)]"
                 >
+                  {/* Metallic Sheen Sweep Overlay */}
+                  <div className="btn-sheen absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
+
                   {isRedirecting ? (
                     <span className="flex items-center gap-3">
                       <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
