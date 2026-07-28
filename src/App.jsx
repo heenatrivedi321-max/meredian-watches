@@ -587,13 +587,13 @@ export default function App() {
         <HorologySpecsCounter />
         <BrandFilm />
         
-        {/* CINEMA TAKEOVER 2: OSCAR WINNER (MICHAEL B. JORDAN) */}
+        {/* CINEMA TAKEOVER 2: PEAKY BLINDERS SHELBY BROTHERS */}
         <CinemaIntermission 
-          videoSrc="/wolf-of-wall-street.mp4" 
-          title='"Everyone applauded. The watch kept ticking."' 
+          videoSrc="/peaky_intro_clip.mp4" 
+          title='"Power doesn’t ask for permission. It counts every second."' 
         />
 
-        {/* CINEMA TAKEOVER 3: PINNACLE SPORTS (F1 / TENNIS / EQUESTRIAN) */}
+        {/* CINEMA TAKEOVER 3: THE DARK KNIGHT */}
         <CinemaIntermission 
           videoSrc="/dark-knight.mp4" 
           title='"0.001s for glory. Still late for your 9 AM."' 
