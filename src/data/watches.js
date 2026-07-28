@@ -247,6 +247,7 @@ export const WATCHES = [
     price: "₹22,000",
     amount: 2200000,
     color: "#b8860b",
+    amazonLink: "https://www.amazon.in/dp/B0C3R8Z8KL",
     shopifyVariantId: "44409313755179",
     video: "/Fossil_Gold_Master.mp4",
     cinematicVideo: "/Fossil_Gold_Master.mp4",
