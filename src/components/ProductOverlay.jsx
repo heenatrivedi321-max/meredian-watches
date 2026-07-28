@@ -80,11 +80,8 @@ export default function ProductOverlay({ watch, onClose }) {
             <div className="w-full lg:w-[50%] flex flex-col z-20">
               
               {/* Block 1: Intro & Quote 1 */}
-              <motion.div 
-                whileInView={{ opacity: 1, y: 0 }}
-                initial={{ opacity: 0, y: 30 }}
-                viewport={{ root: containerRef, amount: 0.5 }}
-                onViewportEnter={() => setActiveImageIndex(0)}
+              <div 
+                onMouseEnter={() => setActiveImageIndex(0)}
                 className="w-full min-h-[80vh] flex flex-col justify-center px-8 lg:px-24 py-24"
               >
                 <p className="text-[10px] lg:text-xs tracking-[0.4em] font-mono text-black/40 uppercase mb-4 flex items-center gap-4">
@@ -102,14 +99,11 @@ export default function ProductOverlay({ watch, onClose }) {
                 >
                   "{watch?.quotes?.[0] || 'A masterpiece of precision.'}"
                 </p>
-              </motion.div>
+              </div>
 
               {/* Block 2: Description & Quote 2 */}
-              <motion.div 
-                whileInView={{ opacity: 1, y: 0 }}
-                initial={{ opacity: 0, y: 30 }}
-                viewport={{ root: containerRef, amount: 0.5 }}
-                onViewportEnter={() => setActiveImageIndex(1)}
+              <div 
+                onMouseEnter={() => setActiveImageIndex(1)}
                 className="w-full min-h-[80vh] flex flex-col justify-center px-8 lg:px-24 py-24"
               >
                 <p 
@@ -121,15 +115,12 @@ export default function ProductOverlay({ watch, onClose }) {
                 <p className="text-lg lg:text-xl text-black/70 leading-relaxed font-light" style={{ fontFamily: "'Inter', sans-serif" }}>
                   {watch?.description}
                 </p>
-              </motion.div>
+              </div>
 
               {/* Block 3: Final Image Trigger */}
-              <motion.div 
-                whileInView={{ opacity: 1 }}
-                initial={{ opacity: 0 }}
-                viewport={{ root: containerRef, amount: 0.5 }}
-                onViewportEnter={() => setActiveImageIndex(2)}
-                className="w-full h-[50vh]"
+              <div 
+                onMouseEnter={() => setActiveImageIndex(2)}
+                className="w-full h-[30vh]"
               />
 
             </div>
