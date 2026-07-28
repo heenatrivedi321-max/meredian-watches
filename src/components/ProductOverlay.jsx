@@ -61,7 +61,7 @@ export default function ProductOverlay({ watch, onClose }) {
           <div className="relative w-full max-w-7xl mx-auto flex flex-col lg:flex-row text-black min-h-screen">
             
             {/* LEFT: Watch Showcase Image */}
-            <div className="w-full lg:w-[50%] h-[400px] sm:h-[500px] lg:h-auto flex items-center justify-center bg-white p-6 sm:p-12 lg:sticky lg:top-0">
+            <div className="w-full lg:w-[50%] flex items-center justify-center bg-white p-6 sm:p-12">
               <AnimatePresence mode="wait">
                 <motion.img 
                   key={activeImage}
@@ -71,7 +71,7 @@ export default function ProductOverlay({ watch, onClose }) {
                   transition={{ duration: 0.6, ease: "easeInOut" }}
                   src={activeImage} 
                   alt={watch.model}
-                  className="w-full max-h-[75vh] object-contain mix-blend-multiply drop-shadow-2xl"
+                  className="w-full max-h-[60vh] object-contain mix-blend-multiply drop-shadow-2xl"
                 />
               </AnimatePresence>
             </div>
