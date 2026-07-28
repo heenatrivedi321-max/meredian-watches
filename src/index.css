@@ -2,10 +2,10 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #050508;
-  --color-surface: #0e0e14;
-  --color-primary: #ffffff;
-  --color-accent: #00F0FF;
+  --color-background: #ffffff;
+  --color-surface: #f8f9fa;
+  --color-primary: #000000;
+  --color-accent: #006039;
   
   --font-sans: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-rolex: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -13,19 +13,21 @@
 
 @layer base {
   :root {
-    --bg-color: #050508;
-    --text-color: #ffffff;
+    --bg-color: #ffffff;
+    --text-color: #0b0b0e;
     --accent-blue: #1A73E8;
-    --accent-cyan: #00F0FF;
+    --accent-cyan: #006039;
   }
   
   html {
     font-family: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #ffffff;
   }
   
   body {
-    @apply bg-[#050508] text-white font-sans antialiased overflow-x-hidden selection:bg-[#00F0FF] selection:text-black;
+    @apply bg-white text-[#0b0b0e] font-sans antialiased overflow-x-hidden selection:bg-[#006039] selection:text-white;
     font-family: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #ffffff;
   }
 }
 

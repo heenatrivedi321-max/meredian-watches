@@ -334,7 +334,7 @@ export default function App() {
       {/* Product Schema for SEO */}
       <ProductSchema watch={selectedWatch} />
 
-      <div ref={mainRef} className="w-full bg-black min-h-screen text-white font-sans overflow-x-hidden selection:bg-[#C9A96E] selection:text-black">
+      <div ref={mainRef} className="w-full bg-white min-h-screen text-[#0b0b0e] font-sans overflow-x-hidden selection:bg-[#006039] selection:text-white">
         
         {/* UNIFIED HYPER-OPTIMIZED 120 FPS CELESTIAL & LIQUID EMBER CANVAS */}
         <CelestialCanvas />
