@@ -27,15 +27,14 @@ export default function WatchSection({ watch, index, onClick }) {
     const pinTrigger = ScrollTrigger.create({
       trigger: section,
       start: "top top",
-      end: "+=100%",
+      end: "+=80%",
       pin: true,
       pinSpacing: true,
+      anticipatePin: 1,
+      fastScrollEnd: true,
       onEnter: () => {
         if (vid) vid.play().catch(() => {});
-        const timer = setTimeout(() => {
-          setShowUI(true);
-        }, 1200);
-        return () => clearTimeout(timer);
+        setShowUI(true);
       },
       onLeave: () => {
         if (vid) {
