@@ -129,10 +129,13 @@ export default function ProductOverlay({ watch, onClose }) {
           backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           cursor: 'pointer', boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-          transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
+          transition: 'transform 0.4s cubic-bezier(0.16,1,0.3,1), background-color 0.3s ease, box-shadow 0.3s ease',
+          willChange: 'transform',
         }}
-        onMouseEnter={e => { e.currentTarget.style.background = '#000'; e.currentTarget.style.transform = 'scale(1.1) rotate(90deg)'; e.currentTarget.querySelector('svg').style.color = '#fff'; }}
+        onMouseEnter={e => { e.currentTarget.style.background = '#000'; e.currentTarget.style.transform = 'scale(1.12) rotate(90deg)'; e.currentTarget.querySelector('svg').style.color = '#fff'; }}
         onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.9)'; e.currentTarget.style.transform = 'scale(1) rotate(0deg)'; e.currentTarget.querySelector('svg').style.color = '#000'; }}
+        onMouseDown={e => { e.currentTarget.style.transform = 'scale(0.92) rotate(90deg)'; }}
+        onMouseUp={e => { e.currentTarget.style.transform = 'scale(1.12) rotate(90deg)'; }}
       >
         <X size={22} strokeWidth={2} color="#000" style={{ transition: 'color 0.3s ease' }} />
       </button>
@@ -252,10 +255,13 @@ export default function ProductOverlay({ watch, onClose }) {
             background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
             border: '1px solid rgba(255,255,255,0.25)', color: '#fff',
             fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', fontWeight: 700,
-            cursor: 'pointer', transition: 'all 0.4s ease',
+            cursor: 'pointer', transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
+            willChange: 'transform, background-color',
           }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.25)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)'; }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.12)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)'; }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.25)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)'; e.currentTarget.style.transform = 'scale(1.06)'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.12)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)'; e.currentTarget.style.transform = 'scale(1)'; }}
+          onMouseDown={e => { e.currentTarget.style.transform = 'scale(0.95)'; }}
+          onMouseUp={e => { e.currentTarget.style.transform = 'scale(1.06)'; }}
         >
           {isMuted ? '🔇 Unmute Sound' : '🔊 Mute Sound'}
         </button>
@@ -426,15 +432,18 @@ export default function ProductOverlay({ watch, onClose }) {
               disabled={isRedirecting}
               style={{
                 padding: '24px 72px', borderRadius: 9999,
-                background: '#000', color: '#fff',
+                background: 'linear-gradient(135deg, #000 0%, #1a1a1a 100%)', color: '#fff',
                 fontSize: 15, letterSpacing: '0.2em', textTransform: 'uppercase',
                 fontWeight: 800, cursor: 'pointer', border: 'none',
-                transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
+                transition: 'transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s cubic-bezier(0.16,1,0.3,1)',
                 boxShadow: '0 12px 40px rgba(0,0,0,0.25)',
                 animation: 'pulseGlow 3s ease infinite',
+                willChange: 'transform, box-shadow',
               }}
-              onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.boxShadow = '0 16px 50px rgba(0,0,0,0.35)'; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.25)'; }}
+              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px) scale(1.05)'; e.currentTarget.style.boxShadow = '0 20px 50px rgba(0,0,0,0.4)'; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0) scale(1)'; e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.25)'; }}
+              onMouseDown={e => { e.currentTarget.style.transform = 'translateY(-1px) scale(0.96)'; }}
+              onMouseUp={e => { e.currentTarget.style.transform = 'translateY(-4px) scale(1.05)'; }}
             >
               {isRedirecting ? 'REDIRECTING...' : `BUY TIME — ${watch.price} →`}
             </button>
