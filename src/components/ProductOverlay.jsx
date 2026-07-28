@@ -7,8 +7,6 @@ export default function ProductOverlay({ watch, onClose }) {
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [visible, setVisible] = useState(false);
-  const scrollRef = useRef(null);
 
   const allImages = watch?.gallery?.length 
     ? watch.gallery.filter(Boolean) 
@@ -17,287 +15,299 @@ export default function ProductOverlay({ watch, onClose }) {
   const activeImage = images[activeImageIndex] || watch?.image || '/watches_new/MK9218_gold_auto_1.jpg';
 
   useEffect(() => {
-    if (watch) {
-      setActiveImageIndex(0);
-      setVisible(false);
-      // Trigger animation on next frame
-      requestAnimationFrame(() => setVisible(true));
-    }
+    if (watch) setActiveImageIndex(0);
   }, [watch]);
 
-  // Lock body scroll when overlay is open, scroll inner container to top
+  // When overlay opens: save scroll position, lock body, scroll to top
+  // When overlay closes: unlock body, restore scroll position
+  const savedScrollY = useRef(0);
+  
   useEffect(() => {
     if (watch) {
-      document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
-      if (scrollRef.current) scrollRef.current.scrollTop = 0;
-    } else {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
+      savedScrollY.current = window.scrollY;
+      // Lock the page behind the overlay
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${savedScrollY.current}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.body.style.width = '100%';
+      // Scroll the window to top so the overlay starts at top
+      window.scrollTo(0, 0);
     }
     return () => {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
+      if (watch) {
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.left = '';
+        document.body.style.right = '';
+        document.body.style.width = '';
+        window.scrollTo(0, savedScrollY.current);
+      }
     };
   }, [watch]);
 
   if (!watch) return null;
 
-  return ReactDOM.createPortal(
-    <>
-      {/* BACKDROP */}
-      <div 
-        className="fixed inset-0 bg-black/80 backdrop-blur-sm"
-        style={{ zIndex: 99990, opacity: visible ? 1 : 0, transition: 'opacity 0.4s ease' }}
-        onClick={onClose}
-      />
+  // Create a portal div if it doesn't exist
+  let portalRoot = document.getElementById('product-overlay-root');
+  if (!portalRoot) {
+    portalRoot = document.createElement('div');
+    portalRoot.id = 'product-overlay-root';
+    document.body.appendChild(portalRoot);
+  }
 
-      {/* SCROLLABLE PRODUCT PAGE — plain div, NO transforms, portaled to body */}
-      <div
-        ref={scrollRef}
-        className="fixed inset-0 overflow-y-auto overflow-x-hidden bg-white"
+  const handleClose = () => {
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    window.scrollTo(0, savedScrollY.current);
+    onClose();
+  };
+
+  return ReactDOM.createPortal(
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 999999,
+        background: '#fff',
+        overflowY: 'scroll',
+        overflowX: 'hidden',
+        WebkitOverflowScrolling: 'touch',
+      }}
+    >
+      {/* Close Button */}
+      <button 
+        onClick={handleClose}
         style={{
-          zIndex: 99995,
-          opacity: visible ? 1 : 0,
-          transition: 'opacity 0.5s ease',
-          WebkitOverflowScrolling: 'touch',
+          position: 'fixed',
+          top: '16px',
+          right: '16px',
+          zIndex: 9999999,
+          width: '44px',
+          height: '44px',
+          borderRadius: '50%',
+          border: '1px solid rgba(0,0,0,0.1)',
+          background: 'rgba(255,255,255,0.95)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
         }}
       >
-        {/* Close Button */}
-        <button 
-          onClick={onClose}
-          className="fixed top-4 right-4 sm:top-6 sm:right-6 lg:top-10 lg:right-10 z-[100] w-11 h-11 sm:w-12 sm:h-12 rounded-full border border-black/10 bg-white/90 backdrop-blur-xl flex items-center justify-center hover:bg-black hover:text-white hover:scale-110 transition-all duration-300 shadow-xl text-black cursor-pointer"
+        <X size={20} strokeWidth={2} color="#000" />
+      </button>
+
+      {/* ========================================= */}
+      {/* SECTION 1: WATCH HERO + NARRATIVE         */}
+      {/* ========================================= */}
+      <div style={{ width: '100%', background: '#fff' }}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'flex', flexDirection: 'column' }} className="lg:!flex-row">
+          
+          {/* Watch Image */}
+          <div className="w-full lg:w-[50%]" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px 24px', background: '#fff' }}>
+            <img 
+              src={activeImage} 
+              alt={watch.model}
+              style={{ width: '100%', maxHeight: '60vh', objectFit: 'contain', mixBlendMode: 'multiply' }}
+              className="drop-shadow-2xl"
+            />
+          </div>
+
+          {/* Text Content */}
+          <div className="w-full lg:w-[50%]" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '48px 24px', gap: '48px' }}>
+            
+            {/* Title & Quote */}
+            <div>
+              <p style={{ fontSize: '10px', letterSpacing: '0.4em', fontFamily: 'monospace', color: 'rgba(0,0,0,0.4)', textTransform: 'uppercase', marginBottom: '16px' }}>
+                {watch.brand}
+              </p>
+              <h1 
+                className="text-[2.2rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5.5rem]"
+                style={{ lineHeight: 1.05, fontWeight: 400, letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '24px', color: '#000', fontFamily: "'Inter', sans-serif" }}
+              >
+                {watch.model}
+              </h1>
+              <p style={{ fontSize: '1.25rem', color: 'rgba(0,0,0,0.6)', fontWeight: 300, maxWidth: '600px', lineHeight: 1.7, fontFamily: "'Inter', sans-serif" }}>
+                "{watch?.quotes?.[0] || 'A masterpiece of precision.'}"
+              </p>
+            </div>
+
+            {/* Quote & Description */}
+            <div style={{ borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: '48px' }}>
+              <p 
+                className="text-[1.5rem] sm:text-[2.2rem] lg:text-[3rem]"
+                style={{ color: '#000', lineHeight: 1.15, fontWeight: 700, letterSpacing: '-0.02em', marginBottom: '24px', fontFamily: "'Inter', sans-serif" }}
+              >
+                "{watch?.quotes?.[1] || 'Unapologetic excellence.'}"
+              </p>
+              <p style={{ fontSize: '1.125rem', color: 'rgba(0,0,0,0.7)', lineHeight: 1.7, fontWeight: 300, fontFamily: "'Inter', sans-serif" }}>
+                {watch?.description}
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {/* ========================================= */}
+      {/* SECTION 2: CINEMATIC VIDEO                */}
+      {/* ========================================= */}
+      <div style={{ position: 'relative', width: '100%', height: '80vh', background: '#000', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <video 
+          autoPlay loop muted={isMuted} playsInline preload="auto"
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transform: 'scale(1.35)' }}
         >
-          <X size={20} strokeWidth={2} />
+          <source src={watch.cinematicVideo} type="video/mp4" />
+        </video>
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, black, transparent, black)', opacity: 0.8, pointerEvents: 'none' }} />
+        
+        <button
+          onClick={() => setIsMuted(!isMuted)}
+          style={{ position: 'absolute', bottom: '24px', right: '24px', zIndex: 20, padding: '8px 16px', borderRadius: '9999px', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase', cursor: 'pointer' }}
+        >
+          {isMuted ? 'Sound Off' : 'Sound On'}
         </button>
-
-        {/* ========================================= */}
-        {/* SECTION 1: WATCH HERO + NARRATIVE         */}
-        {/* ========================================= */}
-        <div className="w-full bg-white">
-          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row text-black">
-            
-            {/* LEFT: Watch Image */}
-            <div className="w-full lg:w-[50%] flex items-center justify-center bg-white p-6 sm:p-12">
-              <img 
-                src={activeImage} 
-                alt={watch.model}
-                className="w-full max-h-[60vh] object-contain drop-shadow-2xl"
-                style={{ mixBlendMode: 'multiply' }}
-              />
-            </div>
-
-            {/* RIGHT: Text Content */}
-            <div className="w-full lg:w-[50%] flex flex-col justify-center px-6 sm:px-12 lg:px-16 py-12 lg:py-24 space-y-16">
-              
-              {/* Block 1: Title & Quote */}
-              <div>
-                <p className="text-[10px] lg:text-xs tracking-[0.4em] font-mono text-black/40 uppercase mb-4">
-                  {watch.brand}
-                </p>
-                <h1 
-                  className="text-[2.2rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5.5rem] leading-[1.05] font-normal tracking-[0.06em] uppercase mb-4 sm:mb-8 text-black drop-shadow-sm"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  {watch.model}
-                </h1>
-                <p 
-                  className="text-base sm:text-xl lg:text-2xl text-black/60 font-light max-w-xl leading-relaxed"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  "{watch?.quotes?.[0] || 'A masterpiece of precision.'}"
-                </p>
-              </div>
-
-              {/* Block 2: Quote & Description */}
-              <div className="border-t border-black/10 pt-12">
-                <p 
-                  className="text-[1.5rem] sm:text-[2.2rem] lg:text-[3rem] text-black leading-[1.15] font-bold tracking-tight mb-6 sm:mb-8"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  "{watch?.quotes?.[1] || 'Unapologetic excellence.'}"
-                </p>
-                <p className="text-base sm:text-lg lg:text-xl text-black/70 leading-relaxed font-light" style={{ fontFamily: "'Inter', sans-serif" }}>
-                  {watch?.description}
-                </p>
-              </div>
-
-            </div>
-          </div>
+        
+        <div style={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>
+          <h2 style={{ fontSize: '2rem', letterSpacing: '0.5em', fontWeight: 300, textTransform: 'uppercase', color: 'rgba(255,255,255,0.9)', fontFamily: "'Inter', sans-serif" }}>
+            Uncompromised
+          </h2>
         </div>
+      </div>
 
-        {/* ========================================= */}
-        {/* SECTION 2: CINEMATIC VIDEO                */}
-        {/* ========================================= */}
-        <div className="relative w-full h-[80vh] lg:h-screen bg-black overflow-hidden flex items-center justify-center">
-          <video 
-            autoPlay 
-            loop 
-            muted={isMuted}
-            playsInline 
-            preload="auto"
-            className="absolute inset-0 w-full h-full object-cover scale-[1.35]"
-          >
-            <source src={watch.cinematicVideo} type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-80 pointer-events-none" />
+      {/* ========================================= */}
+      {/* SECTION 3: TECHNICAL SPECS                */}
+      {/* ========================================= */}
+      <div style={{ position: 'relative', width: '100%', background: 'linear-gradient(to bottom, #1a1a1a, #050505, #000)', padding: '96px 32px' }}>
+        
+        <div style={{ maxWidth: '1152px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '64px', position: 'relative', zIndex: 10 }} className="lg:!flex-row lg:!gap-32">
           
-          <button
-            onClick={() => setIsMuted(!isMuted)}
-            className="absolute bottom-6 right-6 sm:bottom-10 sm:right-10 z-20 px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] sm:text-xs tracking-widest uppercase hover:bg-white hover:text-black transition-colors cursor-pointer"
-          >
-            {isMuted ? 'Sound Off' : 'Sound On'}
-          </button>
-          
-          <div className="relative z-10 text-center">
-            <h2 className="text-2xl lg:text-4xl tracking-[0.5em] font-light uppercase text-white/90" style={{ fontFamily: "'Inter', sans-serif" }}>
-              Uncompromised
-            </h2>
-          </div>
-        </div>
-
-        {/* ========================================= */}
-        {/* SECTION 3: TECHNICAL SPECS                */}
-        {/* ========================================= */}
-        <div className="relative w-full bg-gradient-to-b from-[#1a1a1a] via-[#050505] to-black py-24 lg:py-40 px-8 lg:px-24 overflow-hidden">
-          
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-[500px] bg-[#8B6914] opacity-5 blur-[120px] pointer-events-none rounded-full" />
-          
-          <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-32 relative z-10">
-            
-            {/* Features List */}
-            <div className="w-full lg:w-1/3">
-              <h3 className="text-xs tracking-[0.4em] font-bold uppercase text-[#8B6914] mb-12 flex items-center gap-4">
-                <span className="w-8 h-[1px] bg-[#8B6914]"></span>
-                Signature Details
-              </h3>
-              <ul className="space-y-10">
-                {watch.features && watch.features.map((feature, idx) => (
-                  <li 
-                    key={idx} 
-                    className="flex items-start text-lg lg:text-xl text-[#F5F5F0] font-light group cursor-default"
-                  >
-                    <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mr-4 shrink-0 group-hover:bg-[#8B6914]/20 group-hover:border-[#8B6914]/50 transition-colors duration-500">
-                      <span className="text-[#8B6914] text-xs">⬦</span> 
-                    </div>
-                    <span className="pt-1 group-hover:text-white transition-colors duration-300">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Spec Cards */}
-            <div className="w-full lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[
-                { icon: "⚙️", label: "Engine", value: watch.specs?.movement },
-                { icon: "🛡️", label: "Architecture", value: watch.specs?.caseMaterial },
-                { icon: "📐", label: "Proportions", value: `${watch.specs?.diameter} / ${watch.specs?.thickness}` },
-                { icon: "💎", label: "Shield", value: watch.specs?.glass },
-                { icon: "💧", label: "Resistance", value: watch.specs?.waterResistance },
-                { icon: "🔗", label: "Band", value: watch.specs?.strap }
-              ].map((spec, idx) => (
-                <div 
-                  key={idx} 
-                  className="p-6 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 hover:border-white/30 backdrop-blur-2xl transition-all duration-300 flex flex-col justify-between shadow-[0_15px_35px_rgba(0,0,0,0.5)] group cursor-default hover:-translate-y-1"
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#8B6914] group-hover:text-white transition-colors">
-                      {spec.label}
-                    </span>
-                    <span className="text-lg opacity-80 group-hover:scale-110 transition-transform">
-                      {spec.icon}
-                    </span>
+          {/* Features List */}
+          <div className="w-full lg:w-1/3">
+            <h3 style={{ fontSize: '12px', letterSpacing: '0.4em', fontWeight: 700, textTransform: 'uppercase', color: '#8B6914', marginBottom: '48px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <span style={{ width: '32px', height: '1px', background: '#8B6914' }}></span>
+              Signature Details
+            </h3>
+            <ul style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
+              {watch.features && watch.features.map((feature, idx) => (
+                <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', fontSize: '1.125rem', color: '#F5F5F0', fontWeight: 300 }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '16px', flexShrink: 0 }}>
+                    <span style={{ color: '#8B6914', fontSize: '12px' }}>⬦</span>
                   </div>
-                  <span className="text-lg lg:text-xl font-light text-white/90 group-hover:text-white transition-colors text-left" style={{ fontFamily: "'Inter', sans-serif" }}>
-                    {spec.value}
-                  </span>
-                </div>
+                  <span style={{ paddingTop: '4px' }}>{feature}</span>
+                </li>
               ))}
+            </ul>
+          </div>
 
-              {/* Anchor Story Card */}
-              <div className="md:col-span-2 p-6 rounded-2xl bg-gradient-to-r from-white/[0.04] via-white/[0.08] to-white/[0.04] border border-[#8B6914]/40 backdrop-blur-2xl flex flex-col gap-3 shadow-[0_20px_45px_rgba(0,0,0,0.6)] text-left">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#C9A96E] flex items-center gap-2">
-                    <span>📜</span> YOUR TIME ANCHOR NOTE (INCLUDED IN BOX)
-                  </span>
-                  <span className="text-[9px] font-mono tracking-widest text-white/50 uppercase border border-white/20 px-2.5 py-0.5 rounded-full">
-                    FREE GIFT CARD
-                  </span>
+          {/* Spec Cards */}
+          <div className="w-full lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              { icon: "⚙️", label: "Engine", value: watch.specs?.movement },
+              { icon: "🛡️", label: "Architecture", value: watch.specs?.caseMaterial },
+              { icon: "📐", label: "Proportions", value: `${watch.specs?.diameter} / ${watch.specs?.thickness}` },
+              { icon: "💎", label: "Shield", value: watch.specs?.glass },
+              { icon: "💧", label: "Resistance", value: watch.specs?.waterResistance },
+              { icon: "🔗", label: "Band", value: watch.specs?.strap }
+            ].map((spec, idx) => (
+              <div key={idx} style={{ padding: '24px', borderRadius: '16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+                  <span style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.3em', fontWeight: 700, color: '#8B6914' }}>{spec.label}</span>
+                  <span style={{ fontSize: '1.125rem', opacity: 0.8 }}>{spec.icon}</span>
                 </div>
-                <p className="text-sm italic text-white/80 font-light leading-relaxed">
-                  "For the late nights nobody saw and the battles fought in silence. Your time starts now."
-                </p>
-                <span className="text-[10px] text-white/40 tracking-wider font-mono uppercase">
-                  ✦ Reply to our WhatsApp concierge text after ordering to customize your note
+                <span style={{ fontSize: '1.125rem', fontWeight: 300, color: 'rgba(255,255,255,0.9)', fontFamily: "'Inter', sans-serif" }}>{spec.value}</span>
+              </div>
+            ))}
+
+            {/* Anchor Story Card */}
+            <div className="md:col-span-2" style={{ padding: '24px', borderRadius: '16px', background: 'linear-gradient(to right, rgba(255,255,255,0.04), rgba(255,255,255,0.08), rgba(255,255,255,0.04))', border: '1px solid rgba(139,105,20,0.4)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.3em', fontWeight: 700, color: '#C9A96E' }}>
+                  📜 YOUR TIME ANCHOR NOTE (INCLUDED IN BOX)
+                </span>
+                <span style={{ fontSize: '9px', fontFamily: 'monospace', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', border: '1px solid rgba(255,255,255,0.2)', padding: '2px 10px', borderRadius: '9999px' }}>
+                  FREE GIFT CARD
                 </span>
               </div>
-            </div>
-            
-          </div>
-        </div>
-
-        {/* ========================================= */}
-        {/* SECTION 4: THE CLOSER & BUY               */}
-        {/* ========================================= */}
-        <div className="relative w-full bg-white text-black py-20 sm:py-32 lg:py-56 flex flex-col items-center justify-center text-center px-4 sm:px-8">
-          
-          <h2 
-            className="relative z-10 text-[2.5rem] sm:text-[4rem] lg:text-[7rem] font-bold tracking-tighter mb-6 sm:mb-8 leading-[0.9] text-black"
-            style={{ fontFamily: "'Inter', 'Helvetica Neue', sans-serif" }}
-          >
-            Own the moment.
-          </h2>
-          
-          <p 
-            className="relative z-10 text-xl lg:text-2xl text-black/60 mb-20 max-w-2xl mx-auto font-light"
-            style={{ fontFamily: "'Inter', sans-serif" }}
-          >
-            Some wait for their time. You wear yours.
-          </p>
-
-          <div className="relative z-10 flex flex-col items-center gap-8">
-            <div className="flex flex-col items-center">
-              <span className="text-[3rem] sm:text-[5rem] lg:text-[7rem] leading-none text-black font-light tracking-tighter" style={{ fontFamily: "'Inter', sans-serif" }}>
-                {watch.price}
+              <p style={{ fontSize: '14px', fontStyle: 'italic', color: 'rgba(255,255,255,0.8)', fontWeight: 300, lineHeight: 1.6 }}>
+                "For the late nights nobody saw and the battles fought in silence. Your time starts now."
+              </p>
+              <span style={{ fontSize: '10px', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em', fontFamily: 'monospace', textTransform: 'uppercase' }}>
+                ✦ Reply to our WhatsApp concierge text after ordering to customize your note
               </span>
             </div>
-            
-            {watch.outOfStock ? (
-              <button 
-                onClick={() => window.location.href = `https://wa.me/918431724851?text=Hi%2C%20I%27m%20interested%20in%20the%20${encodeURIComponent(watch.brand + ' ' + watch.model)}.%20Is%20it%20available%3F`}
-                className="px-8 sm:px-14 py-5 sm:py-7 bg-black/5 border border-black/10 text-black hover:bg-black hover:text-white hover:scale-[1.01] active:scale-[0.99] rounded-full text-xs sm:text-sm tracking-[0.2em] uppercase font-bold transition-all duration-300 flex items-center justify-center gap-3 sm:gap-4 cursor-pointer"
-              >
-                Notify Me — WhatsApp
-              </button>
-            ) : (
-              <button 
-                onClick={async () => {
-                  if (isRedirecting) return;
-                  setIsRedirecting(true);
-                  try {
-                    const cart = await createCheckout(watch.shopifyVariantId);
-                    window.location.href = cart.checkoutUrl;
-                  } catch (err) {
-                    console.warn("Checkout failed:", err);
-                    window.location.href = `https://smgnhj-dr.myshopify.com/cart/${watch.shopifyVariantId}:1`;
-                  }
-                }}
-                disabled={isRedirecting}
-                className="btn-google-pill-gold text-base py-5 px-12 sm:px-16 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-wait cursor-pointer"
-              >
-                {isRedirecting ? (
-                  <span className="flex items-center gap-3">
-                    <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-                    REDIRECTING TO CHECKOUT...
-                  </span>
-                ) : `BUY TIME — ${watch.price} →`}
-              </button>
-            )}
           </div>
+          
         </div>
-
       </div>
-    </>,
-    document.body
+
+      {/* ========================================= */}
+      {/* SECTION 4: THE CLOSER & BUY               */}
+      {/* ========================================= */}
+      <div style={{ position: 'relative', width: '100%', background: '#fff', color: '#000', padding: '80px 16px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+        
+        <h2 
+          className="text-[2.5rem] sm:text-[4rem] lg:text-[7rem]"
+          style={{ fontWeight: 700, letterSpacing: '-0.04em', marginBottom: '24px', lineHeight: 0.9, color: '#000', fontFamily: "'Inter', 'Helvetica Neue', sans-serif" }}
+        >
+          Own the moment.
+        </h2>
+        
+        <p style={{ fontSize: '1.25rem', color: 'rgba(0,0,0,0.6)', marginBottom: '80px', maxWidth: '672px', fontWeight: 300, fontFamily: "'Inter', sans-serif" }}>
+          Some wait for their time. You wear yours.
+        </p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '32px' }}>
+          <span 
+            className="text-[3rem] sm:text-[5rem] lg:text-[7rem]"
+            style={{ lineHeight: 1, color: '#000', fontWeight: 300, letterSpacing: '-0.04em', fontFamily: "'Inter', sans-serif" }}
+          >
+            {watch.price}
+          </span>
+          
+          {watch.outOfStock ? (
+            <button 
+              onClick={() => window.location.href = `https://wa.me/918431724851?text=Hi%2C%20I%27m%20interested%20in%20the%20${encodeURIComponent(watch.brand + ' ' + watch.model)}.%20Is%20it%20available%3F`}
+              style={{ padding: '20px 56px', background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.1)', color: '#000', borderRadius: '9999px', fontSize: '12px', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 700, cursor: 'pointer' }}
+            >
+              Notify Me — WhatsApp
+            </button>
+          ) : (
+            <button 
+              onClick={async () => {
+                if (isRedirecting) return;
+                setIsRedirecting(true);
+                try {
+                  const cart = await createCheckout(watch.shopifyVariantId);
+                  window.location.href = cart.checkoutUrl;
+                } catch (err) {
+                  console.warn("Checkout failed:", err);
+                  window.location.href = `https://smgnhj-dr.myshopify.com/cart/${watch.shopifyVariantId}:1`;
+                }
+              }}
+              disabled={isRedirecting}
+              className="btn-google-pill-gold"
+              style={{ fontSize: '16px', padding: '20px 48px', cursor: 'pointer' }}
+            >
+              {isRedirecting ? (
+                <span style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <span style={{ width: '16px', height: '16px', border: '2px solid rgba(0,0,0,0.3)', borderTopColor: '#000', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+                  REDIRECTING TO CHECKOUT...
+                </span>
+              ) : `BUY TIME — ${watch.price} →`}
+            </button>
+          )}
+        </div>
+      </div>
+
+    </div>,
+    portalRoot
   );
 }
