@@ -68,7 +68,7 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
     }
 
     return () => {
-      ScrollTrigger.getAll().forEach(t => t.kill());
+      tl.kill();
     };
   }, []);
 
