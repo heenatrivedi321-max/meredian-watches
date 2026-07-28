@@ -16,9 +16,9 @@ export default function InstagramFeed() {
   const INSTAGRAM_URL = 'https://www.instagram.com/meri.dianwatches/';
 
   return (
-    <section className="w-full py-24 sm:py-32 bg-black pointer-events-auto relative overflow-hidden">
+    <section className="w-full py-24 sm:py-32 bg-white text-[#0b0b0e] pointer-events-auto relative overflow-hidden">
       {/* Ambient glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-to-b from-pink-500/5 to-transparent rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-to-b from-[#006039]/10 to-transparent rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
         {/* Header */}
@@ -57,7 +57,7 @@ export default function InstagramFeed() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08, duration: 0.6 }}
-              className="group relative aspect-square rounded-xl overflow-hidden bg-white/5 border border-white/5 hover:border-white/20 transition-all duration-500"
+              className="group relative aspect-square rounded-xl overflow-hidden bg-[#f8f9fa] border border-black/10 hover:border-[#006039]/40 shadow-md transition-all duration-500"
             >
               <img
                 src={watch.image}

@@ -99,10 +99,6 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
         <source src={videoSrc} type="video/mp4" />
       </video>
 
-      {/* IMAX 2.39:1 CINEMATIC TOP & BOTTOM LETTERBOX BARS */}
-      <div className="absolute top-0 left-0 w-full h-12 sm:h-16 lg:h-20 bg-black z-25 pointer-events-none border-b border-white/10" />
-      <div className="absolute bottom-0 left-0 w-full h-12 sm:h-16 lg:h-20 bg-black z-25 pointer-events-none border-t border-white/10" />
-
       {/* LIVE AUDIO WAVEFORM ANIMATION */}
       {isAudioEnabled && (
         <div className="absolute bottom-6 left-8 sm:bottom-8 sm:left-12 z-30 flex items-center gap-1.5 pointer-events-none">
