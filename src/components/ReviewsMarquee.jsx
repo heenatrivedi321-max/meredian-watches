@@ -2,13 +2,13 @@ import React from 'react';
 import WebGLFluidBg from './WebGLFluidBg';
 
 const REVIEWS = [
-  "\"I bought this to tell time. Now time tells me what to do.\"",
-  "\"My wrist has more net worth than my car.\"",
-  "\"I didn't need it. I just wanted you to know I could afford it.\"",
-  "\"It’s practically useless. I love it.\"",
-  "\"Five stars. It outlived my marriage.\"",
-  "\"I wear this to the grocery store just to disrespect people.\"",
-  "\"It doesn't even have a battery. I have to wind it like a peasant. 10/10.\""
+  "\"My boss asked if I got a promotion. I let him think I did.\"",
+  "\"Looks like 50 Lacs on the wrist. Solid weight and premium leather.\"",
+  "\"Dispatched to South Mumbai in 24 hours. Pure unadulterated luxury.\"",
+  "\"My smartwatch told me to take 10,000 steps. I bought this instead.\"",
+  "\"The sweeping automatic second hand is mesmerizing to watch.\"",
+  "\"People at dinner kept looking at my wrist instead of the menu.\"",
+  "\"Zero batteries. Zero notifications. Just pure mechanical excellence.\""
 ];
 
 export default function ReviewsMarquee() {

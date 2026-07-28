@@ -117,7 +117,7 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
             316L SURGICAL STEEL
           </span>
           <h2 className="text-3xl sm:text-5xl font-sans font-normal tracking-[-0.02em] text-gradient-cyan-lime">
-            Designed for boardrooms. Worn to get fast food at 2 AM.
+            Looks like 50 Lacs. Costs less than your weekend tab.
           </h2>
         </div>
       </div>
@@ -133,7 +133,7 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
             SAPPHIRE CRYSTAL GLASS
           </span>
           <h2 className="text-3xl sm:text-5xl font-sans font-normal tracking-[-0.02em] text-gradient-cyan-lime">
-            Scratch-resistant glass. Fragile ego.
+            No notifications. No software updates. Just pure unadulterated steel.
           </h2>
         </div>
       </div>
@@ -143,10 +143,9 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
         <div
           ref={text3Ref}
           className="transform transition-transform max-w-5xl mx-auto"
-          style={{ willChange: 'transform, opacity' }}
         >
           <h2 className="text-3xl sm:text-5xl lg:text-6xl font-sans font-normal tracking-[-0.02em] text-gradient-cyan-lime mb-3 leading-tight">
-            Still won't make you on time. But you'll look rich being 40 mins late.
+            Your smartwatch tells you to stand up. Ours tells people you own the building.
           </h2>
           <span className="text-xs font-mono tracking-[0.4em] text-[#CCFF00] uppercase">
             MERIDIAN HOROLOGY — ATELIER EDITION
