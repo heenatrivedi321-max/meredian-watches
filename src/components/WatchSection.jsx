@@ -23,40 +23,51 @@ export default function WatchSection({ watch, index, onClick }) {
       vid.play().catch(() => {});
     }
 
-    // GSAP PIN LOCKING: Locks the video section in place for 1 full screen scroll so the video plays in completion
+    // GSAP PIN LOCKING: Locks section in place & handles audio auto-mute on scroll
     const pinTrigger = ScrollTrigger.create({
       trigger: section,
       start: "top top",
-      end: "+=120%",
+      end: "+=100%",
       pin: true,
       pinSpacing: true,
-      scrub: 0.1,
       onEnter: () => {
         if (vid) vid.play().catch(() => {});
         const timer = setTimeout(() => {
           setShowUI(true);
-        }, 1800);
+        }, 1200);
         return () => clearTimeout(timer);
       },
+      onLeave: () => {
+        if (vid) {
+          vid.muted = true;
+          setIsAudioEnabled(false);
+        }
+        setShowUI(false);
+      },
       onLeaveBack: () => {
+        if (vid) {
+          vid.muted = true;
+          setIsAudioEnabled(false);
+        }
         setShowUI(false);
       }
     });
 
-    // ROLEX KINETIC CINEMATIC ENTRANCE & ZOOM EFFECT
+    // ROLEX CINEMATIC CLIP-PATH & DEPTH REVEAL ANIMATION
     if (contentRef.current) {
       gsap.fromTo(contentRef.current,
-        { scale: 1.15, opacity: 0.8 },
+        { clipPath: "inset(12% 8% 12% 8% round 40px)", scale: 1.1, opacity: 0.7 },
         {
-          scale: 1,
+          clipPath: "inset(0% 0% 0% 0% round 0px)",
+          scale: 1.0,
           opacity: 1,
-          duration: 1.4,
-          ease: "power2.out",
+          duration: 1.2,
+          ease: "power3.out",
           scrollTrigger: {
             trigger: section,
-            start: "top bottom",
+            start: "top 90%",
             end: "top top",
-            scrub: true
+            scrub: 0.5
           }
         }
       );
