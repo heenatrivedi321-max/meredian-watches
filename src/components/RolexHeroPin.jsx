@@ -99,7 +99,8 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
           loop
           muted
           playsInline
-          src="/Watch_on_obsidian_rock_202607271043_NO_WATERMARK.mp4"
+          preload="auto"
+          src="/Gold_skeleton_watch_showcase_202606290837.mp4"
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
         {/* Subtle Gradient Vignette for Text Contrast */}
