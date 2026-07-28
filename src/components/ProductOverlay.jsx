@@ -53,15 +53,15 @@ export default function ProductOverlay({ watch, onClose }) {
         </button>
 
         {/* Master Scroll Container */}
-        <div ref={containerRef} className="w-full h-screen overflow-y-auto overflow-x-hidden hide-scrollbar scroll-smooth bg-white">
+        <div ref={containerRef} className="w-full h-full overflow-y-auto overflow-x-hidden scroll-smooth bg-white">
           
           {/* ========================================= */}
           {/* SCROLL SECTION 1: THE NARRATIVE JOURNEY   */}
           {/* ========================================= */}
-          <div className="relative w-full flex flex-col lg:flex-row text-black">
+          <div className="relative w-full max-w-7xl mx-auto flex flex-col lg:flex-row text-black min-h-screen">
             
-            {/* LEFT: Pinned Hovering Watch */}
-            <div className="w-full lg:w-[50%] h-[50vh] lg:h-screen sticky top-0 flex items-center justify-center bg-white z-10 overflow-hidden">
+            {/* LEFT: Watch Showcase Image */}
+            <div className="w-full lg:w-[50%] h-[400px] sm:h-[500px] lg:h-auto flex items-center justify-center bg-white p-6 sm:p-12 lg:sticky lg:top-0">
               <AnimatePresence mode="wait">
                 <motion.img 
                   key={activeImage}
@@ -71,24 +71,24 @@ export default function ProductOverlay({ watch, onClose }) {
                   transition={{ duration: 0.6, ease: "easeInOut" }}
                   src={activeImage} 
                   alt={watch.model}
-                  className="w-[90%] h-[90%] object-contain mix-blend-multiply drop-shadow-2xl"
+                  className="w-full max-h-[75vh] object-contain mix-blend-multiply drop-shadow-2xl"
                 />
               </AnimatePresence>
             </div>
 
             {/* RIGHT: Natural Scrolling Text Blocks */}
-            <div className="w-full lg:w-[50%] flex flex-col z-20">
+            <div className="w-full lg:w-[50%] flex flex-col justify-center px-6 sm:px-12 lg:px-16 py-12 lg:py-24 space-y-16">
               
               {/* Block 1: Intro & Quote 1 */}
               <div 
                 onMouseEnter={() => setActiveImageIndex(0)}
-                className="w-full min-h-[80vh] flex flex-col justify-center px-8 lg:px-24 py-24"
+                className="w-full flex flex-col justify-center"
               >
                 <p className="text-[10px] lg:text-xs tracking-[0.4em] font-mono text-black/40 uppercase mb-4 flex items-center gap-4">
                   <span>{watch.brand}</span>
                 </p>
                 <h1 
-                  className="text-[2.5rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[6.5rem] leading-[1.05] font-normal tracking-[0.06em] uppercase mb-4 sm:mb-8 text-black drop-shadow-sm"
+                  className="text-[2.2rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5.5rem] leading-[1.05] font-normal tracking-[0.06em] uppercase mb-4 sm:mb-8 text-black drop-shadow-sm"
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   {watch.model}
@@ -104,24 +104,18 @@ export default function ProductOverlay({ watch, onClose }) {
               {/* Block 2: Description & Quote 2 */}
               <div 
                 onMouseEnter={() => setActiveImageIndex(1)}
-                className="w-full min-h-[80vh] flex flex-col justify-center px-8 lg:px-24 py-24"
+                className="w-full flex flex-col justify-center border-t border-black/10 pt-12"
               >
                 <p 
-                  className="text-[1.8rem] sm:text-[2.5rem] lg:text-[3.8rem] text-black leading-[1.15] font-bold tracking-tight mb-8 sm:mb-12"
+                  className="text-[1.5rem] sm:text-[2.2rem] lg:text-[3rem] text-black leading-[1.15] font-bold tracking-tight mb-6 sm:mb-8"
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   "{watch?.quotes?.[1] || 'Unapologetic excellence.'}"
                 </p>
-                <p className="text-lg lg:text-xl text-black/70 leading-relaxed font-light" style={{ fontFamily: "'Inter', sans-serif" }}>
+                <p className="text-base sm:text-lg lg:text-xl text-black/70 leading-relaxed font-light" style={{ fontFamily: "'Inter', sans-serif" }}>
                   {watch?.description}
                 </p>
               </div>
-
-              {/* Block 3: Final Image Trigger */}
-              <div 
-                onMouseEnter={() => setActiveImageIndex(2)}
-                className="w-full h-[30vh]"
-              />
 
             </div>
           </div>
