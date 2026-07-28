@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Lenis from 'lenis';
 import WebGLFluid from 'webgl-fluid';
 import CollectionShowcase from './components/CollectionShowcase';
 import ProductOverlay from './components/ProductOverlay';
@@ -14,6 +15,10 @@ import IntroSplash from './components/IntroSplash';
 import CinemaIntermission from './components/CinemaIntermission';
 import PolicyModal from './components/PolicyModal';
 import CelestialCanvas from './components/CelestialCanvas';
+import HorologySpecsCounter from './components/HorologySpecsCounter';
+import RolexHeroPin from './components/RolexHeroPin';
+import GoldStarDustCursor from './components/GoldStarDustCursor';
+import { WATCHES } from './data/watches';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -51,29 +56,28 @@ function FluidBackground() {
     WebGLFluid(canvas, {
       TRIGGER: 'hover',
       IMMEDIATE: true,
-      AUTO: true,
-      INTERVAL: isMobile ? 5000 : 3000,
-      SIM_RESOLUTION: isMobile ? 32 : 64,
-      DYE_RESOLUTION: isMobile ? 256 : 1024,
-      CAPTURE_RESOLUTION: isMobile ? 256 : 512,
-      DENSITY_DISSIPATION: 1,
-      VELOCITY_DISSIPATION: 0.2,
+      AUTO: false,
+      SIM_RESOLUTION: isMobile ? 32 : 48,
+      DYE_RESOLUTION: isMobile ? 128 : 256,
+      CAPTURE_RESOLUTION: isMobile ? 128 : 256,
+      DENSITY_DISSIPATION: 1.5,
+      VELOCITY_DISSIPATION: 0.5,
       PRESSURE: 0.8,
-      PRESSURE_ITERATIONS: isMobile ? 10 : 20,
-      CURL: isMobile ? 15 : 30,
-      SPLAT_RADIUS: 0.25,
-      SPLAT_FORCE: isMobile ? 3000 : 6000,
-      SPLAT_COUNT: isMobile ? 3 : 8,
-      SHADING: true,
+      PRESSURE_ITERATIONS: 8,
+      CURL: 10,
+      SPLAT_RADIUS: 0.2,
+      SPLAT_FORCE: 2500,
+      SPLAT_COUNT: 2,
+      SHADING: false,
       COLORFUL: true,
       COLOR_UPDATE_SPEED: 10,
       PAUSED: false,
       BACK_COLOR: { r: 0, g: 0, b: 0 },
       TRANSPARENT: false,
-      BLOOM: true,
-      BLOOM_ITERATIONS: isMobile ? 3 : 8,
-      BLOOM_RESOLUTION: isMobile ? 128 : 256,
-      BLOOM_INTENSITY: 0.8,
+      BLOOM: false,
+      BLOOM_ITERATIONS: 0,
+      BLOOM_RESOLUTION: 128,
+      BLOOM_INTENSITY: 0.2,
       BLOOM_THRESHOLD: 0.6,
       BLOOM_SOFT_KNEE: 0.7,
       SUNRAYS: !isMobile,
@@ -159,6 +163,32 @@ export default function App() {
   const [showAi, setShowAi] = useState(false);
   const [heroTilt, setHeroTilt] = useState({ x: 0, y: 0 });
 
+  // 120 FPS High-Velocity Lenis Momentum Engine
+  // Native smooth scrolling & 60 FPS Lenis scroll engine
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.0,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.5,
+      infinite: false,
+    });
+
+    lenis.on('scroll', ScrollTrigger.update);
+
+    function update(time) {
+      lenis.raf(time * 1000);
+    }
+    gsap.ticker.add(update);
+    gsap.ticker.lagSmoothing(0);
+
+    return () => {
+      gsap.ticker.remove(update);
+      lenis.destroy();
+    };
+  }, []);
+
   const handleHeroMouseMove = useCallback((e) => {
     const { clientX, clientY } = e;
     const { innerWidth, innerHeight } = window;
@@ -187,10 +217,10 @@ export default function App() {
       // ============================================================
       // 1. HERO — entrance + scroll zoom into darkness
       // ============================================================
-      const heroTl = gsap.timeline({ delay: 0.3 });
+      const heroTl = gsap.timeline();
       heroTl.fromTo(".hero-title",
-        { autoAlpha: 0, y: 30, scale: 0.97 },
-        { autoAlpha: 1, y: 0, scale: 1, duration: 1.8, ease: "power3.out" }
+        { autoAlpha: 1, y: 15, scale: 0.98 },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 1.2, ease: "power3.out" }
       );
 
       // Hero zoom + blur on scroll (entering the watch)
@@ -262,26 +292,6 @@ export default function App() {
         );
       });
 
-      // Dimmer for porsche section
-      gsap.to(".video-dimmer", {
-        autoAlpha: 0.7,
-        scrollTrigger: {
-          trigger: ".porsche-spacer",
-          start: "top 60%",
-          end: "top 20%",
-          scrub: true,
-        }
-      });
-      gsap.to(".video-dimmer", {
-        autoAlpha: 0,
-        scrollTrigger: {
-          trigger: ".porsche-spacer",
-          start: "bottom 60%",
-          end: "bottom 20%",
-          scrub: true,
-        }
-      });
-
       // Fade out Porsche video smoothly before products
       gsap.to(".bg-porsche", {
         autoAlpha: 0,
@@ -293,18 +303,16 @@ export default function App() {
         }
       });
 
-      // ============================================================
-      // 4. PRODUCTS — circular clip-path reveal
-      // ============================================================
+      // Product Reveal Section
       gsap.fromTo(".product-reveal",
-        { clipPath: "circle(0% at 50% 50%)" },
+        { opacity: 0.95 },
         {
-          clipPath: "circle(100% at 50% 50%)",
+          opacity: 1,
           duration: 1,
           ease: "power2.out",
           scrollTrigger: {
             trigger: ".product-reveal",
-            start: "top 85%",
+            start: "top 95%",
             end: "top 40%",
             scrub: true,
           }
@@ -346,8 +354,6 @@ export default function App() {
           <audio ref={audioRef} loop preload="auto">
             <source src="/ambient.mp3" type="audio/mpeg" />
           </audio>
-
-          <div className="video-dimmer absolute inset-0 bg-black z-25 pointer-events-none" style={{ opacity: 0 }} />
 
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/50 z-30 pointer-events-none" />
         </div>
@@ -461,7 +467,7 @@ export default function App() {
 
               <h1 
                 className="hero-title text-[3.5rem] sm:text-7xl md:text-[7.5rem] lg:text-[9.5rem] font-normal tracking-[0.1em] leading-none text-gemini-gradient uppercase drop-shadow-[0_20px_60px_rgba(0,0,0,0.95)] select-none" 
-                style={{ fontFamily: "'Cinzel', Georgia, serif" }}
+                style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 Meridian
               </h1>
@@ -495,7 +501,7 @@ export default function App() {
           </section>
 
           {/* MANIFESTO — GASP 4K WATCH GEARS FORMING DIAL VIDEO */}
-          <section className="manifesto-spacer relative w-full h-[120vh] pointer-events-auto overflow-hidden bg-black">
+          <section className="manifesto-spacer relative w-full h-screen pointer-events-auto overflow-hidden bg-black">
             {/* Scoped 4K Watch Gears Video Background */}
             <video
               autoPlay loop muted playsInline preload="auto"
@@ -527,7 +533,7 @@ export default function App() {
           </section>
 
           {/* PORSCHE — GASP 4K PORSCHE TUNNEL VIDEO */}
-          <section className="porsche-spacer relative w-full h-[120vh] pointer-events-auto overflow-hidden bg-black">
+          <section className="porsche-spacer relative w-full h-screen pointer-events-auto overflow-hidden bg-black">
             {/* Scoped 4K Porsche Video Background */}
             <video
               autoPlay loop muted playsInline preload="auto"
@@ -540,17 +546,17 @@ export default function App() {
             <div className="sticky top-0 left-0 w-full h-screen flex flex-col items-center justify-center pt-24 pb-8 overflow-hidden z-10">
               <div className="relative w-full max-w-[90rem] mx-auto px-4 md:px-8 text-center flex flex-col items-center justify-center space-y-4 sm:space-y-6 md:space-y-8">
                 <div className="w-full">
-                  <h2 className="porsche-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-normal tracking-[-0.02em] select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
+                  <h2 className="porsche-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-sans font-normal tracking-[-0.02em] select-none w-full leading-tight text-gradient-cyan-lime">
                     You will inevitably perish.
                   </h2>
                 </div>
                 <div className="w-full">
-                  <h2 className="porsche-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-normal tracking-[-0.02em] select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
+                  <h2 className="porsche-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-sans font-normal tracking-[-0.02em] select-none w-full leading-tight text-gradient-cyan-lime">
                     Your legacy will be forgotten.
                   </h2>
                 </div>
                 <div className="w-full">
-                  <h2 className="porsche-line text-[1.5rem] sm:text-[2rem] md:text-[3rem] lg:text-[4rem] xl:text-[4.5rem] font-normal tracking-[-0.02em] select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
+                  <h2 className="porsche-line text-[1.5rem] sm:text-[2rem] md:text-[3rem] lg:text-[4rem] xl:text-[4.5rem] font-sans font-normal tracking-[-0.02em] select-none w-full leading-tight text-gradient-cyan-lime">
                     But hey, at least your wrist looks expensive.
                   </h2>
                 </div>
@@ -560,7 +566,11 @@ export default function App() {
 
         </div>
 
+        {/* 100% EXACT ROLEX PINNED 3D CENTERPIECE ZOOM ENGINE */}
+        <RolexHeroPin watch={WATCHES[0]} onSelectWatch={setSelectedWatch} />
+
         <InstagramFeed />
+        <HorologySpecsCounter />
         <BrandFilm />
         
         {/* CINEMA TAKEOVER 2: OSCAR WINNER (MICHAEL B. JORDAN) */}
@@ -590,12 +600,12 @@ export default function App() {
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-6 text-[11px] font-mono tracking-widest uppercase">
-              <button onClick={() => setActivePolicy('terms')} className="hover:text-white transition-colors cursor-pointer">Terms</button>
-              <button onClick={() => setActivePolicy('privacy')} className="hover:text-white transition-colors cursor-pointer">Privacy</button>
-              <button onClick={() => setActivePolicy('refund')} className="hover:text-[#10B981] transition-colors cursor-pointer">Refund & Cancellation</button>
-              <button onClick={() => setActivePolicy('shipping')} className="hover:text-white transition-colors cursor-pointer">Shipping</button>
-              <button onClick={() => setActivePolicy('contact')} className="hover:text-white transition-colors cursor-pointer">Contact</button>
+            <div className="flex flex-wrap items-center justify-center gap-6 text-[11px] font-mono tracking-widest uppercase relative z-50 pointer-events-auto">
+              <button onClick={() => setActivePolicy('terms')} className="hover:text-white transition-colors cursor-pointer relative z-50 pointer-events-auto py-2 px-1">Terms</button>
+              <button onClick={() => setActivePolicy('privacy')} className="hover:text-white transition-colors cursor-pointer relative z-50 pointer-events-auto py-2 px-1">Privacy</button>
+              <button onClick={() => setActivePolicy('refund')} className="hover:text-[#10B981] transition-colors cursor-pointer relative z-50 pointer-events-auto py-2 px-1">Refund & Cancellation</button>
+              <button onClick={() => setActivePolicy('shipping')} className="hover:text-white transition-colors cursor-pointer relative z-50 pointer-events-auto py-2 px-1">Shipping</button>
+              <button onClick={() => setActivePolicy('contact')} className="hover:text-white transition-colors cursor-pointer relative z-50 pointer-events-auto py-2 px-1">Contact</button>
             </div>
           </div>
         </footer>
@@ -603,6 +613,7 @@ export default function App() {
 
       {/* Floating UI — above everything */}
       <WhatsAppButton />
+      <GoldStarDustCursor />
       <ScrollToTop />
 
       {/* Brand Story Overlay */}

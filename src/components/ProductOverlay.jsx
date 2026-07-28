@@ -90,7 +90,7 @@ export default function ProductOverlay({ watch, onClose }) {
                 </p>
                 <h1 
                   className="text-[2.5rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[6.5rem] leading-[1.05] font-normal tracking-[0.06em] uppercase mb-4 sm:mb-8 text-black drop-shadow-sm"
-                  style={{ fontFamily: "'Cinzel', Georgia, serif" }}
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   {watch.model}
                 </h1>
@@ -335,14 +335,11 @@ export default function ProductOverlay({ watch, onClose }) {
                     }
                   }}
                   disabled={isRedirecting}
-                  className="group relative overflow-hidden px-10 sm:px-16 py-6 bg-black text-white hover:bg-black/90 hover:scale-[1.02] active:scale-[0.99] rounded-full text-xs sm:text-sm tracking-[0.2em] uppercase font-bold transition-all duration-300 flex items-center justify-center gap-3 sm:gap-4 disabled:opacity-50 disabled:cursor-wait cursor-pointer shadow-[0_20px_50px_rgba(0,0,0,0.4)]"
+                  className="btn-google-pill-gold text-base py-5 px-12 sm:px-16 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-wait"
                 >
-                  {/* Metallic Sheen Sweep Overlay */}
-                  <div className="btn-sheen absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
-
                   {isRedirecting ? (
                     <span className="flex items-center gap-3">
-                      <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
                       REDIRECTING TO CHECKOUT...
                     </span>
                   ) : `BUY TIME — ${watch.price} →`}

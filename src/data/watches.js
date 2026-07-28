@@ -169,8 +169,8 @@ export const WATCHES = [
     color: "#4a0e0e",
     amazonLink: "https://www.amazon.in/dp/B07QCW7KRS",
     shopifyVariantId: "44408774066219",
-    video: "/olevs_master_commercial.mp4",
-    cinematicVideo: "/olevs_master_commercial.mp4",
+    video: "/olevs_imax_commercial.mp4",
+    cinematicVideo: "/olevs_imax_commercial.mp4",
     image: "/watches_new/Luxury_men's_watch_red_dial_202607141708.jpeg",
     gallery: [
       "/watches_new/Luxury_men's_watch_red_dial_202607141708.jpeg",
@@ -240,45 +240,6 @@ export const WATCHES = [
     ]
   },
   {
-    id: 7,
-    brand: "EMPORIO ARMANI",
-    model: "AR1148",
-    tagline: "Italian audacity. Swiss precision. Zero apologies.",
-    price: "₹24,999",
-    amount: 2499900,
-    color: "#1a1a1a",
-    shopifyVariantId: "44409313722411",
-    video: "/Armani_Ad_Master.mp4",
-    cinematicVideo: "/Armani_Rotating_Final.mp4",
-    image: "/watches-nobg/ea_watch.png",
-    outOfStock: true,
-    gallery: [
-      "/watches-nobg/ea_watch.png",
-      "/watches-nobg/ea_watch-2.png",
-      "/watches-nobg/ea_watch-3.png"
-    ],
-    quotes: [
-      "Italian audacity, Swiss precision. The watch that makes your phone feel insecure.",
-      "Some wear a watch to tell time. Others wear it to tell the world they already won."
-    ],
-    description: "The Emporio Armani watch embodies Italian luxury with a bold, architectural design. A statement piece for those who appreciate refined elegance without compromise. The clean dial and leather strap create an unmistakable silhouette that transcends trends.",
-    specs: {
-      movement: "Japanese Quartz",
-      caseMaterial: "Stainless Steel",
-      diameter: "43mm",
-      thickness: "10mm",
-      glass: "Mineral Crystal",
-      waterResistance: "30M (3 ATM)",
-      strap: "Genuine Leather"
-    },
-    features: [
-      "Italian Design Heritage",
-      "Minimalist Dial Architecture",
-      "Premium Leather Strap",
-      "Signature Armani Logo"
-    ]
-  },
-  {
     id: 8,
     brand: "FOSSIL",
     model: "GOLD ME3280",
@@ -288,7 +249,7 @@ export const WATCHES = [
     color: "#b8860b",
     shopifyVariantId: "44409313755179",
     video: "/Fossil_Gold_Master.mp4",
-    cinematicVideo: "/Luxury_watch_on_slate_pedestal_202606291151.mp4",
+    cinematicVideo: "/Fossil_Gold_Master.mp4",
     image: "/watches-nobg/fossil-gold-me3280.png",
     gallery: [
       "/watches-nobg/fossil-gold-me3280.png",
@@ -316,6 +277,48 @@ export const WATCHES = [
       "Minimalist Dial Design",
       "Fold-Over Clasp",
       "Water Resistant to 50M"
+    ]
+  },
+  {
+    id: 7,
+    brand: "MICHAEL KORS",
+    model: "PANORAMA AUTOMATIC MK9218",
+    tagline: "Zero batteries. Powered by your movement.",
+    price: "₹18,999",
+    amount: 1899900,
+    color: "#D4AF37",
+    amazonLink: "https://www.amazon.in/dp/B0F358W7KW",
+    shopifyVariantId: "44505355157547",
+    video: "/Gold_watch_gears_spinning_climax_202607281207_CLEAN.mp4",
+    cinematicVideo: "/Gold_watch_gears_spinning_climax_202607281207_CLEAN.mp4",
+    image: "/watches_new/MK9218_gold_auto_1.jpg",
+    gallery: [
+      "/watches_new/MK9218_gold_auto_1.jpg",
+      "/watches_new/MK9218_gold_auto_2.jpg",
+      "/watches_new/MK9218_gold_auto_3.jpg",
+      "/watches_new/MK9218_gold_auto_4.jpg",
+      "/watches_new/MK9218_gold_auto_5.jpg",
+      "/watches_new/MK9218_gold_auto_6.jpg"
+    ],
+    quotes: [
+      "No battery to change. Ever. Powered by the motion of your wrist.",
+      "An open-heart skeleton dial revealing 21-jewel automatic horology in 18k gold."
+    ],
+    description: "The Michael Kors Panorama MK9218 is an absolute masterpiece of automatic mechanical engineering. Featuring a exposed skeleton movement set within a 18k gold-plated 316L stainless steel case, this timepiece glides with an iconic smooth sweeping second hand.",
+    specs: {
+      movement: "Automatic Mechanical (21 Jewels, Self-Winding)",
+      caseMaterial: "18K Gold Plated 316L Stainless Steel",
+      diameter: "44mm",
+      thickness: "13mm",
+      glass: "Domed Scratch-Resistant Mineral Crystal",
+      waterResistance: "50M (5 ATM)",
+      strap: "18K Gold Plated Stainless Steel Link Bracelet"
+    },
+    features: [
+      "100% Battery-Free Automatic Engine",
+      "Exposed Open-Heart Skeleton Dial",
+      "Sweeping Second Hand (21,600 vph)",
+      "Exhibition Glass Backcase"
     ]
   }
 ];

@@ -1,0 +1,158 @@
+import React, { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
+export default function RolexHeroPin({ watch, onSelectWatch }) {
+  const containerRef = useRef(null);
+  const pinnedVideoRef = useRef(null);
+  const glowRef = useRef(null);
+  const text1Ref = useRef(null);
+  const text2Ref = useRef(null);
+  const text3Ref = useRef(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const videoEl = pinnedVideoRef.current;
+    const glowEl = glowRef.current;
+    if (!container || !videoEl) return;
+
+    // 1. FULL-WIDTH ROLEX CINEMATIC PINNED ZOOM TIMELINE (GPU HARDWARE ACCELERATED)
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: container,
+        start: "top top",
+        end: "+=70%",
+        pin: true,
+        scrub: 0.05,
+        anticipatePin: 1,
+      }
+    });
+
+    // Scale from clean inset to full edge-to-edge
+    tl.fromTo(videoEl,
+      { scale: 0.88, borderRadius: "24px", force3D: true },
+      { scale: 1.0, borderRadius: "0px", force3D: true, duration: 1, ease: "power2.out" }
+    );
+
+    tl.fromTo(glowEl,
+      { scale: 0.5, opacity: 0.2, force3D: true },
+      { scale: 1.4, opacity: 0.6, force3D: true, duration: 1, ease: "power2.out" },
+      0
+    );
+
+    // 2. ULTRA-FAST 120 FPS GPU HARDWARE ACCELERATED TEXT REVEALS
+    if (text1Ref.current) {
+      tl.fromTo(text1Ref.current,
+        { y: 80, opacity: 0, force3D: true },
+        { y: 0, opacity: 1, force3D: true, duration: 0.4, ease: "power3.out" },
+        0.08
+      ).to(text1Ref.current, { y: -80, opacity: 0, force3D: true, duration: 0.3 }, 0.42);
+    }
+
+    if (text2Ref.current) {
+      tl.fromTo(text2Ref.current,
+        { y: 80, opacity: 0, force3D: true },
+        { y: 0, opacity: 1, force3D: true, duration: 0.4, ease: "power3.out" },
+        0.42
+      ).to(text2Ref.current, { y: -80, opacity: 0, force3D: true, duration: 0.3 }, 0.78);
+    }
+
+    if (text3Ref.current) {
+      tl.fromTo(text3Ref.current,
+        { y: 80, opacity: 0, force3D: true },
+        { y: 0, opacity: 1, force3D: true, duration: 0.4, ease: "power3.out" },
+        0.78
+      );
+    }
+
+    return () => {
+      ScrollTrigger.getAll().forEach(t => t.kill());
+    };
+  }, []);
+
+  return (
+    <section
+      ref={containerRef}
+      className="relative w-full h-screen bg-[#000000] overflow-hidden flex items-center justify-center pointer-events-auto"
+    >
+      {/* Ambient Gold Radial Glow */}
+      <div
+        ref={glowRef}
+        className="absolute w-[800px] h-[800px] rounded-full bg-radial from-[#C9A96E]/20 via-[#FFD700]/5 to-transparent blur-3xl pointer-events-none z-10"
+        style={{ willChange: 'transform, opacity' }}
+      />
+
+      {/* 100% CLEAN NO-WATERMARK 4K VIDEO CONTAINER */}
+      <div
+        ref={pinnedVideoRef}
+        className="relative z-0 w-full h-full overflow-hidden flex items-center justify-center cursor-pointer group shadow-2xl"
+        onClick={() => onSelectWatch && onSelectWatch(watch)}
+        style={{ willChange: 'transform, borderRadius' }}
+      >
+        <video
+          ref={(el) => {
+            if (el) el.play().catch(() => {});
+          }}
+          autoPlay
+          loop
+          muted
+          playsInline
+          src="/Watch_on_obsidian_rock_202607271043_NO_WATERMARK.mp4"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+        {/* Subtle Gradient Vignette for Text Contrast */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/60 pointer-events-none" />
+      </div>
+
+      {/* Text Reveal 1: Top Left */}
+      <div className="absolute left-8 sm:left-20 top-1/3 z-30 overflow-hidden pointer-events-none">
+        <div
+          ref={text1Ref}
+          className="transform transition-transform"
+          style={{ willChange: 'transform, opacity' }}
+        >
+          <span className="text-xs font-mono tracking-[0.4em] text-[#00F0FF] uppercase block mb-2">
+            316L SURGICAL STEEL
+          </span>
+          <h2 className="text-3xl sm:text-5xl font-sans font-normal tracking-[-0.02em] text-gradient-cyan-lime">
+            Designed for boardrooms. Worn to get fast food at 2 AM.
+          </h2>
+        </div>
+      </div>
+
+      {/* Text Reveal 2: Bottom Right */}
+      <div className="absolute right-8 sm:right-20 bottom-1/3 z-30 overflow-hidden text-right pointer-events-none">
+        <div
+          ref={text2Ref}
+          className="transform transition-transform"
+          style={{ willChange: 'transform, opacity' }}
+        >
+          <span className="text-xs font-mono tracking-[0.4em] text-[#00FF88] uppercase block mb-2">
+            SAPPHIRE CRYSTAL GLASS
+          </span>
+          <h2 className="text-3xl sm:text-5xl font-sans font-normal tracking-[-0.02em] text-gradient-cyan-lime">
+            Scratch-resistant glass. Fragile ego.
+          </h2>
+        </div>
+      </div>
+
+      {/* Text Reveal 3: Center Climax */}
+      <div className="absolute inset-x-6 bottom-24 z-30 overflow-hidden text-center pointer-events-none">
+        <div
+          ref={text3Ref}
+          className="transform transition-transform max-w-5xl mx-auto"
+          style={{ willChange: 'transform, opacity' }}
+        >
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-sans font-normal tracking-[-0.02em] text-gradient-cyan-lime mb-3 leading-tight">
+            Still won't make you on time. But you'll look rich being 40 mins late.
+          </h2>
+          <span className="text-xs font-mono tracking-[0.4em] text-[#CCFF00] uppercase">
+            MERIDIAN HOROLOGY — ATELIER EDITION
+          </span>
+        </div>
+      </div>
+    </section>
+  );
+}

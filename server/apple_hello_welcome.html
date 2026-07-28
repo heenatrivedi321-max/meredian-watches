@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Official Apple Hello Video Experience</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    body, html {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #000000;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      cursor: none;
+    }
+
+    /* Ambient Radial Soft Glow */
+    .glow-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(255, 215, 0, 0.08) 0%, rgba(0, 0, 0, 0) 65%);
+      pointer-events: none;
+    }
+
+    /* Time & Date Header */
+    .time-header {
+      position: absolute;
+      top: 8vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      z-index: 30;
+      opacity: 0;
+      animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+    }
+
+    .time-clock {
+      font-size: 4.8rem;
+      font-weight: 200;
+      letter-spacing: -0.04em;
+      color: rgba(255, 255, 255, 0.95);
+      line-height: 1;
+    }
+
+    .date-text {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #FFD700;
+    }
+
+    /* Video / SVG Container */
+    .media-container {
+      width: 900px;
+      max-width: 90vw;
+      height: 320px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      z-index: 20;
+      margin-top: -10px;
+    }
+
+    /* Official Apple SVG Handwriting Animation */
+    .hello-svg {
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+
+    .hello-path {
+      stroke-dasharray: 3000;
+      stroke-dashoffset: 3000;
+      animation: drawHandwriting 2.8s cubic-bezier(0.42, 0, 0.58, 1) 0.4s forwards;
+      filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.5));
+    }
+
+    @keyframes drawHandwriting {
+      0% { stroke-dashoffset: 3000; }
+      100% { stroke-dashoffset: 0; }
+    }
+
+    /* Daily Quote */
+    .quote-container {
+      max-width: 850px;
+      padding: 0 40px;
+      text-align: center;
+      position: relative;
+      z-index: 30;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.5s forwards;
+    }
+
+    .quote-body {
+      font-size: 1.55rem;
+      font-weight: 300;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.88);
+      letter-spacing: -0.01em;
+      font-style: italic;
+    }
+
+    .quote-author {
+      margin-top: 14px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    /* Keyframes */
+    @keyframes fadeIn { to { opacity: 1; } }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* Desktop Morph Exit */
+    body.exit-morph {
+      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 1.2s ease-out;
+      opacity: 0;
+      transform: scale(1.08);
+      filter: blur(20px);
+    }
+  </style>
+</head>
+<body>
+  <div class="glow-bg"></div>
+
+  <!-- Time & Date -->
+  <div class="time-header">
+    <div class="time-clock" id="clock">15:40</div>
+    <div class="date-text" id="date">SUNDAY, 26 JULY</div>
+  </div>
+
+  <!-- Media Reel / SVG Handwriting Container -->
+  <div class="media-container">
+    <svg viewBox="0 0 900 280" class="hello-svg">
+      <defs>
+        <linearGradient id="appleGoldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FFFFFF" />
+          <stop offset="45%" stop-color="#FFD700" />
+          <stop offset="85%" stop-color="#E8D5A3" />
+          <stop offset="100%" stop-color="#00F0FF" />
+        </linearGradient>
+      </defs>
+      <path 
+        class="hello-path" 
+        d="M 120 180 C 110 70, 185 45, 175 140 C 170 215, 130 225, 210 180 C 235 160, 260 120, 245 180 C 240 210, 275 210, 310 180 C 300 70, 365 45, 355 140 C 350 215, 315 225, 395 180 C 385 70, 450 45, 440 140 C 435 215, 400 225, 480 180 C 510 135, 560 135, 535 180 C 515 215, 575 215, 620 180" 
+        fill="none" 
+        stroke="url(#appleGoldGradient)" 
+        stroke-width="12" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" 
+      />
+    </svg>
+  </div>
+
+  <!-- Quote Container -->
+  <div class="quote-container">
+    <div class="quote-body" id="quoteBody">
+      "For the late nights nobody saw and the battles fought in silence. Your time starts now."
+    </div>
+    <div class="quote-author" id="quoteAuthor">
+      — MERIDIAN HOROLOGY
+    </div>
+  </div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const mins = String(now.getMinutes()).padStart(2, '0');
+      document.getElementById('clock').textContent = `${hours}:${mins}`;
+      const options = { weekday: 'long', day: 'numeric', month: 'long' };
+      document.getElementById('date').textContent = now.toLocaleDateString('en-US', options).toUpperCase();
+    }
+    updateClock();
+
+    setTimeout(() => {
+      document.body.classList.add('exit-morph');
+      setTimeout(() => {
+        window.close();
+      }, 1200);
+    }, 4800);
+  </script>
+</body>
+</html>

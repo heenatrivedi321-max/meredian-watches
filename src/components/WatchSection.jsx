@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -7,8 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function WatchSection({ watch, index, onClick }) {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
-  const watchCardRef = useRef(null);
-  const textRef = useRef(null);
+  const [showUI, setShowUI] = useState(false);
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
 
   useEffect(() => {
@@ -18,61 +18,28 @@ export default function WatchSection({ watch, index, onClick }) {
 
     if (vid) {
       vid.muted = true;
+      vid.playsInline = true;
+      vid.play().catch(() => {});
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && vid) {
-            vid.play().catch(() => {});
-          } else if (vid) {
-            vid.pause();
-          }
-        });
+    // ScrollTrigger to detect when this watch section is active & trigger delayed UI reveal
+    const trigger = ScrollTrigger.create({
+      trigger: section,
+      start: "top 40%",
+      onEnter: () => {
+        if (vid) vid.play().catch(() => {});
+        // 2.5 second delayed reveal for Title & Glassmorphism Button
+        const timer = setTimeout(() => {
+          setShowUI(true);
+        }, 2200);
+        return () => clearTimeout(timer);
       },
-      { threshold: 0.15 }
-    );
-    observer.observe(section);
+      onLeaveBack: () => {
+        setShowUI(false);
+      }
+    });
 
-    // ROLEX-STYLE 3D DEPTH KINETIC ENTRANCE
-    if (watchCardRef.current) {
-      gsap.fromTo(watchCardRef.current,
-        { scale: 0.85, opacity: 0, y: 80, rotateX: 10 },
-        {
-          scale: 1,
-          opacity: 1,
-          y: 0,
-          rotateX: 0,
-          duration: 1.4,
-          ease: "power4.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 75%",
-            toggleActions: "play none none reverse"
-          }
-        }
-      );
-    }
-
-    if (textRef.current) {
-      gsap.fromTo(textRef.current,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1.2,
-          delay: 0.2,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 70%",
-            toggleActions: "play none none reverse"
-          }
-        }
-      );
-    }
-
-    return () => observer.disconnect();
+    return () => trigger.kill();
   }, [index]);
 
   const toggleAudio = useCallback((e) => {
@@ -86,162 +53,109 @@ export default function WatchSection({ watch, index, onClick }) {
     if (vid.muted) {
       vid.muted = false;
       vid.volume = 1.0;
-      const playPromise = vid.play();
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          setIsAudioEnabled(true);
-        }).catch(() => {
-          setIsAudioEnabled(true);
-        });
-      } else {
-        setIsAudioEnabled(true);
-      }
+      vid.play().then(() => setIsAudioEnabled(true)).catch(() => setIsAudioEnabled(true));
     } else {
       vid.muted = true;
       setIsAudioEnabled(false);
     }
   }, []);
 
-  const isEven = index % 2 === 0;
-
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-screen bg-[#050507] text-white flex flex-col justify-center py-24 px-4 sm:px-8 lg:px-16 border-b border-white/10 overflow-hidden pointer-events-auto"
+      className="relative w-full h-screen bg-black text-white flex flex-col justify-between overflow-hidden pointer-events-auto snap-start"
     >
-      {/* ROLEX DEEP EMERALD & OBSIDIAN AMBIENT LIGHTING */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,_rgba(10,40,25,0.3)_0%,_rgba(5,5,7,1)_80%)] pointer-events-none" />
+      {/* 100% FULL-SCREEN EDGE-TO-EDGE 4K VIDEO STREAM */}
+      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="w-full h-full object-cover transition-transform duration-1000 scale-[1.05]"
+          style={{ transform: 'translateZ(0)', willChange: 'transform' }}
+        >
+          <source src={watch.cinematicVideo || watch.video} type="video/mp4" />
+        </video>
 
-      {/* TOP HEADER BAR */}
-      <div ref={textRef} className="max-w-7xl mx-auto w-full mb-12 flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b border-white/10 pb-8 z-20">
-        <div>
-          <span className="text-[10px] font-mono tracking-[0.4em] text-white/40 uppercase block mb-2">
-            EDITION 0{index + 1}
-          </span>
-          <h2 
-            className="text-3xl sm:text-6xl lg:text-7xl font-normal tracking-[0.08em] text-white leading-none uppercase drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]"
-            style={{ fontFamily: "'Cinzel', Georgia, serif" }}
-          >
-            {watch.model}
-          </h2>
-          <p className="text-sm font-mono tracking-[0.2em] uppercase text-white/50 mt-2">
-            {watch.brand} — PRECISION HOROLOGY
-          </p>
-        </div>
-
-        <div className="text-left sm:text-right">
-          <span className="text-3xl sm:text-5xl font-light text-white tracking-tight block">
-            {watch.price}
-          </span>
-          <span className="text-[10px] font-mono tracking-widest text-white/40 uppercase block mt-1">
-            COMPLIMENTARY DISPATCH
-          </span>
-        </div>
+        {/* Cinematic Radial & Vertical Gradient Vignettes */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-black/60 pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.7)_100%)] pointer-events-none" />
       </div>
 
-      {/* 2-COLUMN DISPLAY: 4K REEL + ROLEX CERAMIC PEDESTAL */}
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center z-20">
-        
-        {/* COLUMN 1: 4K VIDEO STREAM REEL */}
-        <div className={`relative h-[480px] sm:h-[580px] lg:h-[650px] rounded-[3rem] overflow-hidden bg-[#0a0a0d] border border-white/15 shadow-[0_30px_70px_rgba(0,0,0,0.9)] group ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
-          <video
-            ref={videoRef}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-1000"
-            style={{ transform: 'translateZ(0)', willChange: 'transform' }}
-          >
-            <source src={watch.cinematicVideo || watch.video} type="video/mp4" />
-          </video>
-          
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/30 pointer-events-none" />
+      {/* TOP LEFT REVEAL: TITLE & BRAND (SLIDES DOWN AFTER 2.5s) */}
+      <div className="relative z-20 p-8 sm:p-14 md:p-20 flex justify-between items-start pointer-events-none">
+        <AnimatePresence>
+          {showUI && (
+            <motion.div
+              initial={{ y: -50, opacity: 0, filter: "blur(10px)" }}
+              animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+              exit={{ y: -50, opacity: 0 }}
+              transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
+              className="space-y-2 pointer-events-auto"
+            >
+              <span className="text-xs font-mono tracking-[0.4em] text-[#00F0FF] uppercase block font-semibold">
+                EDITION 0{index + 1} // {watch.brand}
+              </span>
+              <h2
+                className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal tracking-[0.05em] text-gemini-gradient uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                {watch.model}
+              </h2>
+              <span className="text-lg sm:text-2xl font-light text-white/90 tracking-tight block">
+                {watch.price}
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-          {/* SOUND CONTROL PILL */}
-          <button
-            onClick={toggleAudio}
-            className="absolute bottom-8 left-8 z-30 px-6 py-3 rounded-full bg-black/70 hover:bg-black/90 border border-white/30 backdrop-blur-2xl transition-all duration-300 flex items-center gap-3 cursor-pointer shadow-2xl"
-          >
-            <span className={`w-2.5 h-2.5 rounded-full ${isAudioEnabled ? 'bg-[#10B981] animate-ping' : 'bg-white/50'}`} />
-            <span className="text-xs font-mono tracking-[0.2em] font-semibold text-white uppercase">
-              {isAudioEnabled ? 'AUDIO LIVE 🔊' : 'ENABLE SOUND 🔇'}
-            </span>
-          </button>
-        </div>
-
-        {/* COLUMN 2: SEAMLESS ROLEX OYSTER CERAMIC PEDESTAL CARD — CLICK OPENS DEDICATED PRODUCT PAGE OVERLAY */}
-        <div
-          ref={watchCardRef}
-          className={`relative h-[480px] sm:h-[580px] lg:h-[650px] rounded-[3rem] bg-[#0c0c11] border border-white/15 p-8 sm:p-12 flex flex-col justify-between shadow-[0_30px_70px_rgba(0,0,0,0.9)] overflow-hidden group hover:border-[#9B51E0]/40 transition-all duration-500 ${isEven ? 'lg:order-2' : 'lg:order-1'}`}
+        {/* SOUND CONTROL PILL */}
+        <button
+          onClick={toggleAudio}
+          className="pointer-events-auto px-5 py-2.5 rounded-full bg-black/50 hover:bg-black/80 border border-white/20 backdrop-blur-2xl transition-all duration-300 flex items-center gap-3 cursor-pointer shadow-2xl"
         >
-          {/* ROLEX OYSTER CERAMIC PEDESTAL — CLICK OPENS SPECIFIC PRODUCT OVERLAY */}
-          <div 
-            onClick={() => onClick(watch)}
-            className="relative w-full flex-1 flex items-center justify-center rounded-3xl bg-[#eaeaee] p-8 overflow-hidden shadow-2xl group cursor-pointer border border-white/20 transition-all duration-500 hover:shadow-[0_30px_70px_rgba(0,0,0,0.8),0_0_40px_rgba(255,215,0,0.2)]"
-            style={{ perspective: '1000px' }}
-          >
-            {/* Ambient Gemini Aurora Back-Glow */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(66,133,244,0.18)_0%,rgba(155,81,224,0.15)_40%,transparent_70%)] pointer-events-none" />
+          <span className={`w-2.5 h-2.5 rounded-full ${isAudioEnabled ? 'bg-[#10B981] animate-ping' : 'bg-white/50'}`} />
+          <span className="text-[10px] sm:text-xs font-mono tracking-[0.2em] font-semibold text-white uppercase">
+            {isAudioEnabled ? 'AUDIO LIVE 🔊' : 'ENABLE SOUND 🔇'}
+          </span>
+        </button>
+      </div>
 
-            <img
-              src={watch.image}
-              alt={`${watch.brand} ${watch.model}`}
-              loading="lazy"
-              className="max-h-[300px] sm:max-h-[360px] w-auto object-contain transition-all duration-500 group-hover:scale-120 group-hover:-rotate-2 group-hover:drop-shadow-[0_25px_35px_rgba(0,0,0,0.8)] relative z-10"
-              style={{
-                mixBlendMode: 'multiply',
-                filter: 'contrast(1.08) saturate(1.15)'
-              }}
-            />
-            <span className="absolute bottom-4 right-4 text-[9px] font-mono tracking-widest text-black/80 uppercase bg-white/90 px-4 py-2 rounded-full backdrop-blur-md font-semibold border border-black/10 shadow-md transition-all group-hover:bg-black group-hover:text-white">
-              INSPECT TIMEPIECE 🔍
-            </span>
-          </div>
-
-          {/* TECHNICAL SPECIFICATIONS GRID & VIEW PRODUCT BUTTON */}
-          <div className="mt-8 space-y-6">
-            
-            {/* Tech Badges */}
-            {watch.specs && (
-              <div className="grid grid-cols-3 gap-2 text-center">
-                <div className="px-3 py-2.5 rounded-2xl bg-white/5 border border-white/10 group-hover:border-white/20 transition-colors">
-                  <span className="text-[9px] font-mono tracking-widest text-white/40 uppercase block">MOVEMENT</span>
-                  <span className="text-[11px] font-mono text-white font-semibold block mt-0.5">{watch.specs.movement}</span>
-                </div>
-                <div className="px-3 py-2.5 rounded-2xl bg-white/5 border border-white/10 group-hover:border-white/20 transition-colors">
-                  <span className="text-[9px] font-mono tracking-widest text-white/40 uppercase block">RATING</span>
-                  <span className="text-[11px] font-mono text-white font-semibold block mt-0.5">{watch.specs.waterResistance}</span>
-                </div>
-                <div className="px-3 py-2.5 rounded-2xl bg-white/5 border border-white/10 group-hover:border-white/20 transition-colors">
-                  <span className="text-[9px] font-mono tracking-widest text-white/40 uppercase block">CRYSTAL</span>
-                  <span className="text-[11px] font-mono text-white font-semibold block mt-0.5">{watch.specs.glass}</span>
-                </div>
-              </div>
-            )}
-
-            {/* View Specific Product Page Button */}
-            <div>
-              {watch.outOfStock ? (
-                <span className="block text-center w-full py-5 rounded-full bg-white/5 border border-white/10 text-white/40 text-xs font-mono tracking-[0.25em] uppercase">
-                  OUT OF STOCK // ALLOCATION FULL
-                </span>
-              ) : (
-                <button
-                  onClick={(e) => { e.stopPropagation(); onClick(watch); }}
-                  className="w-full py-5 rounded-full bg-white text-black hover:bg-white/90 active:scale-[0.98] transition-all duration-300 text-xs font-bold tracking-[0.25em] uppercase flex items-center justify-center gap-3 shadow-[0_15px_40px_rgba(255,255,255,0.2)] cursor-pointer"
-                >
-                  <span>EXPLORE TIMEPIECE — {watch.price}</span>
-                  <span className="text-sm">→</span>
-                </button>
+      {/* BOTTOM CENTER REVEAL: SEXY GLASSMORPHISM "CHECK IT OUT →" BUTTON (SLIDES UP AFTER 2.5s) */}
+      <div className="relative z-20 pb-16 sm:pb-24 px-6 flex flex-col items-center text-center pointer-events-none">
+        <AnimatePresence>
+          {showUI && (
+            <motion.div
+              initial={{ y: 60, opacity: 0, scale: 0.9, filter: "blur(12px)" }}
+              animate={{ y: 0, opacity: 1, scale: 1, filter: "blur(0px)" }}
+              exit={{ y: 60, opacity: 0 }}
+              transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col items-center gap-4 pointer-events-auto"
+            >
+              {watch.tagline && (
+                <p className="text-xs sm:text-sm font-mono tracking-[0.25em] text-white/70 uppercase max-w-md drop-shadow-[0_10px_20px_rgba(0,0,0,0.9)]">
+                  "{watch.tagline}"
+                </p>
               )}
-            </div>
 
-          </div>
-
-        </div>
-
+              {/* SEXY GLASSMORPHISM BUTTON THAT OPENS EXISTING PRODUCT OVERLAY PAGE */}
+              <button
+                onClick={() => onClick(watch)}
+                className="group relative px-10 py-5 rounded-full border border-white/40 bg-white/10 hover:bg-white/25 hover:border-white/80 backdrop-blur-3xl transition-all duration-500 flex items-center gap-4 cursor-pointer shadow-[0_20px_60px_rgba(0,0,0,0.8),0_0_40px_rgba(0,240,255,0.3)] active:scale-95 z-30"
+              >
+                <span className="text-xs sm:text-sm font-mono tracking-[0.3em] uppercase font-bold text-white group-hover:text-[#00F0FF] transition-colors">
+                  CHECK IT OUT
+                </span>
+                <span className="text-lg text-white group-hover:translate-x-2 transition-transform duration-300">
+                  →
+                </span>
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );

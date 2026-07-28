@@ -32,29 +32,21 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
     );
     observer.observe(section);
 
-    // SLOW, ELEGANT GSAP SCROLL TEXT FADE IN & DISSOLVE OUT
+    // ULTRA FAST 120 FPS HARDWARE ACCELERATED TEXT FADE IN
     if (textRef.current) {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top 80%",
-          end: "bottom 20%",
-          scrub: 1.5,
+      gsap.fromTo(textRef.current,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+            toggleActions: "play none none reverse"
+          }
         }
-      });
-
-      // 1. Enter text slowly and elegantly
-      tl.fromTo(textRef.current,
-        { autoAlpha: 0, y: 35, filter: "blur(10px)" },
-        { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.6, ease: "power2.out" }
-      );
-
-      // 2. Hold in center
-      tl.to(textRef.current, { autoAlpha: 1, duration: 0.6 });
-
-      // 3. Dissolve out super slowly and gracefully
-      tl.to(textRef.current,
-        { autoAlpha: 0, y: -40, filter: "blur(12px)", duration: 0.8, ease: "power1.inOut" }
       );
     }
 
@@ -152,8 +144,7 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
         style={{ opacity: 0 }}
       >
         <h2 
-          className="text-2xl sm:text-5xl md:text-6xl lg:text-[4.5rem] font-normal tracking-[0.08em] text-gemini-gradient leading-[1.1] uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
-          style={{ fontFamily: "'Cinzel', Georgia, serif" }}
+          className="text-2xl sm:text-5xl md:text-6xl lg:text-[4.5rem] font-sans font-normal tracking-[-0.02em] text-gradient-cyan-lime leading-[1.15] drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
         >
           {title}
         </h2>

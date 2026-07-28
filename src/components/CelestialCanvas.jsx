@@ -191,7 +191,7 @@ export default function CelestialCanvas() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-[110] pointer-events-none"
+      className="fixed inset-0 z-1 pointer-events-none"
     />
   );
 }

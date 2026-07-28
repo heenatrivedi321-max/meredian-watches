@@ -140,7 +140,7 @@ export default function BrandFilm() {
       >
         <h2 
           className="text-3xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-normal tracking-[0.06em] uppercase text-white leading-[1.1] drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)]"
-          style={{ fontFamily: "'Cinzel', Georgia, serif" }}
+          style={{ fontFamily: "'Inter', sans-serif" }}
         >
           "I'm the king of the world."
         </h2>

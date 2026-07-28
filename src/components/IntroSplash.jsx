@@ -123,21 +123,27 @@ export default function IntroSplash({ onComplete }) {
   const [started, setStarted] = useState(false);
 
   const handleEnter = () => {
+    if (started) return;
     setStarted(true);
     playIntroSound();
     
-    setTimeout(() => setPhase(1), 200);
-    setTimeout(() => setPhase(2), 1500);
-    setTimeout(() => setPhase(3), 5000);
-    setTimeout(() => onComplete(), 5600);
+    setTimeout(() => setPhase(1), 100);
+    setTimeout(() => setPhase(2), 1200);
+    setTimeout(() => setPhase(3), 3200);
+    setTimeout(() => onComplete(), 3600);
   };
+
+  useEffect(() => {
+    // Component mounted, sound is played strictly once on user interaction
+  }, []);
 
   return (
     <AnimatePresence>
       {!started ? (
         <motion.div
           key="enter-screen"
-          className="fixed inset-0 z-[99999] bg-[#020202] flex flex-col items-center justify-center space-y-8 px-4"
+          onClick={handleEnter}
+          className="fixed inset-0 z-[99999] bg-[#020202] flex flex-col items-center justify-center space-y-8 px-4 cursor-pointer"
           exit={{ opacity: 0 }}
           transition={{ duration: 0.6 }}
         >
@@ -156,7 +162,7 @@ export default function IntroSplash({ onComplete }) {
           {/* Monolithic Meridian Headline */}
           <h1 
             className="text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-normal tracking-[0.1em] sm:tracking-[0.15em] text-gemini-gradient uppercase text-center max-w-[90vw] drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
-            style={{ fontFamily: "'Cinzel', Georgia, serif" }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
             Meridian
           </h1>
@@ -234,7 +240,7 @@ export default function IntroSplash({ onComplete }) {
           <div className="relative z-20 flex flex-col items-center justify-center text-center px-4 max-w-[95vw] mx-auto overflow-hidden">
             <motion.h1
               className="text-3xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-normal tracking-[0.08em] sm:tracking-[0.15em] text-gemini-gradient gemini-laser-glow uppercase drop-shadow-[0_30px_70px_rgba(0,0,0,0.95)] max-w-full"
-              style={{ fontFamily: "'Cinzel', Georgia, serif" }}
+              style={{ fontFamily: "'Inter', sans-serif" }}
               initial={{ opacity: 0, scale: 0.95, filter: 'blur(16px)' }}
               animate={phase >= 1 ? { opacity: 1, scale: 1, filter: 'blur(0px)' } : {}}
               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}

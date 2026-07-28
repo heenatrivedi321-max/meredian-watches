@@ -228,6 +228,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
   const taglineRef = useRef(null);
   const storyRef = useRef(null);
   const closerRef = useRef(null);
+  const [joinedMessage, setJoinedMessage] = useState(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -281,21 +282,19 @@ export default function CollectionShowcase({ onSelectWatch }) {
         }
       );
 
-      // 3D Fly-Through Zoom Portal Transition into Product Grid
+      // Smooth 3D Zoom Stagger into Product Grid without scroll pin locking
       gsap.fromTo(".story-text-container",
         { scale: 1, opacity: 1, y: 0 },
         {
-          scale: 12,
+          scale: 3,
           opacity: 0,
-          y: -80,
-          ease: "power1.in",
+          y: -40,
+          ease: "power1.inOut",
           scrollTrigger: {
             trigger: storyRef.current,
-            start: "top top",
-            end: "+=120%",
-            scrub: 0.5,
-            pin: true,
-            anticipatePin: 1
+            start: "top 60%",
+            end: "bottom top",
+            scrub: 0.1,
           }
         }
       );
@@ -331,7 +330,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
           <div className="relative z-10 text-center px-4">
             <h2
               className="legacy-text text-[2.5rem] sm:text-[4.5rem] md:text-[6rem] lg:text-[7.5rem] font-normal tracking-[0.08em] text-gemini-gradient text-center leading-[1.1] uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
-              style={{ fontFamily: "'Cinzel', Georgia, serif" }}
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
               Choose Your<br />Legacy.
             </h2>
@@ -352,7 +351,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
           >
             <h3
               className="text-[2.2rem] sm:text-[3.8rem] md:text-[4.8rem] lg:text-[5.5rem] font-normal tracking-[0.06em] leading-[1.15] uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)] text-gemini-gradient"
-              style={{ fontFamily: "'Cinzel', Georgia, serif" }}
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
               Every timepiece tells a story.<br />
               <span className="text-white/50 font-normal">Find yours.</span>
@@ -412,8 +411,8 @@ export default function CollectionShowcase({ onSelectWatch }) {
 
           <MagneticButton
             onClick={() => {
-              const firstSection = document.querySelector('section');
-              if (firstSection) firstSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              const watchGrid = document.getElementById('watch-collection-grid');
+              if (watchGrid) watchGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }}
             className="closer-btn px-12 py-5 bg-white text-black text-xs font-mono tracking-[0.3em] uppercase font-extrabold
                        rounded-full hover:bg-white/90 hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_10px_40px_rgba(255,255,255,0.3)] cursor-pointer"
@@ -432,29 +431,73 @@ export default function CollectionShowcase({ onSelectWatch }) {
                 <p className="text-xs tracking-[0.3em] uppercase text-white/25 font-light">
                   Stay in the loop
                 </p>
-                <div className="flex items-center gap-2">
-                  <input 
-                    type="email" 
-                    placeholder="your@email.com"
-                    className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-xs text-white/60 placeholder:text-white/20 focus:outline-none focus:border-[#C9A96E]/40 w-56 transition-colors"
-                  />
-                  <button className="px-5 py-2 bg-white/10 border border-white/10 text-white/60 text-xs tracking-[0.2em] uppercase rounded-full hover:bg-[#C9A96E] hover:text-black hover:border-[#C9A96E] transition-all duration-300">
-                    Join
-                  </button>
+                <div className="flex flex-col items-end gap-2">
+                  <form 
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      setJoinedMessage(true);
+                      setTimeout(() => setJoinedMessage(false), 4000);
+                    }}
+                    className="flex items-center gap-2"
+                  >
+                    <input 
+                      type="email" 
+                      required
+                      placeholder="your@email.com"
+                      className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-xs text-white placeholder:text-white/20 focus:outline-none focus:border-[#C9A96E] w-56 transition-colors"
+                    />
+                    <button 
+                      type="submit"
+                      className="px-5 py-2 bg-[#C9A96E] text-black text-xs font-mono font-bold tracking-[0.2em] uppercase rounded-full hover:bg-white transition-all duration-300 cursor-pointer shadow-lg shadow-[#C9A96E]/20"
+                    >
+                      Join
+                    </button>
+                  </form>
+                  {joinedMessage && (
+                    <span className="text-[10px] font-mono tracking-widest text-[#C9A96E] uppercase animate-pulse">
+                      ✨ VIP Access Granted. Check your inbox.
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
 
             {/* Middle: Nav Links */}
             <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 mb-16">
-              {['Shop', 'Heritage', 'Instagram', 'Contact'].map((link) => (
-                <button 
-                  key={link}
-                  className="text-xs tracking-[0.25em] uppercase text-white/20 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer font-light"
-                >
-                  {link}
-                </button>
-              ))}
+              <button 
+                onClick={() => {
+                  const watchGrid = document.getElementById('watch-collection-grid');
+                  if (watchGrid) watchGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+                className="text-xs tracking-[0.25em] uppercase text-white/40 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer font-light"
+              >
+                Shop
+              </button>
+              <button 
+                onClick={() => {
+                  const firstSec = document.querySelector('section');
+                  if (firstSec) firstSec.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="text-xs tracking-[0.25em] uppercase text-white/40 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer font-light"
+              >
+                Heritage
+              </button>
+              <a 
+                href="https://www.instagram.com/meri.dianwatches"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs tracking-[0.25em] uppercase text-white/40 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer font-light"
+              >
+                Instagram
+              </a>
+              <a 
+                href="https://wa.me/918431724851"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs tracking-[0.25em] uppercase text-white/40 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer font-light"
+              >
+                Contact
+              </a>
             </div>
 
             {/* Divider */}
@@ -470,7 +513,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
                   href="https://www.instagram.com/meri.dianwatches" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-[10px] tracking-[0.3em] uppercase text-white/15 hover:text-[#C9A96E] transition-colors duration-300"
+                  className="text-[10px] tracking-[0.3em] uppercase text-white/20 hover:text-[#C9A96E] transition-colors duration-300"
                 >
                   Instagram
                 </a>
@@ -478,7 +521,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
                   href="https://wa.me/918431724851" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-[10px] tracking-[0.3em] uppercase text-white/15 hover:text-[#C9A96E] transition-colors duration-300"
+                  className="text-[10px] tracking-[0.3em] uppercase text-white/20 hover:text-[#C9A96E] transition-colors duration-300"
                 >
                   WhatsApp
                 </a>
