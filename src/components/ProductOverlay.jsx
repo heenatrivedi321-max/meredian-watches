@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { X, ChevronDown } from 'lucide-react';
 import { createCheckout } from '../shopify';
 
-// Smooth reveal on scroll — lightweight IntersectionObserver
+// Ultra-smooth reveal on scroll using native IntersectionObserver
 function FadeIn({ children, delay = 0, className = '', style = {}, direction = 'up' }) {
   const ref = useRef(null);
   useEffect(() => {
@@ -22,7 +22,13 @@ function FadeIn({ children, delay = 0, className = '', style = {}, direction = '
     return () => io.disconnect();
   }, []);
 
-  const transforms = { up: 'translateY(40px)', down: 'translateY(-40px)', left: 'translateX(-40px)', right: 'translateX(40px)', scale: 'scale(0.95)' };
+  const transforms = { 
+    up: 'translateY(40px)', 
+    down: 'translateY(-40px)', 
+    left: 'translateX(-40px)', 
+    right: 'translateX(40px)', 
+    scale: 'scale(0.95)' 
+  };
 
   return (
     <div
@@ -104,61 +110,60 @@ export default function ProductOverlay({ watch, onClose }) {
   return ReactDOM.createPortal(
     <div style={{ minHeight: '100vh', background: '#fff', color: '#000' }}>
 
-      {/* Injected CSS for animations */}
+      {/* Injected CSS for animations & bold crisp typography */}
       <style>{`
         .fade-reveal.revealed { opacity: 1 !important; transform: none !important; }
         @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 0 rgba(139,105,20,0.4); } 50% { box-shadow: 0 0 0 16px rgba(139,105,20,0); } }
         @keyframes floatBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         @keyframes slideStagger { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes breathe { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
-        @keyframes marqueeScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
       `}</style>
 
       {/* ─── CLOSE BUTTON ─── */}
       <button 
         onClick={handleClose}
         style={{
-          position: 'fixed', top: 20, right: 20, zIndex: 50,
-          width: 48, height: 48, borderRadius: '50%',
-          border: '1px solid rgba(0,0,0,0.06)', background: 'rgba(255,255,255,0.85)',
+          position: 'fixed', top: 24, right: 24, zIndex: 50,
+          width: 52, height: 52, borderRadius: '50%',
+          border: '1px solid rgba(0,0,0,0.08)', background: 'rgba(255,255,255,0.9)',
           backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          cursor: 'pointer', boxShadow: '0 4px 30px rgba(0,0,0,0.1)',
+          cursor: 'pointer', boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
           transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
         }}
         onMouseEnter={e => { e.currentTarget.style.background = '#000'; e.currentTarget.style.transform = 'scale(1.1) rotate(90deg)'; e.currentTarget.querySelector('svg').style.color = '#fff'; }}
-        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.85)'; e.currentTarget.style.transform = 'scale(1) rotate(0deg)'; e.currentTarget.querySelector('svg').style.color = '#000'; }}
+        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.9)'; e.currentTarget.style.transform = 'scale(1) rotate(0deg)'; e.currentTarget.querySelector('svg').style.color = '#000'; }}
       >
-        <X size={18} strokeWidth={1.5} color="#000" style={{ transition: 'color 0.3s ease' }} />
+        <X size={22} strokeWidth={2} color="#000" style={{ transition: 'color 0.3s ease' }} />
       </button>
 
       {/* ═══════════════════════════════════════════ */}
       {/* SECTION 1: THE OPENING — HERO IMAGE + TEXT  */}
       {/* ═══════════════════════════════════════════ */}
       <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
-        <div style={{ maxWidth: 1400, margin: '0 auto', width: '100%', padding: '80px 28px 40px' }} className="flex flex-col lg:flex-row items-center">
+        <div style={{ maxWidth: 1440, margin: '0 auto', width: '100%', padding: '100px 32px 60px' }} className="flex flex-col lg:flex-row items-center">
           
           {/* Watch Image */}
-          <FadeIn className="w-full lg:w-[55%]" delay={0.05} direction="scale" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-            <div style={{ position: 'relative' }}>
+          <FadeIn className="w-full lg:w-[55%]" delay={0.05} direction="scale" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
+            <div style={{ position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <img 
                 src={activeImage} alt={watch.model}
                 loading="eager" decoding="async" fetchPriority="high"
                 style={{
-                  width: '100%', maxHeight: '70vh', objectFit: 'contain',
-                  filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.18))',
+                  width: '100%', maxHeight: '72vh', objectFit: 'contain',
+                  filter: 'drop-shadow(0 35px 70px rgba(0,0,0,0.2))',
                   transform: 'translateZ(0)',
                   animation: 'floatBounce 6s ease-in-out infinite',
                 }}
               />
               {/* Image gallery dots */}
               {images.length > 1 && (
-                <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 20 }}>
+                <div style={{ display: 'flex', gap: 10, justifyContent: 'center', marginTop: 28 }}>
                   {images.map((img, i) => (
                     <button key={i} onClick={() => setActiveImageIndex(i)}
                       style={{
-                        width: i === activeImageIndex ? 28 : 8, height: 8, borderRadius: 9999,
-                        background: i === activeImageIndex ? '#000' : 'rgba(0,0,0,0.15)',
+                        width: i === activeImageIndex ? 32 : 10, height: 10, borderRadius: 9999,
+                        background: i === activeImageIndex ? '#000' : 'rgba(0,0,0,0.2)',
                         border: 'none', cursor: 'pointer',
                         transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
                       }}
@@ -169,45 +174,43 @@ export default function ProductOverlay({ watch, onClose }) {
             </div>
           </FadeIn>
 
-          {/* Text Content */}
-          <div className="w-full lg:w-[45%]" style={{ padding: '40px 20px 40px 48px', display: 'flex', flexDirection: 'column', gap: 40 }}>
+          {/* Text Content — Bold, Prominent, Clear */}
+          <div className="w-full lg:w-[45%]" style={{ padding: '40px 24px 40px 48px', display: 'flex', flexDirection: 'column', gap: 40 }}>
             <FadeIn delay={0.15}>
-              <p style={{ fontSize: 10, letterSpacing: '0.5em', fontFamily: 'monospace', color: 'rgba(0,0,0,0.3)', textTransform: 'uppercase', marginBottom: 20 }}>
+              <p style={{ fontSize: 13, letterSpacing: '0.4em', fontWeight: 700, color: 'rgba(0,0,0,0.5)', textTransform: 'uppercase', marginBottom: 16 }}>
                 {watch.brand} — {watch.specs?.movement?.split(' ')[0] || 'Swiss'}
               </p>
               <h1 style={{
-                fontSize: 'clamp(2.2rem, 5.5vw, 5.5rem)', lineHeight: 1.0, fontWeight: 300,
-                letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: 28,
+                fontSize: 'clamp(2.5rem, 5vw, 5.5rem)', lineHeight: 1.05, fontWeight: 800,
+                letterSpacing: '-0.02em', textTransform: 'uppercase', marginBottom: 24,
                 color: '#000', fontFamily: "'Inter', sans-serif",
-                background: 'linear-gradient(135deg, #000 0%, #333 50%, #000 100%)',
-                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
               }}>
                 {watch.model}
               </h1>
-              <p style={{ fontSize: '1.1rem', color: 'rgba(0,0,0,0.5)', fontWeight: 300, lineHeight: 1.8, fontFamily: "'Inter', sans-serif", fontStyle: 'italic' }}>
+              <p style={{ fontSize: '1.35rem', color: 'rgba(0,0,0,0.75)', fontWeight: 500, lineHeight: 1.6, fontFamily: "'Inter', sans-serif" }}>
                 "{watch?.quotes?.[0] || 'A masterpiece of precision.'}"
               </p>
             </FadeIn>
 
-            <FadeIn delay={0.25} style={{ borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: 36 }}>
+            <FadeIn delay={0.25} style={{ borderTop: '2px solid rgba(0,0,0,0.08)', paddingTop: 36 }}>
               <p style={{
-                fontSize: 'clamp(1.4rem, 2.8vw, 2.8rem)', color: '#000', lineHeight: 1.12,
-                fontWeight: 700, letterSpacing: '-0.02em', marginBottom: 20, fontFamily: "'Inter', sans-serif",
+                fontSize: 'clamp(1.5rem, 2.8vw, 2.6rem)', color: '#000', lineHeight: 1.2,
+                fontWeight: 800, letterSpacing: '-0.02em', marginBottom: 20, fontFamily: "'Inter', sans-serif",
               }}>
                 "{watch?.quotes?.[1] || 'Unapologetic excellence.'}"
               </p>
-              <p style={{ fontSize: '1rem', color: 'rgba(0,0,0,0.55)', lineHeight: 1.8, fontWeight: 300, fontFamily: "'Inter', sans-serif" }}>
+              <p style={{ fontSize: '1.15rem', color: 'rgba(0,0,0,0.7)', lineHeight: 1.75, fontWeight: 400, fontFamily: "'Inter', sans-serif" }}>
                 {watch?.description}
               </p>
             </FadeIn>
 
             <FadeIn delay={0.35}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                <span style={{ fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 300, fontFamily: "'Inter', sans-serif", letterSpacing: '-0.02em' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+                <span style={{ fontSize: 'clamp(2.2rem, 3.5vw, 3.2rem)', fontWeight: 800, fontFamily: "'Inter', sans-serif", letterSpacing: '-0.03em', color: '#000' }}>
                   {watch.price}
                 </span>
-                <span style={{ fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600, color: 'rgba(0,0,0,0.35)', padding: '4px 12px', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 9999 }}>
-                  Free Shipping
+                <span style={{ fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 700, color: '#006039', padding: '6px 14px', border: '1.5px solid #006039', borderRadius: 9999, background: 'rgba(0,96,57,0.05)' }}>
+                  Free Express Delivery
                 </span>
               </div>
             </FadeIn>
@@ -216,13 +219,13 @@ export default function ProductOverlay({ watch, onClose }) {
 
         {/* Scroll indicator */}
         <div style={{ position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, animation: 'breathe 2.5s ease infinite' }}>
-          <span style={{ fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(0,0,0,0.3)', fontWeight: 600 }}>Scroll</span>
-          <ChevronDown size={16} color="rgba(0,0,0,0.3)" />
+          <span style={{ fontSize: 11, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(0,0,0,0.5)', fontWeight: 700 }}>Scroll Down</span>
+          <ChevronDown size={20} color="rgba(0,0,0,0.5)" />
         </div>
       </div>
 
       {/* ═══════════════════════════════════════════ */}
-      {/* SECTION 2: FULL-SCREEN CINEMATIC VIDEO      */}
+      {/* SECTION 2: FULL-SCREEN CINEMATIC VIDEO (4K) */}
       {/* ═══════════════════════════════════════════ */}
       <div style={{
         position: 'relative', width: '100%', height: '100vh', background: '#000',
@@ -232,87 +235,86 @@ export default function ProductOverlay({ watch, onClose }) {
           ref={videoRef} autoPlay loop muted={isMuted} playsInline preload="metadata" poster={activeImage}
           style={{
             position: 'absolute', inset: 0, width: '100%', height: '100%',
-            objectFit: 'cover', transform: 'scale(1.35) translateZ(0)',
+            objectFit: 'cover', transform: 'scale(1.15) translateZ(0)',
           }}
         >
           <source src={watch.cinematicVideo} type="video/mp4" />
         </video>
 
-        {/* Cinematic overlays */}
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.8) 100%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.4) 100%)', pointerEvents: 'none' }} />
+        {/* Subtle vignette gradient — transparent focus on video */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 25%, transparent 75%, rgba(0,0,0,0.7) 100%)', pointerEvents: 'none' }} />
         
         {/* Sound toggle */}
         <button onClick={() => setIsMuted(!isMuted)}
           style={{
-            position: 'absolute', bottom: 32, right: 32, zIndex: 20,
-            padding: '12px 24px', borderRadius: 9999,
-            background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.8)',
-            fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase',
+            position: 'absolute', bottom: 36, right: 36, zIndex: 20,
+            padding: '14px 28px', borderRadius: 9999,
+            background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255,255,255,0.25)', color: '#fff',
+            fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', fontWeight: 700,
             cursor: 'pointer', transition: 'all 0.4s ease',
           }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.15)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'; }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'; }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.25)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.12)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)'; }}
         >
-          {isMuted ? '🔇 Unmute' : '🔊 Mute'}
+          {isMuted ? '🔇 Unmute Sound' : '🔊 Mute Sound'}
         </button>
         
-        {/* Center text */}
+        {/* Center overlay typography */}
         <FadeIn direction="scale" style={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>
-          <p style={{ fontSize: 10, letterSpacing: '0.6em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 16, fontWeight: 500 }}>
-            The Film
+          <p style={{ fontSize: 12, letterSpacing: '0.6em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', marginBottom: 16, fontWeight: 700 }}>
+            Cinematic Horology
           </p>
           <h2 style={{
-            fontSize: 'clamp(2rem, 4vw, 4rem)', letterSpacing: '0.3em', fontWeight: 200,
+            fontSize: 'clamp(2.5rem, 5vw, 5rem)', letterSpacing: '0.2em', fontWeight: 800,
             textTransform: 'uppercase', color: '#fff', fontFamily: "'Inter', sans-serif",
-            textShadow: '0 2px 40px rgba(0,0,0,0.5)',
+            textShadow: '0 4px 50px rgba(0,0,0,0.8)',
           }}>
             Uncompromised
           </h2>
-          <div style={{ width: 40, height: 1, background: 'rgba(255,255,255,0.3)', margin: '20px auto 0' }} />
+          <div style={{ width: 60, height: 2, background: 'rgba(255,255,255,0.6)', margin: '24px auto 0' }} />
         </FadeIn>
       </div>
 
       {/* ═══════════════════════════════════════════ */}
       {/* SECTION 3: SPECS — DARK LUXURY              */}
       {/* ═══════════════════════════════════════════ */}
-      <div style={{ width: '100%', background: '#080808', padding: '100px 28px', color: '#fff', position: 'relative', overflow: 'hidden' }}>
-        {/* Ambient glow */}
-        <div style={{ position: 'absolute', top: '-200px', left: '50%', transform: 'translateX(-50%)', width: '60%', height: 500, background: 'radial-gradient(ellipse, rgba(139,105,20,0.08), transparent 70%)', pointerEvents: 'none' }} />
+      <div style={{ width: '100%', background: '#080808', padding: '120px 32px', color: '#fff', position: 'relative', overflow: 'hidden' }}>
+        {/* Ambient backlight glow */}
+        <div style={{ position: 'absolute', top: '-150px', left: '50%', transform: 'translateX(-50%)', width: '70%', height: 500, background: 'radial-gradient(ellipse, rgba(139,105,20,0.12), transparent 70%)', pointerEvents: 'none' }} />
 
-        <FadeIn style={{ textAlign: 'center', marginBottom: 72 }}>
-          <p style={{ fontSize: 10, letterSpacing: '0.5em', textTransform: 'uppercase', color: '#8B6914', fontWeight: 600, marginBottom: 12 }}>Technical Specifications</p>
-          <h3 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', fontWeight: 300, color: '#fff', fontFamily: "'Inter', sans-serif", letterSpacing: '0.1em' }}>
+        <FadeIn style={{ textAlign: 'center', marginBottom: 80 }}>
+          <p style={{ fontSize: 12, letterSpacing: '0.5em', textTransform: 'uppercase', color: '#C9A96E', fontWeight: 700, marginBottom: 16 }}>Technical Specifications</p>
+          <h3 style={{ fontSize: 'clamp(2rem, 3.5vw, 3rem)', fontWeight: 800, color: '#fff', fontFamily: "'Inter', sans-serif", letterSpacing: '0.04em' }}>
             Engineered for Eternity
           </h3>
         </FadeIn>
 
-        <div style={{ maxWidth: 1100, margin: '0 auto' }} className="flex flex-col lg:flex-row gap-16">
+        <div style={{ maxWidth: 1200, margin: '0 auto' }} className="flex flex-col lg:flex-row gap-16">
           
           {/* Features */}
           <FadeIn delay={0.1} className="w-full lg:w-1/3">
-            <h4 style={{ fontSize: 10, letterSpacing: '0.5em', fontWeight: 700, textTransform: 'uppercase', color: '#8B6914', marginBottom: 40, display: 'flex', alignItems: 'center', gap: 12 }}>
-              <span style={{ width: 20, height: 1, background: '#8B6914', display: 'inline-block' }} />
+            <h4 style={{ fontSize: 12, letterSpacing: '0.4em', fontWeight: 800, textTransform: 'uppercase', color: '#C9A96E', marginBottom: 40, display: 'flex', alignItems: 'center', gap: 14 }}>
+              <span style={{ width: 24, height: 2, background: '#C9A96E', display: 'inline-block' }} />
               Signature Details
             </h4>
             <ul style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
               {watch.features?.map((f, i) => (
                 <li key={i} style={{
-                  display: 'flex', alignItems: 'center', gap: 14,
-                  fontSize: '1rem', color: 'rgba(255,255,255,0.75)', fontWeight: 300,
+                  display: 'flex', alignItems: 'center', gap: 16,
+                  fontSize: '1.15rem', color: 'rgba(255,255,255,0.9)', fontWeight: 500,
                   animation: `slideStagger 0.6s ease ${0.08 * i}s both`,
                   fontFamily: "'Inter', sans-serif",
                 }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#8B6914', flexShrink: 0 }} />
+                  <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#C9A96E', flexShrink: 0 }} />
                   {f}
                 </li>
               ))}
             </ul>
           </FadeIn>
 
-          {/* Spec Cards */}
-          <div className="w-full lg:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Spec Cards — Large & Readable */}
+          <div className="w-full lg:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-6">
             {[
               { icon: "⚙️", label: "Engine", value: watch.specs?.movement },
               { icon: "🛡️", label: "Architecture", value: watch.specs?.caseMaterial },
@@ -323,19 +325,19 @@ export default function ProductOverlay({ watch, onClose }) {
             ].map((s, i) => (
               <FadeIn key={i} delay={0.05 * i} direction="scale">
                 <div style={{
-                  padding: 24, borderRadius: 16, height: '100%',
-                  background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.06)',
+                  padding: 28, borderRadius: 20, height: '100%',
+                  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
                   transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)', cursor: 'default',
                   transform: 'translateZ(0)',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.07)'; e.currentTarget.style.borderColor = 'rgba(139,105,20,0.3)'; e.currentTarget.style.transform = 'translateY(-4px) translateZ(0)'; e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.3)'; }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.025)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)'; e.currentTarget.style.transform = 'translateY(0) translateZ(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.borderColor = 'rgba(201,169,110,0.5)'; e.currentTarget.style.transform = 'translateY(-4px) translateZ(0)'; e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.4)'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.transform = 'translateY(0) translateZ(0)'; e.currentTarget.style.boxShadow = 'none'; }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-                    <span style={{ fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.35em', fontWeight: 700, color: '#8B6914' }}>{s.label}</span>
-                    <span style={{ fontSize: '1.1rem', opacity: 0.6 }}>{s.icon}</span>
+                    <span style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.35em', fontWeight: 800, color: '#C9A96E' }}>{s.label}</span>
+                    <span style={{ fontSize: '1.3rem', opacity: 0.8 }}>{s.icon}</span>
                   </div>
-                  <span style={{ fontSize: '1.05rem', fontWeight: 300, color: 'rgba(255,255,255,0.85)', fontFamily: "'Inter', sans-serif", lineHeight: 1.5 }}>{s.value}</span>
+                  <span style={{ fontSize: '1.2rem', fontWeight: 600, color: '#fff', fontFamily: "'Inter', sans-serif", lineHeight: 1.5 }}>{s.value}</span>
                 </div>
               </FadeIn>
             ))}
@@ -343,18 +345,18 @@ export default function ProductOverlay({ watch, onClose }) {
             {/* Anchor Note */}
             <FadeIn delay={0.35} className="sm:col-span-2">
               <div style={{
-                padding: 24, borderRadius: 16,
-                background: 'linear-gradient(135deg, rgba(139,105,20,0.1) 0%, rgba(255,255,255,0.03) 100%)',
-                border: '1px solid rgba(139,105,20,0.2)',
+                padding: 28, borderRadius: 20,
+                background: 'linear-gradient(135deg, rgba(201,169,110,0.15) 0%, rgba(255,255,255,0.04) 100%)',
+                border: '1px solid rgba(201,169,110,0.3)',
               }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                  <span style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.25em', fontWeight: 700, color: '#C9A96E' }}>📜 Your Time Anchor Note</span>
-                  <span style={{ fontSize: 8, fontFamily: 'monospace', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.35)', border: '1px solid rgba(255,255,255,0.12)', padding: '3px 10px', borderRadius: 9999, textTransform: 'uppercase' }}>Included Free</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                  <span style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.25em', fontWeight: 800, color: '#C9A96E' }}>📜 Your Time Anchor Note</span>
+                  <span style={{ fontSize: 10, fontFamily: 'monospace', letterSpacing: '0.15em', color: '#fff', background: 'rgba(201,169,110,0.2)', border: '1px solid rgba(201,169,110,0.4)', padding: '4px 12px', borderRadius: 9999, textTransform: 'uppercase', fontWeight: 700 }}>Included Free</span>
                 </div>
-                <p style={{ fontSize: 14, fontStyle: 'italic', color: 'rgba(255,255,255,0.65)', fontWeight: 300, lineHeight: 1.7 }}>
+                <p style={{ fontSize: 16, fontStyle: 'italic', color: 'rgba(255,255,255,0.9)', fontWeight: 400, lineHeight: 1.7 }}>
                   "For the late nights nobody saw and the battles fought in silence. Your time starts now."
                 </p>
-                <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.25)', fontFamily: 'monospace', textTransform: 'uppercase' }}>
+                <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', fontFamily: 'monospace', textTransform: 'uppercase', marginTop: 8, display: 'block' }}>
                   ✦ Customize via WhatsApp after ordering
                 </span>
               </div>
@@ -369,28 +371,26 @@ export default function ProductOverlay({ watch, onClose }) {
       <div style={{
         width: '100%', minHeight: '80vh', background: '#fff', color: '#000',
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-        padding: '100px 24px', textAlign: 'center', position: 'relative',
+        padding: '120px 24px', textAlign: 'center', position: 'relative',
       }}>
         <FadeIn direction="scale">
-          <p style={{ fontSize: 10, letterSpacing: '0.5em', textTransform: 'uppercase', color: 'rgba(0,0,0,0.3)', marginBottom: 24, fontWeight: 600 }}>
+          <p style={{ fontSize: 12, letterSpacing: '0.5em', textTransform: 'uppercase', color: 'rgba(0,0,0,0.4)', marginBottom: 24, fontWeight: 800 }}>
             The Final Word
           </p>
           <h2 style={{
-            fontSize: 'clamp(2.8rem, 7vw, 7rem)', fontWeight: 700,
-            letterSpacing: '-0.04em', marginBottom: 20, lineHeight: 0.9,
-            fontFamily: "'Inter', sans-serif",
-            background: 'linear-gradient(135deg, #000 0%, #222 100%)',
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+            fontSize: 'clamp(3rem, 7vw, 7rem)', fontWeight: 900,
+            letterSpacing: '-0.04em', marginBottom: 24, lineHeight: 0.95,
+            fontFamily: "'Inter', sans-serif", color: '#000',
           }}>
             Own the moment.
           </h2>
-          <p style={{ fontSize: '1.15rem', color: 'rgba(0,0,0,0.45)', marginBottom: 48, fontWeight: 300, fontFamily: "'Inter', sans-serif" }}>
+          <p style={{ fontSize: '1.35rem', color: 'rgba(0,0,0,0.65)', marginBottom: 48, fontWeight: 500, fontFamily: "'Inter', sans-serif" }}>
             Some wait for their time. You wear yours.
           </p>
         </FadeIn>
 
         <FadeIn delay={0.2}>
-          <div style={{ fontSize: 'clamp(2.8rem, 6vw, 6rem)', fontWeight: 200, letterSpacing: '-0.04em', marginBottom: 48, fontFamily: "'Inter', sans-serif" }}>
+          <div style={{ fontSize: 'clamp(3rem, 6vw, 6rem)', fontWeight: 800, letterSpacing: '-0.04em', marginBottom: 48, fontFamily: "'Inter', sans-serif", color: '#000' }}>
             {watch.price}
           </div>
         </FadeIn>
@@ -400,10 +400,10 @@ export default function ProductOverlay({ watch, onClose }) {
             <button 
               onClick={() => window.location.href = `https://wa.me/918431724851?text=Hi%2C%20I%27m%20interested%20in%20the%20${encodeURIComponent(watch.brand + ' ' + watch.model)}.%20Is%20it%20available%3F`}
               style={{
-                padding: '20px 56px', background: 'transparent', color: '#000',
-                border: '2px solid #000', borderRadius: 9999,
-                fontSize: 12, letterSpacing: '0.25em', textTransform: 'uppercase',
-                fontWeight: 600, cursor: 'pointer', transition: 'all 0.4s ease',
+                padding: '22px 64px', background: 'transparent', color: '#000',
+                border: '2.5px solid #000', borderRadius: 9999,
+                fontSize: 13, letterSpacing: '0.25em', textTransform: 'uppercase',
+                fontWeight: 800, cursor: 'pointer', transition: 'all 0.4s ease',
               }}
               onMouseEnter={e => { e.currentTarget.style.background = '#000'; e.currentTarget.style.color = '#fff'; }}
               onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#000'; }}
@@ -425,16 +425,16 @@ export default function ProductOverlay({ watch, onClose }) {
               }}
               disabled={isRedirecting}
               style={{
-                padding: '22px 64px', borderRadius: 9999,
+                padding: '24px 72px', borderRadius: 9999,
                 background: '#000', color: '#fff',
-                fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase',
-                fontWeight: 600, cursor: 'pointer', border: 'none',
+                fontSize: 15, letterSpacing: '0.2em', textTransform: 'uppercase',
+                fontWeight: 800, cursor: 'pointer', border: 'none',
                 transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
-                boxShadow: '0 8px 30px rgba(0,0,0,0.2)',
+                boxShadow: '0 12px 40px rgba(0,0,0,0.25)',
                 animation: 'pulseGlow 3s ease infinite',
               }}
-              onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.04)'; e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.3)'; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(0,0,0,0.2)'; }}
+              onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.boxShadow = '0 16px 50px rgba(0,0,0,0.35)'; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.25)'; }}
             >
               {isRedirecting ? 'REDIRECTING...' : `BUY TIME — ${watch.price} →`}
             </button>
