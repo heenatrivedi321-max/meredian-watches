@@ -16,11 +16,11 @@ export default function InstagramFeed() {
   const INSTAGRAM_URL = 'https://www.instagram.com/meri.dianwatches/';
 
   return (
-    <section className="w-full py-24 sm:py-32 bg-white text-[#0b0b0e] pointer-events-auto relative overflow-hidden">
-      {/* Ambient glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-to-b from-[#006039]/10 to-transparent rounded-full blur-[100px] pointer-events-none" />
+    <section className="w-full py-24 sm:py-32 bg-black text-white pointer-events-auto relative overflow-hidden">
+      {/* Ambient Gemini Fluid Aurora Mesh Glow */}
+      <div className="absolute inset-0 gemini-aurora-bg pointer-events-none opacity-40" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -30,17 +30,17 @@ export default function InstagramFeed() {
           className="text-center mb-16"
         >
           <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 flex items-center justify-center">
-              <InstagramIcon size={18} className="text-white" />
+            <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#00F0FF] via-[#9B51E0] via-[#FF007F] to-[#00FF88] flex items-center justify-center animate-pulse shadow-[0_0_30px_rgba(0,240,255,0.6)]">
+              <InstagramIcon size={22} className="text-white" />
             </div>
           </div>
           <h2
-            className="text-[1.8rem] sm:text-[2.5rem] lg:text-[3.5rem] font-bold tracking-tighter mb-4"
-            style={{ fontFamily: "'Inter', sans-serif" }}
+            className="text-[2.2rem] sm:text-[3.5rem] lg:text-[4.5rem] font-bold tracking-tight mb-4 text-gemini-gradient uppercase drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]"
+            style={{ fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif" }}
           >
             @meri.dianwatches
           </h2>
-          <p className="text-white/40 text-sm sm:text-base font-light tracking-wide max-w-md mx-auto">
+          <p className="text-white/70 text-sm sm:text-base font-light tracking-wide max-w-md mx-auto gemini-rainbow-subtext">
             Behind the scenes, new drops, and wrist shots from the inner circle.
           </p>
         </motion.div>
@@ -57,7 +57,7 @@ export default function InstagramFeed() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08, duration: 0.6 }}
-              className="group relative aspect-square rounded-xl overflow-hidden bg-[#f8f9fa] border border-black/10 hover:border-[#006039]/40 shadow-md transition-all duration-500"
+              className="group relative aspect-square rounded-2xl overflow-hidden bg-black/60 border border-white/10 hover:border-[#00F0FF]/60 shadow-2xl transition-all duration-500 backdrop-blur-xl"
             >
               <img
                 src={watch.image}

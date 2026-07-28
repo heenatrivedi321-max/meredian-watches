@@ -450,7 +450,7 @@ export default function App() {
           <section 
             onMouseMove={handleHeroMouseMove}
             onMouseLeave={handleHeroMouseLeave}
-            className="hero-spacer relative w-full h-screen flex flex-col items-center justify-center pointer-events-auto overflow-hidden bg-white text-[#0b0b0e]"
+            className="hero-spacer relative w-full h-screen flex flex-col items-center justify-center pointer-events-auto overflow-hidden bg-black text-white"
             style={{ perspective: "1000px" }}
           >
             {/* Ambient Gemini Aurora Fluid Glow */}
