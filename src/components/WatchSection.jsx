@@ -53,12 +53,11 @@ export default function WatchSection({ watch, index, onClick }) {
       }
     });
 
-    // ROLEX CINEMATIC CLIP-PATH & DEPTH REVEAL ANIMATION
+    // ROLEX CINEMATIC DEPTH & OPACITY REVEAL
     if (contentRef.current) {
       gsap.fromTo(contentRef.current,
-        { clipPath: "inset(12% 8% 12% 8% round 40px)", scale: 1.1, opacity: 0.7 },
+        { scale: 1.05, opacity: 0.8 },
         {
-          clipPath: "inset(0% 0% 0% 0% round 0px)",
           scale: 1.0,
           opacity: 1,
           duration: 1.2,
@@ -97,7 +96,7 @@ export default function WatchSection({ watch, index, onClick }) {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-screen bg-black text-white flex flex-col justify-between overflow-hidden pointer-events-auto my-24"
+      className="relative w-full h-screen bg-black text-white flex flex-col justify-between overflow-hidden pointer-events-auto"
     >
       {/* 100% FULL-SCREEN EDGE-TO-EDGE 4K VIDEO STREAM WITH ROLEX ZOOM ANIMATION */}
       <div ref={contentRef} className="absolute inset-0 w-full h-full z-0 overflow-hidden">
