@@ -46,10 +46,10 @@ export default function HorologySpecsCounter() {
   ];
 
   return (
-    <section className="relative w-full py-20 bg-[#08080c] border-y border-white/10 overflow-hidden z-20 pointer-events-auto font-sans">
+    <section className="relative w-full py-20 bg-white border-y border-black/10 overflow-hidden z-20 pointer-events-auto font-sans">
       {/* Feature 4: Liquid Metal Hairline Borders (Active Glow) */}
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#FFD700] via-[#00F0FF] to-transparent animate-navbar-sweep opacity-70" />
-      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#00F0FF] via-[#FF007F] to-transparent animate-navbar-sweep opacity-70" style={{ animationDelay: '3s' }} />
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#006039] via-[#00F0FF] to-transparent animate-navbar-sweep opacity-70" />
+      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#00F0FF] via-[#006039] to-transparent animate-navbar-sweep opacity-70" style={{ animationDelay: '3s' }} />
 
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
         {specs.map((spec, i) => (
@@ -59,16 +59,16 @@ export default function HorologySpecsCounter() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: i * 0.15 }}
-            className="group relative p-6 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-[#FFD700]/50 transition-all duration-500 overflow-hidden shadow-2xl"
+            className="group relative p-6 rounded-2xl bg-[#f8f9fa] border border-black/10 hover:border-[#006039]/50 transition-all duration-500 overflow-hidden shadow-xl"
           >
             {/* Feature 4: Liquid Metal Light Trace */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#FFD700]/10 via-transparent to-[#00F0FF]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#006039]/10 via-transparent to-[#00F0FF]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-            <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-2 font-sans">
+            <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0b0b0e] tracking-tight mb-2 font-sans">
               <AnimatedNumber value={spec.value} suffix={spec.suffix} />
             </div>
 
-            <div className="text-[10px] sm:text-xs font-sans font-bold tracking-[0.25em] uppercase text-white/60 group-hover:text-[#FFD700] transition-colors duration-300">
+            <div className="text-[10px] sm:text-xs font-sans font-bold tracking-[0.25em] uppercase text-black/60 group-hover:text-[#006039] transition-colors duration-300">
               {spec.label}
             </div>
           </motion.div>
