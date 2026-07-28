@@ -310,12 +310,12 @@ export default function CollectionShowcase({ onSelectWatch }) {
       {/* ======================================== */}
       {/* SECTION 4 & 5: LEGACY + PRODUCTS */}
       {/* ======================================== */}
-      <div className="product-reveal relative z-0 w-full bg-black">
+      <div className="product-reveal relative z-0 w-full bg-white">
 
         {/* Legacy Header Section with 4K Gold Skeleton Watch Video Background */}
         <section
           ref={taglineRef}
-          className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center pointer-events-none overflow-hidden bg-black"
+          className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center pointer-events-none overflow-hidden bg-white"
         >
           {/* Scoped 4K Gold Skeleton Watch Video */}
           <video
@@ -325,7 +325,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
           >
             <source src="/Gold_skeleton_watch_showcase_202606290837.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black pointer-events-none z-5" />
+          <div className="absolute inset-0 bg-gradient-to-b from-white via-white/40 to-white pointer-events-none z-5" />
 
           <div className="relative z-10 text-center px-4">
             <h2
