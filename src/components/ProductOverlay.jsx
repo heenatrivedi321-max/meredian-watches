@@ -11,9 +11,11 @@ export default function ProductOverlay({ watch, onClose }) {
   const [isMuted, setIsMuted] = useState(true);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
-  const allImages = watch?.gallery?.length ? watch.gallery : [watch?.image, watch?.image, watch?.image];
-  const images = allImages.length >= 3 ? allImages.slice(0, 3) : [...allImages, ...Array(3 - allImages.length).fill(allImages[allImages.length - 1])];
-  const activeImage = images[activeImageIndex] || watch?.image;
+  const allImages = watch?.gallery?.length 
+    ? watch.gallery.filter(Boolean) 
+    : [watch?.image, watch?.image, watch?.image].filter(Boolean);
+  const images = allImages.length >= 3 ? allImages.slice(0, 3) : [...allImages, ...Array(Math.max(1, 3 - allImages.length)).fill(allImages[0] || watch?.image)];
+  const activeImage = images[activeImageIndex] || watch?.image || '/watches_new/MK9218_gold_auto_1.jpg';
 
   useEffect(() => {
     if (watch) setActiveImageIndex(0);
