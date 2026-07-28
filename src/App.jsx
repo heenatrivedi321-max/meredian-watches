@@ -501,15 +501,15 @@ export default function App() {
           </section>
 
           {/* MANIFESTO — GASP 4K WATCH GEARS FORMING DIAL VIDEO */}
-          <section className="manifesto-spacer relative w-full h-screen pointer-events-auto overflow-hidden bg-white">
+          <section className="manifesto-spacer relative w-full h-screen pointer-events-auto overflow-hidden bg-black">
             {/* Scoped 4K Watch Gears Video Background */}
             <video
               autoPlay loop muted playsInline preload="auto"
-              className="absolute inset-0 w-full h-full object-cover opacity-50 pointer-events-none z-0"
+              className="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none z-0"
             >
               <source src="/Watch_gears_forming_watch_dial_202606291025.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-gradient-to-b from-white via-white/40 to-white pointer-events-none z-5" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black pointer-events-none z-5" />
 
             <div className="sticky top-0 left-0 w-full h-screen flex flex-col items-center justify-center z-10">
               <div className="relative w-full max-w-[90rem] mx-auto px-4 md:px-8 text-center flex flex-col items-center justify-center space-y-4 sm:space-y-6 md:space-y-8">
@@ -533,15 +533,15 @@ export default function App() {
           </section>
 
           {/* PORSCHE — GASP 4K PORSCHE TUNNEL VIDEO */}
-          <section className="porsche-spacer relative w-full h-screen pointer-events-auto overflow-hidden bg-white">
+          <section className="porsche-spacer relative w-full h-screen pointer-events-auto overflow-hidden bg-black">
             {/* Scoped 4K Porsche Video Background */}
             <video
               autoPlay loop muted playsInline preload="auto"
-              className="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none z-0"
+              className="absolute inset-0 w-full h-full object-cover opacity-70 pointer-events-none z-0"
             >
               <source src="/Porsche_driving_through_tunnel_202606281316.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-gradient-to-b from-white via-white/40 to-white pointer-events-none z-5" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black pointer-events-none z-5" />
 
             <div className="sticky top-0 left-0 w-full h-screen flex flex-col items-center justify-center pt-24 pb-8 overflow-hidden z-10">
               <div className="relative w-full max-w-[90rem] mx-auto px-4 md:px-8 text-center flex flex-col items-center justify-center space-y-4 sm:space-y-6 md:space-y-8">
