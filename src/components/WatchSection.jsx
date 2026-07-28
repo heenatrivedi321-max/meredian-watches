@@ -53,11 +53,12 @@ export default function WatchSection({ watch, index, onClick }) {
       }
     });
 
-    // ROLEX CINEMATIC DEPTH & OPACITY REVEAL
+    // ROLEX CINEMATIC CLIP-PATH & DEPTH REVEAL ANIMATION
     if (contentRef.current) {
       gsap.fromTo(contentRef.current,
-        { scale: 1.05, opacity: 0.8 },
+        { clipPath: "inset(12% 8% 12% 8% round 40px)", scale: 1.1, opacity: 0.7 },
         {
+          clipPath: "inset(0% 0% 0% 0% round 0px)",
           scale: 1.0,
           opacity: 1,
           duration: 1.2,

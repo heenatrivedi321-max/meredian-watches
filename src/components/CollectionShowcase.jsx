@@ -315,17 +315,17 @@ export default function CollectionShowcase({ onSelectWatch }) {
         {/* Legacy Header Section with 4K Gold Skeleton Watch Video Background */}
         <section
           ref={taglineRef}
-          className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center pointer-events-none overflow-hidden bg-white"
+          className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center pointer-events-none overflow-hidden bg-black"
         >
           {/* Scoped 4K Gold Skeleton Watch Video */}
           <video
             autoPlay loop muted playsInline preload="auto"
-            className="absolute inset-0 w-full h-full object-cover opacity-50 pointer-events-none z-0"
+            className="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none z-0"
             style={{ transform: 'translateZ(0)', willChange: 'transform' }}
           >
             <source src="/Gold_skeleton_watch_showcase_202606290837.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-white via-white/40 to-white pointer-events-none z-5" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black pointer-events-none z-5" />
 
           <div className="relative z-10 text-center px-4">
             <h2

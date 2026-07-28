@@ -450,7 +450,7 @@ export default function App() {
           <section 
             onMouseMove={handleHeroMouseMove}
             onMouseLeave={handleHeroMouseLeave}
-            className="hero-spacer relative w-full h-screen flex flex-col items-center justify-center pointer-events-auto overflow-hidden"
+            className="hero-spacer relative w-full h-screen flex flex-col items-center justify-center pointer-events-auto overflow-hidden bg-white text-[#0b0b0e]"
             style={{ perspective: "1000px" }}
           >
             {/* Ambient Gemini Aurora Fluid Glow */}
@@ -466,7 +466,7 @@ export default function App() {
               <div className="w-24 h-[1.5px] bg-gradient-to-r from-[#4285F4] via-[#9B51E0] via-[#E91E63] to-[#00F0FF] rounded-full opacity-80 animate-pulse mb-1" />
 
               <h1 
-                className="hero-title text-[3.5rem] sm:text-7xl md:text-[7.5rem] lg:text-[9.5rem] font-normal tracking-[0.1em] leading-none text-gemini-gradient uppercase drop-shadow-[0_20px_60px_rgba(0,0,0,0.95)] select-none" 
+                className="hero-title text-[3.5rem] sm:text-7xl md:text-[7.5rem] lg:text-[9.5rem] font-normal tracking-[0.1em] leading-none uppercase drop-shadow-[0_10px_30px_rgba(0,0,0,0.15)] select-none text-[#0b0b0e]" 
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 Meridian
@@ -475,7 +475,7 @@ export default function App() {
 
             {/* Scroll Indicator with Gemini Gradient Line */}
             <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none opacity-60">
-              <span className="text-[9px] font-mono tracking-[0.4em] uppercase text-white/40">SCROLL</span>
+              <span className="text-[9px] font-mono tracking-[0.4em] uppercase text-black/60 font-bold">SCROLL</span>
               <div className="w-[1.5px] h-8 bg-gradient-to-b from-[#9B51E0] via-[#00F0FF] to-transparent animate-pulse" />
             </div>
 
