@@ -289,8 +289,8 @@ export const WATCHES = [
     color: "#D4AF37",
     amazonLink: "https://www.amazon.in/dp/B0F358W7KW",
     shopifyVariantId: "44505355157547",
-    video: "/Gold_skeleton_watch_showcase_202606290837.mp4",
-    cinematicVideo: "/Gold_skeleton_watch_showcase_202606290837.mp4",
+    video: "/Michael_Kors_watch_on_stone_202607281146_CLEAN.mp4",
+    cinematicVideo: "/Michael_Kors_watch_on_stone_202607281146_CLEAN.mp4",
     image: "/watches_new/MK9218_gold_auto_1.jpg",
     gallery: [
       "/watches_new/MK9218_gold_auto_1.jpg",
