@@ -587,9 +587,9 @@ export default function App() {
         <HorologySpecsCounter />
         <BrandFilm />
         
-        {/* CINEMA TAKEOVER 2: PEAKY BLINDERS SHELBY BROTHERS (EXTENDED) */}
+        {/* CINEMA TAKEOVER 2: PEAKY BLINDERS SHELBY BROTHERS (FULL UNUNCUT SCENE) */}
         <CinemaIntermission 
-          videoSrc="/peaky_extended_clip.mp4" 
+          videoSrc="/peaky_extended_full_44s.mp4" 
           title='"Power doesn’t ask for permission. It counts every second."' 
         />
 
