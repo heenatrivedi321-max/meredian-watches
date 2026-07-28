@@ -169,8 +169,8 @@ export const WATCHES = [
     color: "#4a0e0e",
     amazonLink: "https://www.amazon.in/dp/B07QCW7KRS",
     shopifyVariantId: "44408774066219",
-    video: "/olevs_imax_commercial.mp4",
-    cinematicVideo: "/olevs_imax_commercial.mp4",
+    video: "/Luxury_watch_commercial_diamond_202607141833.mp4",
+    cinematicVideo: "/Luxury_watch_commercial_diamond_202607141833.mp4",
     image: "/watches_new/Luxury_men's_watch_red_dial_202607141708.jpeg",
     gallery: [
       "/watches_new/Luxury_men's_watch_red_dial_202607141708.jpeg",
@@ -289,8 +289,8 @@ export const WATCHES = [
     color: "#D4AF37",
     amazonLink: "https://www.amazon.in/dp/B0F358W7KW",
     shopifyVariantId: "44505355157547",
-    video: "/Gold_watch_gears_spinning_climax_202607281207_CLEAN.mp4",
-    cinematicVideo: "/Gold_watch_gears_spinning_climax_202607281207_CLEAN.mp4",
+    video: "/Gold_skeleton_watch_showcase_202606290837.mp4",
+    cinematicVideo: "/Gold_skeleton_watch_showcase_202606290837.mp4",
     image: "/watches_new/MK9218_gold_auto_1.jpg",
     gallery: [
       "/watches_new/MK9218_gold_auto_1.jpg",
