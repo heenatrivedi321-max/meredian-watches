@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import ReactDOM from 'react-dom';
 import { X } from 'lucide-react';
 import { createCheckout } from '../shopify';
 
@@ -43,23 +43,23 @@ export default function ProductOverlay({ watch, onClose }) {
 
   if (!watch) return null;
 
-  return (
+  return ReactDOM.createPortal(
     <>
       {/* BACKDROP */}
       <div 
-        className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm"
-        style={{ opacity: visible ? 1 : 0, transition: 'opacity 0.4s ease' }}
+        className="fixed inset-0 bg-black/80 backdrop-blur-sm"
+        style={{ zIndex: 99990, opacity: visible ? 1 : 0, transition: 'opacity 0.4s ease' }}
         onClick={onClose}
       />
 
-      {/* SCROLLABLE PRODUCT PAGE — plain div, no motion, no transforms */}
+      {/* SCROLLABLE PRODUCT PAGE — plain div, NO transforms, portaled to body */}
       <div
         ref={scrollRef}
-        className="fixed inset-0 z-[70] overflow-y-auto overflow-x-hidden"
+        className="fixed inset-0 overflow-y-auto overflow-x-hidden bg-white"
         style={{
+          zIndex: 99995,
           opacity: visible ? 1 : 0,
-          transform: visible ? 'translateY(0)' : 'translateY(40px)',
-          transition: 'opacity 0.5s ease, transform 0.5s ease',
+          transition: 'opacity 0.5s ease',
           WebkitOverflowScrolling: 'touch',
         }}
       >
@@ -297,6 +297,7 @@ export default function ProductOverlay({ watch, onClose }) {
         </div>
 
       </div>
-    </>
+    </>,
+    document.body
   );
 }
