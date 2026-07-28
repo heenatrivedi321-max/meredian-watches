@@ -42,7 +42,7 @@ export default function ProductOverlay({ watch, onClose }) {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: "100%" }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed inset-0 z-50 bg-[#030303] text-white overflow-hidden"
+        className="fixed inset-0 z-50 bg-white text-black overflow-y-auto overflow-x-hidden scroll-smooth"
       >
         {/* Close Button */}
         <button 
@@ -53,7 +53,7 @@ export default function ProductOverlay({ watch, onClose }) {
         </button>
 
         {/* Master Scroll Container */}
-        <div ref={containerRef} className="w-full h-full overflow-y-auto overflow-x-hidden scroll-smooth bg-white">
+        <div ref={containerRef} className="w-full bg-white">
           
           {/* ========================================= */}
           {/* SCROLL SECTION 1: THE NARRATIVE JOURNEY   */}
