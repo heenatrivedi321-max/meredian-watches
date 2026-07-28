@@ -75,7 +75,7 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-screen bg-[#000000] overflow-hidden flex items-center justify-center pointer-events-auto"
+      className="relative w-full h-screen bg-white overflow-hidden flex items-center justify-center pointer-events-auto"
     >
       {/* Ambient Gold Radial Glow */}
       <div
@@ -84,10 +84,10 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
         style={{ willChange: 'transform, opacity' }}
       />
 
-      {/* 100% CLEAN NO-WATERMARK 4K VIDEO CONTAINER */}
+      {/* 100% CLEAN NO-WATERMARK CROPPED 4K VIDEO CONTAINER */}
       <div
         ref={pinnedVideoRef}
-        className="relative z-0 w-full h-full overflow-hidden flex items-center justify-center cursor-pointer group shadow-2xl"
+        className="relative z-0 w-full h-full overflow-hidden flex items-center justify-center cursor-pointer group shadow-2xl bg-white"
         onClick={() => onSelectWatch && onSelectWatch(watch)}
         style={{ willChange: 'transform, borderRadius' }}
       >
@@ -101,7 +101,7 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
           playsInline
           preload="auto"
           src="/Gold_skeleton_watch_showcase_202606290837.mp4"
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-700 scale-125 origin-center"
         />
         {/* Subtle Gradient Vignette for Text Contrast */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/60 pointer-events-none" />

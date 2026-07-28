@@ -107,8 +107,8 @@ export default function WatchSection({ watch, index, onClick }) {
           loop
           playsInline
           preload="auto"
-          className="w-full h-full object-cover transition-transform duration-1000 scale-[1.05]"
-          style={{ transform: 'translateZ(0)', willChange: 'transform' }}
+          className="w-full h-full object-cover transition-transform duration-1000 scale-125 origin-center"
+          style={{ transform: 'scale(1.25) translateZ(0)', willChange: 'transform' }}
         >
           <source src={watch.cinematicVideo || watch.video} type="video/mp4" />
         </video>
