@@ -8,7 +8,6 @@ gsap.registerPlugin(ScrollTrigger);
 export default function WatchSection({ watch, index, onClick }) {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
-  const contentRef = useRef(null);
   const [showUI, setShowUI] = useState(false);
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
 
@@ -23,7 +22,9 @@ export default function WatchSection({ watch, index, onClick }) {
       vid.play().catch(() => {});
     }
 
-    // GSAP PIN LOCKING: Locks section in place & handles audio auto-mute on scroll
+    let revealTimer;
+
+    // GSAP PIN LOCKING: Locks section & delayed 2.2s UI reveal
     const pinTrigger = ScrollTrigger.create({
       trigger: section,
       start: "top top",
@@ -34,9 +35,12 @@ export default function WatchSection({ watch, index, onClick }) {
       fastScrollEnd: true,
       onEnter: () => {
         if (vid) vid.play().catch(() => {});
-        setShowUI(true);
+        revealTimer = setTimeout(() => {
+          setShowUI(true);
+        }, 2200);
       },
       onLeave: () => {
+        clearTimeout(revealTimer);
         if (vid) {
           vid.muted = true;
           setIsAudioEnabled(false);
@@ -44,6 +48,7 @@ export default function WatchSection({ watch, index, onClick }) {
         setShowUI(false);
       },
       onLeaveBack: () => {
+        clearTimeout(revealTimer);
         if (vid) {
           vid.muted = true;
           setIsAudioEnabled(false);
@@ -52,27 +57,10 @@ export default function WatchSection({ watch, index, onClick }) {
       }
     });
 
-    // ROLEX CINEMATIC CLIP-PATH & DEPTH REVEAL ANIMATION
-    if (contentRef.current) {
-      gsap.fromTo(contentRef.current,
-        { clipPath: "inset(12% 8% 12% 8% round 40px)", scale: 1.1, opacity: 0.7 },
-        {
-          clipPath: "inset(0% 0% 0% 0% round 0px)",
-          scale: 1.0,
-          opacity: 1,
-          duration: 1.2,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 90%",
-            end: "top top",
-            scrub: 0.5
-          }
-        }
-      );
-    }
-
-    return () => pinTrigger.kill();
+    return () => {
+      clearTimeout(revealTimer);
+      pinTrigger.kill();
+    };
   }, [index]);
 
   const toggleAudio = useCallback((e) => {
@@ -98,8 +86,8 @@ export default function WatchSection({ watch, index, onClick }) {
       ref={sectionRef}
       className="relative w-full h-screen bg-black text-white flex flex-col justify-between overflow-hidden pointer-events-auto"
     >
-      {/* 100% FULL-SCREEN EDGE-TO-EDGE 4K VIDEO STREAM WITH ROLEX ZOOM ANIMATION */}
-      <div ref={contentRef} className="absolute inset-0 w-full h-full z-0 overflow-hidden">
+      {/* 100% FULL-SCREEN EDGE-TO-EDGE 4K VIDEO */}
+      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
         <video
           ref={videoRef}
           autoPlay
