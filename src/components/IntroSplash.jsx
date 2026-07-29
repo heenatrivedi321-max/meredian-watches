@@ -181,7 +181,7 @@ export default function IntroSplash({ onComplete }) {
             onClick={handleEnter}
             className="group relative px-9 py-4 rounded-full border border-white/30 bg-white/10 hover:bg-white/20 hover:border-white/60 backdrop-blur-2xl transition-all duration-300 flex items-center gap-3.5 cursor-pointer shadow-[0_0_50px_rgba(255,255,255,0.15)] active:scale-95 z-50"
           >
-            <span className="text-xs font-mono tracking-[0.25em] uppercase font-semibold text-white">
+            <span className="text-xs font-mono tracking-[0.25em] uppercase font-semibold text-gemini-gradient">
               ENTER EXPERIENCE 🔊
             </span>
             <span className="relative flex h-2.5 w-2.5">
