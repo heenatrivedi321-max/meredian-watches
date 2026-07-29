@@ -20,20 +20,20 @@ export default function WatchSection({ watch, index, onClick, isActive }) {
     clearTimeout(timerRef.current);
     if (isActive) {
       if (vid) vid.play().catch(() => {});
-      // Lock scroll for 2.2s while UI delays
-      if (window.lenis) window.lenis.stop();
+      // Slow scroll to near-lock for 2.2s while UI delays
+      if (window.lenis) window.lenis.options.duration = 3.5;
       timerRef.current = setTimeout(() => {
         setShowUI(true);
-        if (window.lenis) window.lenis.start();
+        if (window.lenis) window.lenis.options.duration = 1.0;
       }, 2200);
     } else {
       setShowUI(false);
       if (vid) vid.pause();
-      if (window.lenis) window.lenis.start();
+      if (window.lenis) window.lenis.options.duration = 1.0;
     }
     return () => {
       clearTimeout(timerRef.current);
-      if (window.lenis) window.lenis.start();
+      if (window.lenis) window.lenis.options.duration = 1.0;
     };
   }, [isActive]);
 
