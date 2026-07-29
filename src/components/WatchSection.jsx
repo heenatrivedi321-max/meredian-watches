@@ -24,6 +24,10 @@ export default function WatchSection({ watch, index, onClick }) {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+            // Pause all other section videos so only one plays at a time
+            document.querySelectorAll('.watch-section-video').forEach(v => {
+              if (v !== vid) v.pause();
+            });
             if (vid) vid.play().catch(() => {});
             timerRef.current = setTimeout(() => {
               setShowUI(true);
@@ -31,11 +35,11 @@ export default function WatchSection({ watch, index, onClick }) {
           } else {
             clearTimeout(timerRef.current);
             setShowUI(false);
-            if (vid) { vid.pause(); vid.currentTime = 0; }
+            if (vid) vid.pause();
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 0.6 }
     );
 
     observer.observe(section);
@@ -79,7 +83,7 @@ export default function WatchSection({ watch, index, onClick }) {
           loop
           playsInline
           preload="auto"
-          className="w-full h-full object-cover transition-transform duration-1000 scale-125 origin-center"
+          className="watch-section-video w-full h-full object-cover transition-transform duration-1000 scale-125 origin-center"
           style={{ transform: 'scale(1.25) translateZ(0)', willChange: 'transform' }}
         >
           <source src={watch.cinematicVideo || watch.video} type="video/mp4" />
