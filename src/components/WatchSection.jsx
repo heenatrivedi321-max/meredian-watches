@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import useIsMobile from '../hooks/useIsMobile';
 
 export default function WatchSection({ watch, index, onClick, isActive }) {
   const sectionRef = useRef(null);
@@ -7,6 +8,7 @@ export default function WatchSection({ watch, index, onClick, isActive }) {
   const [showUI, setShowUI] = useState(false);
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
   const timerRef = useRef(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const vid = videoRef.current;
@@ -68,7 +70,7 @@ export default function WatchSection({ watch, index, onClick, isActive }) {
           muted
           loop
           playsInline
-          preload="auto"
+          preload={isMobile ? "metadata" : "auto"}
           className="watch-section-video w-full h-full object-cover transition-transform duration-1000 scale-125 origin-center"
           style={{ transform: 'scale(1.25) translateZ(0)', willChange: 'transform' }}
         >

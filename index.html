@@ -12,11 +12,11 @@
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <meta name="theme-color" content="#000000" />
 
-    <!-- Preload critical videos -->
-    <link rel="preload" as="video" href="/hero-4k.mp4" type="video/mp4" />
-    <link rel="preload" as="video" href="/Watch_gears_forming_watch_dial_202606291025.mp4" type="video/mp4" />
-    <link rel="preload" as="video" href="/brand-film.mp4" type="video/mp4" />
-    <link rel="preload" as="video" href="/peaky_extended_full_44s.mp4" type="video/mp4" />
+    <!-- Preload critical videos (desktop only — mobile loads on demand) -->
+    <link rel="preload" as="video" href="/hero-4k.mp4" type="video/mp4" media="(min-width: 768px)" />
+    <link rel="preload" as="video" href="/Watch_gears_forming_watch_dial_202606291025.mp4" type="video/mp4" media="(min-width: 768px)" />
+    <link rel="preload" as="video" href="/brand-film.mp4" type="video/mp4" media="(min-width: 768px)" />
+    <link rel="preload" as="video" href="/peaky_extended_full_44s.mp4" type="video/mp4" media="(min-width: 768px)" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -92,7 +92,7 @@
     </script>
   </head>
   <body>
-    <audio id="ta-dum-audio" src="/ta-dum.wav" preload="auto" playsinline></audio>
+    <audio id="ta-dum-audio" src="/ta-dum.wav" preload="none" playsinline></audio>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

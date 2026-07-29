@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import useIsMobile from '../hooks/useIsMobile';
 
 function playIntroSound() {
   try {
@@ -61,8 +62,10 @@ function playFallbackAudio() {
 }
 
 function GoldParticles({ active }) {
+  const isMobile = useIsMobile();
+  const count = isMobile ? 12 : 50;
   const particles = useMemo(() =>
-    Array.from({ length: 50 }, (_, i) => ({
+    Array.from({ length: count }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: 40 + Math.random() * 20,
@@ -70,7 +73,7 @@ function GoldParticles({ active }) {
       delay: Math.random() * 1.5,
       duration: Math.random() * 3 + 2,
       drift: (Math.random() - 0.5) * 300,
-    })), []);
+    })), [count]);
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">

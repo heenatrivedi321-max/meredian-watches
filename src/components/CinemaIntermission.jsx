@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import useIsMobile from '../hooks/useIsMobile';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,6 +13,7 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
   const topBarRef = useRef(null);
   const bottomBarRef = useRef(null);
   const [isAudioEnabled, setIsAudioEnabled] = useState(soundDefault);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const vid = videoRef.current;
@@ -108,7 +110,7 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
         muted
         loop
         playsInline
-        preload="auto"
+        preload={isMobile ? "metadata" : "auto"}
         className="absolute inset-0 w-full h-full object-cover"
         style={{ transform: 'scale(1.02) translateZ(0)', willChange: 'transform' }}
       >
