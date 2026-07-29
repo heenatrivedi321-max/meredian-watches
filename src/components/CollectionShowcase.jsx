@@ -241,21 +241,6 @@ export default function CollectionShowcase({ onSelectWatch }) {
   useEffect(() => {
     const ctx = gsap.context(() => {
 
-      // Entrance — cross-fade from dark section above
-      gsap.fromTo(".product-reveal",
-        { autoAlpha: 0, y: 40 },
-        {
-          autoAlpha: 1, y: 0,
-          duration: 1.4,
-          ease: "power1.out",
-          scrollTrigger: {
-            trigger: ".product-reveal",
-            start: "top 100%",
-            toggleActions: "play none none none"
-          }
-        }
-      );
-
       // "Choose Your Legacy" — staggered reveal with scale
       const legacyEls = gsap.utils.toArray(".legacy-text");
       gsap.fromTo(legacyEls,
@@ -333,7 +318,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
       {/* ======================================== */}
       {/* SECTION 4 & 5: LEGACY + PRODUCTS */}
       {/* ======================================== */}
-      <div className="product-reveal relative z-0 w-full">
+      <div className="product-reveal relative z-0 w-full bg-black">
 
         {/* Legacy Header Section with 4K Gold Skeleton Watch Video Background */}
         <section

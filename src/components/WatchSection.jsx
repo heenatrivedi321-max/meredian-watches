@@ -25,24 +25,62 @@ export default function WatchSection({ watch, index, onClick }) {
 
     let revealTimer;
 
-    const trigger = ScrollTrigger.create({
+    // PIN LOCK + 2.2S DELAYED UI REVEAL
+    const pinTrigger = ScrollTrigger.create({
       trigger: section,
-      start: "top 40%",
+      start: "top top",
+      end: "+=80%",
+      pin: true,
+      pinSpacing: true,
+      anticipatePin: 1,
+      fastScrollEnd: true,
       onEnter: () => {
         if (vid) vid.play().catch(() => {});
         revealTimer = setTimeout(() => {
           setShowUI(true);
         }, 2200);
       },
+      onLeave: () => {
+        clearTimeout(revealTimer);
+        setShowUI(false);
+        if (vid) {
+          vid.muted = true;
+          setIsAudioEnabled(false);
+        }
+      },
       onLeaveBack: () => {
         clearTimeout(revealTimer);
         setShowUI(false);
+        if (vid) {
+          vid.muted = true;
+          setIsAudioEnabled(false);
+        }
       }
     });
 
+    // CLIP-PATH CINEMATIC REVEAL
+    if (contentRef.current) {
+      gsap.fromTo(contentRef.current,
+        { clipPath: "inset(12% 8% 12% 8% round 40px)", scale: 1.1, opacity: 0.7 },
+        {
+          clipPath: "inset(0% 0% 0% 0% round 0px)",
+          scale: 1.0,
+          opacity: 1,
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 90%",
+            end: "top top",
+            scrub: 0.5
+          }
+        }
+      );
+    }
+
     return () => {
       clearTimeout(revealTimer);
-      trigger.kill();
+      pinTrigger.kill();
     };
   }, [index]);
 
