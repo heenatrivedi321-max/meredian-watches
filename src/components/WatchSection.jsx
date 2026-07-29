@@ -23,8 +23,7 @@ export default function WatchSection({ watch, index, onClick }) {
       vid.play().catch(() => {});
     }
 
-    let revealTimer;
-
+    // GSAP PIN LOCKING: Locks section in place & handles audio auto-mute on scroll
     const pinTrigger = ScrollTrigger.create({
       trigger: section,
       start: "top top",
@@ -35,12 +34,9 @@ export default function WatchSection({ watch, index, onClick }) {
       fastScrollEnd: true,
       onEnter: () => {
         if (vid) vid.play().catch(() => {});
-        revealTimer = setTimeout(() => {
-          setShowUI(true);
-        }, 2200);
+        setShowUI(true);
       },
       onLeave: () => {
-        clearTimeout(revealTimer);
         if (vid) {
           vid.muted = true;
           setIsAudioEnabled(false);
@@ -48,7 +44,6 @@ export default function WatchSection({ watch, index, onClick }) {
         setShowUI(false);
       },
       onLeaveBack: () => {
-        clearTimeout(revealTimer);
         if (vid) {
           vid.muted = true;
           setIsAudioEnabled(false);
@@ -57,6 +52,7 @@ export default function WatchSection({ watch, index, onClick }) {
       }
     });
 
+    // ROLEX CINEMATIC CLIP-PATH & DEPTH REVEAL ANIMATION
     if (contentRef.current) {
       gsap.fromTo(contentRef.current,
         { clipPath: "inset(12% 8% 12% 8% round 40px)", scale: 1.1, opacity: 0.7 },
@@ -76,10 +72,7 @@ export default function WatchSection({ watch, index, onClick }) {
       );
     }
 
-    return () => {
-      clearTimeout(revealTimer);
-      pinTrigger.kill();
-    };
+    return () => pinTrigger.kill();
   }, [index]);
 
   const toggleAudio = useCallback((e) => {
@@ -105,6 +98,7 @@ export default function WatchSection({ watch, index, onClick }) {
       ref={sectionRef}
       className="relative w-full h-screen bg-black text-white flex flex-col justify-between overflow-hidden pointer-events-auto"
     >
+      {/* 100% FULL-SCREEN EDGE-TO-EDGE 4K VIDEO STREAM WITH ROLEX ZOOM ANIMATION */}
       <div ref={contentRef} className="absolute inset-0 w-full h-full z-0 overflow-hidden">
         <video
           ref={videoRef}
@@ -119,10 +113,12 @@ export default function WatchSection({ watch, index, onClick }) {
           <source src={watch.cinematicVideo || watch.video} type="video/mp4" />
         </video>
 
+        {/* Cinematic Radial & Vertical Gradient Vignettes */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/70 pointer-events-none" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(0,0,0,0.85)_100%)] pointer-events-none" />
       </div>
 
+      {/* TOP LEFT REVEAL: TITLE & BRAND (SLIDES DOWN AFTER VIDEO PLAYS) */}
       <div className="relative z-20 p-8 sm:p-14 md:p-20 flex justify-between items-start pointer-events-none">
         <AnimatePresence>
           {showUI && (
@@ -152,6 +148,7 @@ export default function WatchSection({ watch, index, onClick }) {
           )}
         </AnimatePresence>
 
+        {/* SOUND CONTROL PILL */}
         <button
           onClick={toggleAudio}
           className="pointer-events-auto px-5 py-3 rounded-full bg-black/60 hover:bg-black/90 border border-white/20 backdrop-blur-2xl transition-all duration-300 flex items-center gap-3 cursor-pointer shadow-2xl min-h-[44px]"
@@ -163,6 +160,7 @@ export default function WatchSection({ watch, index, onClick }) {
         </button>
       </div>
 
+      {/* BOTTOM CENTER REVEAL: SEXY GLASSMORPHISM BUTTON WITH GOOGLE TYPOGRAPHY (PLUS JAKARTA SANS / INTER) */}
       <div className="relative z-20 pb-16 sm:pb-24 px-6 flex flex-col items-center text-center pointer-events-none">
         <AnimatePresence>
           {showUI && (
@@ -182,6 +180,7 @@ export default function WatchSection({ watch, index, onClick }) {
                 </p>
               )}
 
+              {/* SEXY GLASSMORPHISM BUTTON WITH GOOGLE TYPOGRAPHY (PLUS JAKARTA SANS / INTER) */}
               <button
                 onClick={() => onClick(watch)}
                 style={{ fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif" }}
@@ -201,3 +200,4 @@ export default function WatchSection({ watch, index, onClick }) {
     </section>
   );
 }
+
