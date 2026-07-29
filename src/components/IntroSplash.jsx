@@ -214,7 +214,7 @@ export default function IntroSplash({ onComplete }) {
 
             {/* Subtext */}
             <motion.p
-              className="mt-6 sm:mt-10 text-xs sm:text-lg md:text-xl tracking-[0.25em] sm:tracking-[0.35em] uppercase font-light text-white/80 drop-shadow-[0_10px_20px_rgba(0,0,0,0.9)] max-w-full"
+              className="mt-16 sm:mt-24 text-xs sm:text-lg md:text-xl tracking-[0.25em] sm:tracking-[0.35em] uppercase font-light text-white/80 drop-shadow-[0_10px_20px_rgba(0,0,0,0.9)] max-w-full"
               style={{ fontFamily: "'Inter', sans-serif" }}
               initial={{ opacity: 0, y: 30, filter: 'blur(4px)' }}
               animate={phase >= 2 ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
