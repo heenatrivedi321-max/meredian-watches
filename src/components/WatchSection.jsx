@@ -20,7 +20,7 @@ export default function WatchSection({ watch, index, onClick }) {
     if (vid) {
       vid.muted = true;
       vid.playsInline = true;
-      vid.play().catch(() => {});
+      vid.pause();
     }
 
     let revealTimer;
@@ -40,21 +40,21 @@ export default function WatchSection({ watch, index, onClick }) {
           setShowUI(true);
         }, 2200);
       },
+      onEnterBack: () => {
+        if (vid) vid.play().catch(() => {});
+        revealTimer = setTimeout(() => {
+          setShowUI(true);
+        }, 2200);
+      },
       onLeave: () => {
         clearTimeout(revealTimer);
         setShowUI(false);
-        if (vid) {
-          vid.muted = true;
-          setIsAudioEnabled(false);
-        }
+        if (vid) { vid.pause(); vid.muted = true; setIsAudioEnabled(false); }
       },
       onLeaveBack: () => {
         clearTimeout(revealTimer);
         setShowUI(false);
-        if (vid) {
-          vid.muted = true;
-          setIsAudioEnabled(false);
-        }
+        if (vid) { vid.pause(); vid.muted = true; setIsAudioEnabled(false); }
       }
     });
 
