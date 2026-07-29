@@ -23,7 +23,9 @@ export default function WatchSection({ watch, index, onClick }) {
       vid.play().catch(() => {});
     }
 
-    // GSAP PIN LOCKING: Locks section in place & handles audio auto-mute on scroll
+    let revealTimer;
+
+    // GSAP PIN LOCKING: Locks section & delayed 2.2s UI reveal
     const pinTrigger = ScrollTrigger.create({
       trigger: section,
       start: "top top",
@@ -34,9 +36,12 @@ export default function WatchSection({ watch, index, onClick }) {
       fastScrollEnd: true,
       onEnter: () => {
         if (vid) vid.play().catch(() => {});
-        setShowUI(true);
+        revealTimer = setTimeout(() => {
+          setShowUI(true);
+        }, 2200);
       },
       onLeave: () => {
+        clearTimeout(revealTimer);
         if (vid) {
           vid.muted = true;
           setIsAudioEnabled(false);
@@ -44,6 +49,7 @@ export default function WatchSection({ watch, index, onClick }) {
         setShowUI(false);
       },
       onLeaveBack: () => {
+        clearTimeout(revealTimer);
         if (vid) {
           vid.muted = true;
           setIsAudioEnabled(false);
@@ -72,7 +78,10 @@ export default function WatchSection({ watch, index, onClick }) {
       );
     }
 
-    return () => pinTrigger.kill();
+    return () => {
+      clearTimeout(revealTimer);
+      pinTrigger.kill();
+    };
   }, [index]);
 
   const toggleAudio = useCallback((e) => {
