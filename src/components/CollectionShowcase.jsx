@@ -245,8 +245,8 @@ export default function CollectionShowcase({ onSelectWatch }) {
     sections.forEach((section, idx) => {
       const t = ScrollTrigger.create({
         trigger: section,
-        start: "top center",
-        end: "bottom center",
+        start: "top top",
+        end: "bottom top",
         onEnter: () => setActiveWatchIndex(idx),
         onEnterBack: () => setActiveWatchIndex(idx),
       });
