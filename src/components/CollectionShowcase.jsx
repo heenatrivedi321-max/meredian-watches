@@ -86,7 +86,7 @@ function ProductCard({ watch, index, onClick }) {
       className="relative rounded-2xl overflow-hidden cursor-pointer group"
       onClick={() => onClick(watch)}
       style={{
-        backgroundColor: '#0a0a0a',
+        backgroundColor: '#ffffff',
         minHeight: 'min(520px, 70vh)',
         transformStyle: 'preserve-3d',
         perspective: '1000px',
@@ -324,7 +324,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
       {/* ======================================== */}
       {/* SECTION 4 & 5: LEGACY + PRODUCTS */}
       {/* ======================================== */}
-      <div className="product-reveal relative z-0 w-full bg-white">
+      <div className="product-reveal relative z-0 w-full">
 
         {/* Legacy Header Section with 4K Gold Skeleton Watch Video Background */}
         <section

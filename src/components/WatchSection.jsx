@@ -55,7 +55,7 @@ export default function WatchSection({ watch, index, onClick }) {
     // ROLEX CINEMATIC CLIP-PATH & DEPTH REVEAL ANIMATION
     if (contentRef.current) {
       gsap.fromTo(contentRef.current,
-        { clipPath: "inset(12% 8% 12% 8% round 40px)", scale: 1.25, opacity: 0.6 },
+        { clipPath: "inset(12% 8% 12% 8% round 40px)", scale: 1.1, opacity: 0.7 },
         {
           clipPath: "inset(0% 0% 0% 0% round 0px)",
           scale: 1.0,
@@ -107,8 +107,8 @@ export default function WatchSection({ watch, index, onClick }) {
           loop
           playsInline
           preload="auto"
-          className="w-full h-full object-cover transition-transform duration-1000 origin-center"
-          style={{ willChange: 'transform' }}
+          className="w-full h-full object-cover transition-transform duration-1000 scale-125 origin-center"
+          style={{ transform: 'scale(1.25) translateZ(0)', willChange: 'transform' }}
         >
           <source src={watch.cinematicVideo || watch.video} type="video/mp4" />
         </video>
