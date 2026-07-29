@@ -75,7 +75,7 @@ export default function VipVaultModal({ isOpen, onClose }) {
                 />
                 {error && (
                   <p className="text-xs font-mono text-red-400 mt-2 animate-bounce">
-                    ❌ Invalid passcode. Try NOLAN2026
+                    Invalid passcode. Try NOLAN2026
                   </p>
                 )}
               </div>
@@ -84,7 +84,11 @@ export default function VipVaultModal({ isOpen, onClose }) {
                 type="submit"
                 className="w-full py-4 rounded-full bg-gradient-to-r from-[#FFD700] via-[#E8D5A3] to-[#FFD700] text-black font-mono text-xs font-extrabold tracking-[0.25em] uppercase hover:scale-105 active:scale-95 transition-all shadow-[0_10px_30px_rgba(255,215,0,0.3)] cursor-pointer"
               >
-                UNLOCK VAULT →
+                UNLOCK VAULT{' '}
+                <svg className="w-4 h-4 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
               </button>
             </form>
           ) : (
@@ -108,7 +112,11 @@ export default function VipVaultModal({ isOpen, onClose }) {
                 onClick={onClose}
                 className="w-full py-3 rounded-full bg-white text-black font-mono text-xs font-bold uppercase hover:bg-white/90 transition-all cursor-pointer"
               >
-                RETURN TO STORE →
+                RETURN TO STORE{' '}
+                <svg className="w-4 h-4 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
               </button>
             </div>
           )}

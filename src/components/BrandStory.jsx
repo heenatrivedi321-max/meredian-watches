@@ -14,9 +14,12 @@ export default function BrandStory({ onClose }) {
     <div className="fixed inset-0 z-[150] bg-[#0a0a0a] text-white overflow-y-auto">
       <button
         onClick={onClose}
-        className="fixed top-4 right-4 z-[200] w-12 h-12 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white/60 hover:text-white hover:bg-white/20 transition-colors text-[10px] tracking-[0.3em] uppercase font-bold"
+        className="fixed top-4 right-4 z-[200] w-12 h-12 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white/60 hover:text-white hover:bg-white/20 transition-colors"
       >
-        ✕
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
       </button>
 
       {/* Hero */}

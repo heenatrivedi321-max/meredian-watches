@@ -211,7 +211,11 @@ function ProductCard({ watch, index, onClick }) {
               className="px-5 py-2.5 border border-white/30 text-white text-xs tracking-[0.25em] uppercase font-medium min-h-[44px] flex items-center
                          hover:bg-white hover:text-black transition-all duration-300 rounded-full backdrop-blur-md"
             >
-              View →
+              View{' '}
+              <svg className="w-3.5 h-3.5 inline-block ml-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
             </MagneticButton>
           )}
         </div>
@@ -440,7 +444,11 @@ export default function CollectionShowcase({ onSelectWatch }) {
             className="closer-btn px-12 py-5 bg-black text-white text-xs font-mono tracking-[0.3em] uppercase font-extrabold
                        rounded-full hover:bg-black/90 hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_10px_40px_rgba(0,0,0,0.1)] cursor-pointer"
           >
-            EXPLORE ARCHIVE →
+            EXPLORE ARCHIVE{' '}
+            <svg className="w-4 h-4 inline-block ml-1 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
           </MagneticButton>
         </div>
 

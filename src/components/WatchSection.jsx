@@ -116,8 +116,23 @@ export default function WatchSection({ watch, index, onClick, isActive }) {
           className="pointer-events-auto px-5 py-3 rounded-full bg-black/60 hover:bg-black/90 border border-white/20 backdrop-blur-2xl transition-all duration-300 flex items-center gap-3 cursor-pointer shadow-2xl min-h-[44px]"
         >
           <span className={`w-2.5 h-2.5 rounded-full ${isAudioEnabled ? 'bg-[#10B981] animate-ping' : 'bg-white/50'}`} />
+          <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            {isAudioEnabled ? (
+              <>
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+              </>
+            ) : (
+              <>
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <line x1="23" y1="9" x2="17" y2="15" />
+                <line x1="17" y1="9" x2="23" y2="15" />
+              </>
+            )}
+          </svg>
           <span className="text-[10px] sm:text-xs font-mono tracking-[0.2em] font-semibold text-white uppercase">
-            {isAudioEnabled ? 'AUDIO LIVE 🔊' : 'ENABLE SOUND 🔇'}
+            {isAudioEnabled ? 'AUDIO LIVE' : 'ENABLE SOUND'}
           </span>
         </button>
       </div>
@@ -151,9 +166,10 @@ export default function WatchSection({ watch, index, onClick, isActive }) {
                 <span className="text-xs sm:text-sm tracking-[0.3em] uppercase font-bold text-white group-hover:text-[#800020] transition-colors">
                   CHECK IT OUT
                 </span>
-                <span className="text-lg text-white group-hover:translate-x-2 transition-transform duration-300">
-                  →
-                </span>
+                <svg className="w-5 h-5 text-white group-hover:translate-x-1.5 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
               </button>
             </motion.div>
           )}

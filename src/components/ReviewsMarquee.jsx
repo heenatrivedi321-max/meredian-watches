@@ -34,7 +34,11 @@ export default function ReviewsMarquee() {
               >
                 {review}
               </h2>
-              <span className="mx-6 sm:mx-12 md:mx-24 text-2xl sm:text-3xl md:text-6xl text-[var(--accent-gold)] group-hover:rotate-180 transition-transform duration-700 drop-shadow-[0_0_20px_rgba(216,156,68,0.5)] group-hover:drop-shadow-[0_0_40px_rgba(216,156,68,1)]">✦</span>
+              <span className="mx-6 sm:mx-12 md:mx-24 inline-flex items-center group-hover:rotate-180 transition-transform duration-700">
+              <svg className="w-4 sm:w-5 md:w-6 h-auto text-[var(--accent-gold)] drop-shadow-[0_0_20px_rgba(216,156,68,0.5)] group-hover:drop-shadow-[0_0_40px_rgba(216,156,68,1)]" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="12 2 15 9 22 9 16.5 14 18.5 21 12 17 5.5 21 7.5 14 2 9 9 9 12 2" />
+              </svg>
+            </span>
             </div>
           ))}
         </div>

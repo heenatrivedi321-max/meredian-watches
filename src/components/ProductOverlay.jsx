@@ -301,7 +301,22 @@ export default function ProductOverlay({ watch, onClose }) {
           onMouseDown={e => { e.currentTarget.style.transform = 'scale(0.95)'; }}
           onMouseUp={e => { e.currentTarget.style.transform = 'scale(1.06)'; }}
         >
-          {isMuted ? '🔇 Unmute Sound' : '🔊 Mute Sound'}
+          <svg className="w-4 h-4 inline-block mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            {!isMuted ? (
+              <>
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+              </>
+            ) : (
+              <>
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <line x1="23" y1="9" x2="17" y2="15" />
+                <line x1="17" y1="9" x2="23" y2="15" />
+              </>
+            )}
+          </svg>
+          {isMuted ? 'Unmute Sound' : 'Mute Sound'}
         </button>
         
         {/* Center overlay typography */}
@@ -401,7 +416,7 @@ export default function ProductOverlay({ watch, onClose }) {
                   "For the late nights nobody saw and the battles fought in silence. Your time starts now."
                 </p>
                 <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', fontFamily: 'monospace', textTransform: 'uppercase', marginTop: 8, display: 'block' }}>
-                  ✦ Customize via WhatsApp after ordering
+                  Customize via WhatsApp after ordering
                 </span>
               </div>
             </FadeIn>
@@ -571,7 +586,7 @@ export default function ProductOverlay({ watch, onClose }) {
               onMouseDown={e => { e.currentTarget.style.transform = 'translateY(-1px) scale(0.96)'; }}
               onMouseUp={e => { e.currentTarget.style.transform = 'translateY(-4px) scale(1.05)'; }}
             >
-              {isRedirecting ? 'REDIRECTING...' : `BUY TIME — ${watch.price} →`}
+              {isRedirecting ? 'REDIRECTING...' : <>BUY TIME — {watch.price}{' '}<svg className="w-4 h-4 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></>}
             </button>
           )}
         </FadeIn>
