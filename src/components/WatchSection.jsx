@@ -20,14 +20,21 @@ export default function WatchSection({ watch, index, onClick, isActive }) {
     clearTimeout(timerRef.current);
     if (isActive) {
       if (vid) vid.play().catch(() => {});
+      // Lock scroll for 2.2s while UI delays
+      if (window.lenis) window.lenis.stop();
       timerRef.current = setTimeout(() => {
         setShowUI(true);
+        if (window.lenis) window.lenis.start();
       }, 2200);
     } else {
       setShowUI(false);
       if (vid) vid.pause();
+      if (window.lenis) window.lenis.start();
     }
-    return () => clearTimeout(timerRef.current);
+    return () => {
+      clearTimeout(timerRef.current);
+      if (window.lenis) window.lenis.start();
+    };
   }, [isActive]);
 
   const toggleAudio = useCallback((e) => {

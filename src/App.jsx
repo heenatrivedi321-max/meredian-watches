@@ -170,7 +170,10 @@ export default function App() {
     gsap.ticker.add(update);
     gsap.ticker.lagSmoothing(0);
 
+    window.lenis = lenis;
+
     return () => {
+      delete window.lenis;
       gsap.ticker.remove(update);
       lenis.destroy();
     };
