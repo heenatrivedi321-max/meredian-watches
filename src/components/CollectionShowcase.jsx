@@ -333,7 +333,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
       {/* ======================================== */}
       {/* SECTION 4 & 5: LEGACY + PRODUCTS */}
       {/* ======================================== */}
-      <div className="product-reveal relative z-0 w-full">
+      <div className="product-reveal relative z-0 w-full bg-black">
 
         {/* Legacy Header Section with 4K Gold Skeleton Watch Video Background */}
         <section
