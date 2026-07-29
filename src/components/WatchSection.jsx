@@ -1,16 +1,13 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function WatchSection({ watch, index, onClick }) {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
-  const contentRef = useRef(null);
   const [showUI, setShowUI] = useState(false);
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
+  const timerRef = useRef(null);
+  const observerRef = useRef(null);
 
   useEffect(() => {
     const vid = videoRef.current;
@@ -23,64 +20,30 @@ export default function WatchSection({ watch, index, onClick }) {
       vid.pause();
     }
 
-    let revealTimer;
-
-    // PIN LOCK + 2.2S DELAYED UI REVEAL
-    const pinTrigger = ScrollTrigger.create({
-      trigger: section,
-      start: "top top",
-      end: "+=80%",
-      pin: true,
-      pinSpacing: true,
-      anticipatePin: 1,
-      fastScrollEnd: true,
-      onEnter: () => {
-        if (vid) vid.play().catch(() => {});
-        revealTimer = setTimeout(() => {
-          setShowUI(true);
-        }, 2200);
-      },
-      onEnterBack: () => {
-        if (vid) vid.play().catch(() => {});
-        revealTimer = setTimeout(() => {
-          setShowUI(true);
-        }, 2200);
-      },
-      onLeave: () => {
-        clearTimeout(revealTimer);
-        setShowUI(false);
-        if (vid) { vid.pause(); vid.muted = true; setIsAudioEnabled(false); }
-      },
-      onLeaveBack: () => {
-        clearTimeout(revealTimer);
-        setShowUI(false);
-        if (vid) { vid.pause(); vid.muted = true; setIsAudioEnabled(false); }
-      }
-    });
-
-    // CLIP-PATH CINEMATIC REVEAL
-    if (contentRef.current) {
-      gsap.fromTo(contentRef.current,
-        { clipPath: "inset(12% 8% 12% 8% round 40px)", scale: 1.1, opacity: 0.7 },
-        {
-          clipPath: "inset(0% 0% 0% 0% round 0px)",
-          scale: 1.0,
-          opacity: 1,
-          duration: 1.2,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 90%",
-            end: "top top",
-            scrub: 0.5
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (vid) vid.play().catch(() => {});
+            timerRef.current = setTimeout(() => {
+              setShowUI(true);
+            }, 2200);
+          } else {
+            clearTimeout(timerRef.current);
+            setShowUI(false);
+            if (vid) { vid.pause(); vid.currentTime = 0; }
           }
-        }
-      );
-    }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(section);
+    observerRef.current = observer;
 
     return () => {
-      clearTimeout(revealTimer);
-      pinTrigger.kill();
+      clearTimeout(timerRef.current);
+      observer.disconnect();
     };
   }, [index]);
 
@@ -108,7 +71,7 @@ export default function WatchSection({ watch, index, onClick }) {
       className="relative w-full h-screen bg-black text-white flex flex-col justify-between overflow-hidden pointer-events-auto"
     >
       {/* 100% FULL-SCREEN EDGE-TO-EDGE 4K VIDEO STREAM WITH ROLEX ZOOM ANIMATION */}
-      <div ref={contentRef} className="absolute inset-0 w-full h-full z-0 overflow-hidden">
+      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
         <video
           ref={videoRef}
           autoPlay
