@@ -7,7 +7,10 @@ gsap.registerPlugin(ScrollTrigger);
 export default function CinemaIntermission({ videoSrc, title, soundDefault = false }) {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
-  const textRef = useRef(null);
+  const textContainerRef = useRef(null);
+  const beamRef = useRef(null);
+  const topBarRef = useRef(null);
+  const bottomBarRef = useRef(null);
   const [isAudioEnabled, setIsAudioEnabled] = useState(soundDefault);
 
   useEffect(() => {
@@ -16,8 +19,6 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
     if (!vid || !section) return;
 
     vid.muted = !soundDefault;
-
-    // Instant video play on load
     vid.play().catch(() => {});
 
     const observer = new IntersectionObserver(
@@ -32,23 +33,38 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
     );
     observer.observe(section);
 
-    // ULTRA FAST 120 FPS HARDWARE ACCELERATED TEXT FADE IN
-    if (textRef.current) {
-      gsap.fromTo(textRef.current,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 80%",
-            toggleActions: "play none none reverse"
-          }
-        }
-      );
-    }
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top 75%",
+        toggleActions: "play none none reverse"
+      }
+    });
+
+    // Letterbox bars retract
+    tl.fromTo(topBarRef.current,
+      { scaleY: 1 },
+      { scaleY: 0, duration: 0.6, ease: "power4.out", transformOrigin: "top" }, 0
+    );
+    tl.fromTo(bottomBarRef.current,
+      { scaleY: 1 },
+      { scaleY: 0, duration: 0.6, ease: "power4.out", transformOrigin: "bottom" }, 0
+    );
+
+    // Text center-split reveal
+    tl.fromTo(textContainerRef.current,
+      { clipPath: 'inset(50% 0 50% 0)' },
+      { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.5, ease: "power4.out" }, 0.15
+    );
+
+    // Beam sweep
+    tl.fromTo(beamRef.current,
+      { left: '-15%', opacity: 0 },
+      { left: '115%', opacity: 1, duration: 1, ease: "power2.inOut" }, 0.3
+    );
+    tl.to(beamRef.current,
+      { opacity: 0, duration: 0.3 }, 1.3
+    );
 
     return () => observer.disconnect();
   }, [soundDefault]);
@@ -99,13 +115,26 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
         <source src={videoSrc} type="video/mp4" />
       </video>
 
+      {/* LETTERBOX BARS — RETRACT ON SCROLL */}
+      <div ref={topBarRef} className="absolute top-0 left-0 right-0 h-[12vh] bg-black z-20 pointer-events-none" />
+      <div ref={bottomBarRef} className="absolute bottom-0 left-0 right-0 h-[12vh] bg-black z-20 pointer-events-none" />
+
+      {/* BEAM SWEEP */}
+      <div
+        ref={beamRef}
+        className="absolute top-0 bottom-0 w-[40vw] z-20 pointer-events-none opacity-0"
+        style={{
+          background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 30%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.08) 70%, transparent 100%)',
+        }}
+      />
+
       {/* LIVE AUDIO WAVEFORM ANIMATION */}
       {isAudioEnabled && (
         <div className="absolute bottom-6 left-8 sm:bottom-8 sm:left-12 z-30 flex items-center gap-1.5 pointer-events-none">
-          <span className="w-1 bg-[#00F0FF] rounded-full animate-pulse h-4" />
-          <span className="w-1 bg-[#9B51E0] rounded-full animate-bounce h-7" />
-          <span className="w-1 bg-[#FF4081] rounded-full animate-pulse h-5" />
-          <span className="w-1 bg-[#4285F4] rounded-full animate-bounce h-8" />
+          <span className="w-1 bg-[#800020] rounded-full animate-pulse h-4" />
+          <span className="w-1 bg-[#A52A2A] rounded-full animate-bounce h-7" />
+          <span className="w-1 bg-[#C95A5A] rounded-full animate-pulse h-5" />
+          <span className="w-1 bg-[#5C0018] rounded-full animate-bounce h-8" />
           <span className="text-[10px] font-mono tracking-widest text-white/80 uppercase font-semibold ml-2">
             IMAX 2.39:1 AUDIO ACTIVE
           </span>
@@ -116,7 +145,7 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
       <div className="absolute top-16 right-8 sm:top-20 sm:right-12 z-30">
         <button
           onClick={toggleAudio}
-          className={`group relative px-6 py-3 rounded-full border backdrop-blur-xl transition-all duration-300 flex items-center gap-3 cursor-pointer ${
+          className={`group relative px-6 py-3 rounded-full border backdrop-blur-xl transition-all duration-300 flex items-center gap-3 cursor-pointer min-h-[44px] ${
             isAudioEnabled
               ? 'bg-white/20 border-white shadow-[0_0_30px_rgba(255,255,255,0.4)]'
               : 'bg-black/60 border-white/20 hover:border-white/50 hover:bg-black/80'
@@ -133,22 +162,22 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
         </button>
       </div>
 
-      {/* GEMINI IRIDESCENT TYPOGRAPHY — SLOW DISSOLVE FADE OUT */}
+      {/* ROLEX-STYLE CENTER-SPLIT TEXT REVEAL */}
       <div
-        ref={textRef}
+        ref={textContainerRef}
         className="relative z-20 text-center px-6 max-w-6xl mx-auto flex flex-col items-center pointer-events-none"
-        style={{ opacity: 0 }}
+        style={{ clipPath: 'inset(50% 0 50% 0)' }}
       >
         <h2 
-          className="text-2xl sm:text-5xl md:text-6xl lg:text-[4.5rem] font-sans font-normal tracking-[-0.02em] text-gradient-cyan-lime leading-[1.15] drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
+          className="text-2xl sm:text-5xl md:text-6xl lg:text-[4.5rem] font-sans font-normal tracking-[-0.02em] text-rainbow-shimmer leading-[1.15]"
         >
           {title}
         </h2>
       </div>
 
       {/* GEMINI AURORA SCANLINE BORDERS */}
-      <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#4285F4] via-[#9B51E0] to-transparent pointer-events-none z-20 opacity-60" />
-      <div className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#9B51E0] via-[#00F0FF] to-transparent pointer-events-none z-20 opacity-60" />
+      <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#800020] via-[#A52A2A] to-transparent pointer-events-none z-20 opacity-60" />
+      <div className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#A52A2A] via-[#800020] to-transparent pointer-events-none z-20 opacity-60" />
     </section>
   );
 }

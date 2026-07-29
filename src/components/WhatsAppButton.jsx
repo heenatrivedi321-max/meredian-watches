@@ -12,7 +12,7 @@ export default function WhatsAppButton() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const phone = '918056887610';
+  const phone = '918431724851';
   const message = encodeURIComponent("Hi Meridian, I'm interested in a watch. Can you help me?");
 
   return (

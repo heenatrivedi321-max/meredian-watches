@@ -1,24 +1,25 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback, Suspense } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import WebGLFluid from 'webgl-fluid';
 import CollectionShowcase from './components/CollectionShowcase';
-import ProductOverlay from './components/ProductOverlay';
 import WhatsAppButton from './components/WhatsAppButton';
 import ScrollToTop from './components/ScrollToTop';
-import BrandStory from './components/BrandStory';
 import ProductSchema from './components/ProductSchema';
-import InstagramFeed from './components/InstagramFeed';
-import BrandFilm from './components/BrandFilm';
 import IntroSplash from './components/IntroSplash';
-import CinemaIntermission from './components/CinemaIntermission';
-import PolicyModal from './components/PolicyModal';
 import CelestialCanvas from './components/CelestialCanvas';
-import HorologySpecsCounter from './components/HorologySpecsCounter';
 import RolexHeroPin from './components/RolexHeroPin';
 import GoldStarDustCursor from './components/GoldStarDustCursor';
 import { WATCHES } from './data/watches';
+
+const ProductOverlay = React.lazy(() => import('./components/ProductOverlay'));
+const BrandStory = React.lazy(() => import('./components/BrandStory'));
+const InstagramFeed = React.lazy(() => import('./components/InstagramFeed'));
+const BrandFilm = React.lazy(() => import('./components/BrandFilm'));
+const CinemaIntermission = React.lazy(() => import('./components/CinemaIntermission'));
+const PolicyModal = React.lazy(() => import('./components/PolicyModal'));
+const HorologySpecsCounter = React.lazy(() => import('./components/HorologySpecsCounter'));
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,19 +27,6 @@ ScrollTrigger.config({
   limitCallbacks: true,
   ignoreMobileResize: true,
 });
-
-// Split text into individual character spans for typewriter effect
-function SplitChars({ text, className = '' }) {
-  return (
-    <span className={className}>
-      {text.split('').map((char, i) => (
-        <span key={i} className="char inline-block">
-          {char === ' ' ? '\u00A0' : char}
-        </span>
-      ))}
-    </span>
-  );
-}
 
 // ============================================
 // WEBGL FLUID SIMULATION — GLOBAL BACKGROUND
@@ -219,8 +207,16 @@ export default function App() {
       // ============================================================
       const heroTl = gsap.timeline();
       heroTl.fromTo(".hero-title",
-        { autoAlpha: 1, y: 15, scale: 0.98 },
-        { autoAlpha: 1, y: 0, scale: 1, duration: 1.2, ease: "power3.out" }
+        { autoAlpha: 0, y: 25, scale: 0.96, filter: "blur(8px)" },
+        { autoAlpha: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 1.2, ease: "power3.out" }, 0
+      );
+      heroTl.fromTo(".logo-entrance",
+        { autoAlpha: 0, y: -10 },
+        { autoAlpha: 1, y: 0, duration: 0.8, ease: "power2.out" }, 0
+      );
+      heroTl.fromTo(".nav-link",
+        { autoAlpha: 0, y: -8 },
+        { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" }, 0.2
       );
 
       // Hero zoom + blur on scroll (entering the watch)
@@ -303,18 +299,15 @@ export default function App() {
         }
       });
 
-      // Product Reveal Section
-      gsap.fromTo(".product-reveal",
-        { opacity: 0.95 },
+      // Footer reveal
+      gsap.fromTo(".site-footer",
+        { autoAlpha: 0, y: 30 },
         {
-          opacity: 1,
-          duration: 1,
-          ease: "power2.out",
+          autoAlpha: 1, y: 0, duration: 1, ease: "power3.out",
           scrollTrigger: {
-            trigger: ".product-reveal",
-            start: "top 95%",
-            end: "top 40%",
-            scrub: true,
+            trigger: ".site-footer",
+            start: "top 90%",
+            toggleActions: "play none none reverse"
           }
         }
       );
@@ -334,7 +327,7 @@ export default function App() {
       {/* Product Schema for SEO */}
       <ProductSchema watch={selectedWatch} />
 
-      <div ref={mainRef} className="w-full bg-white min-h-screen text-[#0b0b0e] font-sans overflow-x-hidden selection:bg-[#006039] selection:text-white">
+      <div ref={mainRef} className="w-full bg-black min-h-screen text-white font-sans overflow-x-hidden selection:bg-[#800020] selection:text-white">
         
         {/* UNIFIED HYPER-OPTIMIZED 120 FPS CELESTIAL & LIQUID EMBER CANVAS */}
         <CelestialCanvas />
@@ -359,18 +352,23 @@ export default function App() {
         </div>
 
         {/* NAVIGATION */}
-        <nav className="relative flex items-center justify-between px-6 sm:px-12 md:px-20 py-4 sm:py-6 overflow-hidden pointer-events-auto mix-blend-difference">
-          {/* Magnetic Specular Sweep Hairline */}
-          <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#00F0FF] to-transparent animate-navbar-sweep opacity-70" />
+        <nav className="sticky top-0 flex items-center justify-between px-6 sm:px-12 md:px-20 py-4 sm:py-6 overflow-hidden pointer-events-auto text-white z-[100]">
+          <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#800020] to-transparent animate-burgundy-sweep opacity-70" />
           <button 
             onClick={() => setShowBrand(true)} 
-            className="hidden md:block flex-1 text-left text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] font-semibold uppercase hover:opacity-80 transition-opacity cursor-pointer gemini-rainbow-subtext"
+            className="hidden md:block flex-1 text-left text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] font-semibold uppercase hover:text-[#800020] transition-all duration-300 cursor-pointer text-white/70 nav-link"
           >
-            Heritage
+            <span className="relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-[#800020] after:scale-x-0 after:origin-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-left">
+              Heritage
+            </span>
           </button>
 
           <div className="flex-1 flex justify-center">
-            <img src="/logo.jpg" alt="Meridian Logo" className="h-10 sm:h-14 lg:h-20 w-auto object-contain drop-shadow-[0_0_20px_rgba(155,81,224,0.5)] hover:scale-105 transition-transform cursor-pointer" />
+            <img 
+              src="/logo.jpg" 
+              alt="Meridian Logo" 
+              className="h-10 sm:h-14 lg:h-20 w-auto object-contain drop-shadow-[0_0_30px_rgba(201,169,110,0.3)] hover:scale-105 transition-transform duration-500 cursor-pointer logo-entrance" 
+            />
           </div>
 
           <div 
@@ -378,19 +376,21 @@ export default function App() {
               const grid = document.querySelector('.max-w-screen-2xl');
               if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }}
-            className="hidden md:block flex-1 text-right text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] font-semibold uppercase hover:opacity-80 transition-opacity cursor-pointer gemini-rainbow-subtext"
+            className="hidden md:block flex-1 text-right text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] font-semibold uppercase hover:text-[#800020] transition-all duration-300 cursor-pointer text-white/70 nav-link"
           >
-            Collection
+            <span className="relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-[#800020] after:scale-x-0 after:origin-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-left">
+              Collection
+            </span>
           </div>
 
           {/* Mobile: Hamburger */}
           <button 
             onClick={() => setMenuOpen(true)}
-            className="md:hidden absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-[5px] cursor-pointer p-2"
+            className="md:hidden absolute right-4 top-1/2 -translate-y-1/2 flex flex-col items-center justify-center gap-[5px] cursor-pointer p-3 min-w-[44px] min-h-[44px]"
             aria-label="Open menu"
           >
-            <span className="block w-5 h-[1px] bg-white" />
-            <span className="block w-5 h-[1px] bg-white" />
+            <span className="block w-6 h-[1.5px] bg-white/80" />
+            <span className="block w-6 h-[1.5px] bg-white/80" />
           </button>
         </nav>
 
@@ -404,7 +404,7 @@ export default function App() {
             <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center bg-black/95">
               <button 
                 onClick={() => setMenuOpen(false)}
-                className="absolute top-5 right-5 w-10 h-10 flex items-center justify-center cursor-pointer"
+                className="absolute top-5 right-5 w-12 h-12 flex items-center justify-center cursor-pointer"
                 aria-label="Close menu"
               >
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="white" strokeWidth="1">
@@ -416,7 +416,7 @@ export default function App() {
               <div className="flex flex-col items-center gap-10">
                 <button 
                   onClick={() => { setShowBrand(true); setMenuOpen(false); }}
-                  className="text-2xl tracking-[0.15em] uppercase text-white/80 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer font-light"
+                  className="text-2xl tracking-[0.15em] uppercase text-white/80 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer font-light py-3 min-h-[44px] flex items-center"
                 >
                   Heritage
                 </button>
@@ -426,7 +426,7 @@ export default function App() {
                     if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     setMenuOpen(false);
                   }}
-                  className="text-2xl tracking-[0.15em] uppercase text-white/80 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer font-light"
+                  className="text-2xl tracking-[0.15em] uppercase text-white/80 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer font-light py-3 min-h-[44px] flex items-center"
                 >
                   Collection
                 </button>
@@ -444,7 +444,7 @@ export default function App() {
         )}
 
         {/* SCROLLING CONTENT LAYER */}
-        <div className="relative z-50 w-full pointer-events-none">
+        <div className="relative z-[100] w-full pointer-events-none">
 
           {/* HERO — 3D Tilt-Shift Parallax & Gemini Iridescent Typography */}
           <section 
@@ -467,8 +467,8 @@ export default function App() {
             </video>
 
             {/* High-Velocity Wavy Rainbow Liquid Mesh Overlay */}
-            <div className="absolute inset-0 gemini-rainbow-wave opacity-30 mix-blend-color-dodge pointer-events-none z-5" />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 z-5 pointer-events-none" />
+            <div className="absolute inset-0 burgundy-wave opacity-30 mix-blend-color-dodge pointer-events-none z-10" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 z-10 pointer-events-none" />
 
             <div 
               className="hero-content relative z-10 flex flex-col items-center text-center pointer-events-auto px-4 space-y-3 transition-transform duration-300 ease-out"
@@ -477,10 +477,10 @@ export default function App() {
               }}
             >
               {/* Gemini Iridescent Accent Hairline */}
-              <div className="w-24 h-[1.5px] bg-gradient-to-r from-[#4285F4] via-[#9B51E0] via-[#E91E63] to-[#00F0FF] rounded-full opacity-80 animate-pulse mb-1" />
+              <div className="w-24 h-[1.5px] bg-gradient-to-r from-[#800020] via-[#A52A2A] to-[#C95A5A] rounded-full opacity-80 mb-1" />
 
               <h1 
-                className="hero-title text-[3.5rem] sm:text-7xl md:text-[7.5rem] lg:text-[9.5rem] font-normal tracking-[0.1em] leading-none text-gemini-gradient uppercase drop-shadow-[0_20px_60px_rgba(0,0,0,0.95)] select-none" 
+                className="hero-title text-[3.5rem] sm:text-7xl md:text-[7.5rem] lg:text-[9.5rem] font-normal tracking-[0.1em] leading-none text-rainbow-shimmer uppercase select-none" 
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 Meridian
@@ -490,13 +490,13 @@ export default function App() {
             {/* Scroll Indicator with Gemini Gradient Line */}
             <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none opacity-80 z-20">
               <span className="text-[9px] font-mono tracking-[0.4em] uppercase text-white/70 font-bold">SCROLL</span>
-              <div className="w-[1.5px] h-8 bg-gradient-to-b from-[#9B51E0] via-[#00F0FF] to-transparent animate-pulse" />
+              <div className="w-[1.5px] h-8 bg-gradient-to-b from-[#800020] to-transparent" />
             </div>
 
             {/* Sound toggle — minimal */}
             <button 
               onClick={toggleSound}
-              className="absolute bottom-8 right-6 sm:right-10 w-9 h-9 flex items-center justify-center rounded-full border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all duration-300 pointer-events-auto z-[60] cursor-pointer"
+              className="absolute bottom-8 right-6 sm:right-10 w-12 h-12 flex items-center justify-center rounded-full border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all duration-300 pointer-events-auto z-[60] cursor-pointer"
               aria-label={soundOn ? "Mute sound" : "Play sound"}
             >
               {soundOn ? (
@@ -523,22 +523,22 @@ export default function App() {
             >
               <source src="/Watch_gears_forming_watch_dial_202606291025.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black pointer-events-none z-5" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black pointer-events-none z-10" />
 
             <div className="sticky top-0 left-0 w-full h-screen flex flex-col items-center justify-center z-10">
               <div className="relative w-full max-w-[90rem] mx-auto px-4 md:px-8 text-center flex flex-col items-center justify-center space-y-4 sm:space-y-6 md:space-y-8">
                 <div className="w-full">
-                  <h2 className="manifesto-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-normal tracking-[-0.02em] select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
+                  <h2 className="manifesto-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-normal tracking-[-0.02em] select-none w-full leading-tight text-rainbow-shimmer">
                     Your smartwatch just told you to stand up.
                   </h2>
                 </div>
                 <div className="w-full">
-                  <h2 className="manifesto-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-normal tracking-[-0.02em] select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
+                  <h2 className="manifesto-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-normal tracking-[-0.02em] select-none w-full leading-tight text-rainbow-shimmer">
                     Congrats on hitting 10,000 steps.
                   </h2>
                 </div>
                 <div className="w-full">
-                  <h2 className="manifesto-line text-[1.5rem] sm:text-[2rem] md:text-[3rem] lg:text-[4rem] xl:text-[4.5rem] font-normal tracking-[-0.02em] select-none w-full leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
+                  <h2 className="manifesto-line text-[1.5rem] sm:text-[2rem] md:text-[3rem] lg:text-[4rem] xl:text-[4.5rem] font-normal tracking-[-0.02em] select-none w-full leading-tight text-rainbow-shimmer">
                     Too bad your wrist looks like a tiny iPad.
                   </h2>
                 </div>
@@ -555,22 +555,22 @@ export default function App() {
             >
               <source src="/Porsche_driving_through_tunnel_202606281316.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black pointer-events-none z-5" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black pointer-events-none z-10" />
 
             <div className="sticky top-0 left-0 w-full h-screen flex flex-col items-center justify-center pt-24 pb-8 overflow-hidden z-10">
               <div className="relative w-full max-w-[90rem] mx-auto px-4 md:px-8 text-center flex flex-col items-center justify-center space-y-4 sm:space-y-6 md:space-y-8">
                 <div className="w-full">
-                  <h2 className="porsche-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-sans font-normal tracking-[-0.02em] select-none w-full leading-tight text-gradient-cyan-lime">
+                  <h2 className="porsche-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-sans font-normal tracking-[-0.02em] select-none w-full leading-tight text-rainbow-shimmer">
                     You will inevitably perish.
                   </h2>
                 </div>
                 <div className="w-full">
-                  <h2 className="porsche-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-sans font-normal tracking-[-0.02em] select-none w-full leading-tight text-gradient-cyan-lime">
+                  <h2 className="porsche-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-sans font-normal tracking-[-0.02em] select-none w-full leading-tight text-rainbow-shimmer">
                     Your legacy will be forgotten.
                   </h2>
                 </div>
                 <div className="w-full">
-                  <h2 className="porsche-line text-[1.5rem] sm:text-[2rem] md:text-[3rem] lg:text-[4rem] xl:text-[4.5rem] font-sans font-normal tracking-[-0.02em] select-none w-full leading-tight text-gradient-cyan-lime">
+                  <h2 className="porsche-line text-[1.5rem] sm:text-[2rem] md:text-[3rem] lg:text-[4rem] xl:text-[4.5rem] font-sans font-normal tracking-[-0.02em] select-none w-full leading-tight text-rainbow-shimmer">
                     But hey, at least your wrist looks expensive.
                   </h2>
                 </div>
@@ -583,30 +583,34 @@ export default function App() {
         {/* 100% EXACT ROLEX PINNED 3D CENTERPIECE ZOOM ENGINE */}
         <RolexHeroPin watch={WATCHES[0]} onSelectWatch={setSelectedWatch} />
 
-        <InstagramFeed />
-        <HorologySpecsCounter />
-        <BrandFilm />
-        
-        {/* CINEMA TAKEOVER 2: PEAKY BLINDERS SHELBY BROTHERS (FULL UNUNCUT SCENE) */}
-        <CinemaIntermission 
-          videoSrc="/peaky_extended_full_44s.mp4" 
-          title='"Power doesn’t ask for permission. It counts every second."' 
-        />
+        <Suspense fallback={null}>
+          <InstagramFeed />
+          <HorologySpecsCounter />
+          <BrandFilm />
+          
+          {/* CINEMA TAKEOVER 2: PEAKY BLINDERS SHELBY BROTHERS (FULL UNUNCUT SCENE) */}
+          <CinemaIntermission 
+            videoSrc="/peaky_extended_full_44s.mp4" 
+            title='"Power doesn’t ask for permission. It counts every second."' 
+          />
 
-        {/* CINEMA TAKEOVER 3: THE DARK KNIGHT */}
-        <CinemaIntermission 
-          videoSrc="/dark-knight.mp4" 
-          title='"0.001s for glory. Still late for your 9 AM."' 
-        />
+          {/* CINEMA TAKEOVER 3: THE DARK KNIGHT */}
+          <CinemaIntermission 
+            videoSrc="/dark-knight.mp4" 
+            title='"0.001s for glory. Still late for your 9 AM."' 
+          />
+        </Suspense>
 
         <CollectionShowcase onSelectWatch={setSelectedWatch} />
-        <ProductOverlay watch={selectedWatch} onClose={() => setSelectedWatch(null)} />
+        <Suspense fallback={null}>
+          <ProductOverlay watch={selectedWatch} onClose={() => setSelectedWatch(null)} />
+        </Suspense>
 
         {/* LUXURY COMPLIANCE FOOTER */}
-        <footer className="w-full bg-[#050507] border-t border-white/10 py-12 px-6 text-center text-white/50 z-20 relative pointer-events-auto">
+        <footer className="site-footer w-full bg-[#050507] border-t border-white/10 py-12 px-6 text-center text-white/50 z-20 relative pointer-events-auto">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="text-left">
-              <span className="text-xs font-mono font-bold tracking-[0.3em] text-[#10B981] uppercase block mb-1">
+              <span className="text-xs font-mono font-bold tracking-[0.3em] text-[#800020] uppercase block mb-1">
                 MERIDIAN HOROLOGY © 2026
               </span>
               <p className="text-[11px] font-mono text-white/40">
@@ -614,12 +618,12 @@ export default function App() {
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-6 text-[11px] font-mono tracking-widest uppercase relative z-50 pointer-events-auto">
-              <button onClick={() => setActivePolicy('terms')} className="hover:text-white transition-colors cursor-pointer relative z-50 pointer-events-auto py-2 px-1">Terms</button>
-              <button onClick={() => setActivePolicy('privacy')} className="hover:text-white transition-colors cursor-pointer relative z-50 pointer-events-auto py-2 px-1">Privacy</button>
-              <button onClick={() => setActivePolicy('refund')} className="hover:text-[#10B981] transition-colors cursor-pointer relative z-50 pointer-events-auto py-2 px-1">Refund & Cancellation</button>
-              <button onClick={() => setActivePolicy('shipping')} className="hover:text-white transition-colors cursor-pointer relative z-50 pointer-events-auto py-2 px-1">Shipping</button>
-              <button onClick={() => setActivePolicy('contact')} className="hover:text-white transition-colors cursor-pointer relative z-50 pointer-events-auto py-2 px-1">Contact</button>
+            <div className="flex flex-wrap items-center justify-center gap-6 text-[11px] font-mono tracking-widest uppercase relative z-[100] pointer-events-auto">
+              <button onClick={() => setActivePolicy('terms')} className="hover:text-white transition-colors cursor-pointer relative z-[100] pointer-events-auto py-3 px-2 min-h-[44px] flex items-center">Terms</button>
+              <button onClick={() => setActivePolicy('privacy')} className="hover:text-white transition-colors cursor-pointer relative z-[100] pointer-events-auto py-3 px-2 min-h-[44px] flex items-center">Privacy</button>
+              <button onClick={() => setActivePolicy('refund')} className="hover:text-white transition-colors cursor-pointer relative z-[100] pointer-events-auto py-3 px-2 min-h-[44px] flex items-center">Refund & Cancellation</button>
+              <button onClick={() => setActivePolicy('shipping')} className="hover:text-white transition-colors cursor-pointer relative z-[100] pointer-events-auto py-3 px-2 min-h-[44px] flex items-center">Shipping</button>
+              <button onClick={() => setActivePolicy('contact')} className="hover:text-white transition-colors cursor-pointer relative z-[100] pointer-events-auto py-3 px-2 min-h-[44px] flex items-center">Contact</button>
             </div>
           </div>
         </footer>
@@ -631,10 +635,10 @@ export default function App() {
       <ScrollToTop />
 
       {/* Brand Story Overlay */}
-      {showBrand && <BrandStory onClose={() => setShowBrand(false)} />}
+      {showBrand && <Suspense fallback={null}><BrandStory onClose={() => setShowBrand(false)} /></Suspense>}
 
       {/* Official Policy Overlay Modal */}
-      {activePolicy && <PolicyModal type={activePolicy} onClose={() => setActivePolicy(null)} />}
+      {activePolicy && <Suspense fallback={null}><PolicyModal type={activePolicy} onClose={() => setActivePolicy(null)} /></Suspense>}
     </>
   );
 }

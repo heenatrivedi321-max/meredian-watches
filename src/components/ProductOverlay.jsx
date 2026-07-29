@@ -51,6 +51,7 @@ export default function ProductOverlay({ watch, onClose }) {
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [closing, setClosing] = useState(false);
   const savedScrollY = useRef(0);
   const videoRef = useRef(null);
 
@@ -60,7 +61,7 @@ export default function ProductOverlay({ watch, onClose }) {
   const images = allImages.length >= 3 ? allImages.slice(0, 3) : [...allImages, ...Array(Math.max(1, 3 - allImages.length)).fill(allImages[0] || watch?.image)];
   const activeImage = images[activeImageIndex] || watch?.image || '/watches_new/MK9218_gold_auto_1.jpg';
 
-  useEffect(() => { if (watch) setActiveImageIndex(0); }, [watch]);
+  useEffect(() => { if (watch) { setActiveImageIndex(0); setClosing(false); } }, [watch]);
 
   // Hide app, show overlay as normal page
   useEffect(() => {
@@ -101,19 +102,27 @@ export default function ProductOverlay({ watch, onClose }) {
   }
 
   const handleClose = () => {
-    const appRoot = document.getElementById('root');
-    if (appRoot) appRoot.style.display = '';
-    window.scrollTo(0, savedScrollY.current);
-    onClose();
+    setClosing(true);
+    setTimeout(() => {
+      const appRoot = document.getElementById('root');
+      if (appRoot) appRoot.style.display = '';
+      window.scrollTo(0, savedScrollY.current);
+      onClose();
+    }, 500);
   };
 
   return ReactDOM.createPortal(
-    <div style={{ minHeight: '100vh', background: '#fff', color: '#000' }}>
+    <div style={{
+      minHeight: '100vh', background: '#fff', color: '#000',
+      opacity: closing ? 0 : 1,
+      transform: closing ? 'translateY(30px)' : 'translateY(0)',
+      transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1)',
+    }}>
 
       {/* Injected CSS for animations & bold crisp typography */}
       <style>{`
         .fade-reveal.revealed { opacity: 1 !important; transform: none !important; }
-        @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 0 rgba(139,105,20,0.4); } 50% { box-shadow: 0 0 0 16px rgba(139,105,20,0); } }
+        @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 0 rgba(128,0,32,0.4); } 50% { box-shadow: 0 0 0 16px rgba(128,0,32,0); } }
         @keyframes floatBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         @keyframes slideStagger { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes breathe { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
@@ -212,7 +221,7 @@ export default function ProductOverlay({ watch, onClose }) {
                 <span style={{ fontSize: 'clamp(2.2rem, 3.5vw, 3.2rem)', fontWeight: 800, fontFamily: "'Inter', sans-serif", letterSpacing: '-0.03em', color: '#000' }}>
                   {watch.price}
                 </span>
-                <span style={{ fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 700, color: '#006039', padding: '6px 14px', border: '1.5px solid #006039', borderRadius: 9999, background: 'rgba(0,96,57,0.05)' }}>
+                <span style={{ fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 700, color: '#800020', padding: '6px 14px', border: '1.5px solid #800020', borderRadius: 9999, background: 'rgba(0,96,57,0.05)' }}>
                   Free Express Delivery
                 </span>
               </div>

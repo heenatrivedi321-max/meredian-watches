@@ -48,11 +48,11 @@ export default function HorologySpecsCounter() {
   return (
     <section className="relative w-full py-24 bg-[#08080c] text-white border-y border-white/10 overflow-hidden z-20 pointer-events-auto font-sans">
       {/* Ambient Gemini Fluid Aurora Mesh Glow */}
-      <div className="absolute inset-0 gemini-aurora-bg pointer-events-none opacity-30" />
+      <div className="absolute inset-0 burgundy-aurora-bg pointer-events-none opacity-30" />
 
       {/* Feature 4: Liquid Metal Hairline Borders (Active Glow) */}
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#00F0FF] via-[#9B51E0] via-[#FF007F] to-transparent animate-navbar-sweep opacity-70" />
-      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#FF007F] via-[#00FF88] to-transparent animate-navbar-sweep opacity-70" style={{ animationDelay: '3s' }} />
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#800020] via-[#A52A2A] to-transparent animate-burgundy-sweep opacity-70" />
+      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#A52A2A] via-[#800020] to-transparent animate-burgundy-sweep opacity-70" style={{ animationDelay: '3s' }} />
 
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 relative z-10">
         {specs.map((spec, i) => (
@@ -62,16 +62,16 @@ export default function HorologySpecsCounter() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: i * 0.15 }}
-            className="group relative p-8 rounded-3xl bg-black/60 border border-white/10 hover:border-[#00F0FF]/60 transition-all duration-500 overflow-hidden shadow-2xl backdrop-blur-2xl"
+            className="group relative p-8 rounded-3xl bg-black/60 border border-white/10 hover:border-[#800020]/60 transition-all duration-500 overflow-hidden shadow-2xl backdrop-blur-2xl"
           >
             {/* Feature 4: Liquid Metal Light Trace */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#00F0FF]/15 via-transparent to-[#FF007F]/15 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#800020]/15 via-transparent to-[#A52A2A]/15 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-            <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gemini-gradient tracking-tight mb-3 font-sans drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">
+            <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-rainbow-shimmer tracking-tight mb-3 font-sans">
               <AnimatedNumber value={spec.value} suffix={spec.suffix} />
             </div>
 
-            <div className="text-[10px] sm:text-xs font-sans font-bold tracking-[0.25em] uppercase text-white/70 group-hover:text-[#00F0FF] transition-colors duration-300">
+            <div className="text-[10px] sm:text-xs font-sans font-bold tracking-[0.25em] uppercase text-white/70 group-hover:text-[#800020] transition-colors duration-300">
               {spec.label}
             </div>
           </motion.div>

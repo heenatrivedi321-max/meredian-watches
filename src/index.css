@@ -2,72 +2,60 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #ffffff;
-  --color-surface: #f8f9fa;
-  --color-primary: #000000;
-  --color-accent: #006039;
+  --color-background: #0a0a0a;
+  --color-surface: #111111;
+  --color-primary: #ffffff;
+  --color-accent: #800020;
   
   --font-sans: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-rolex: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
 }
 
 @layer base {
   :root {
-    --bg-color: #ffffff;
-    --text-color: #0b0b0e;
-    --accent-blue: #1A73E8;
-    --accent-cyan: #006039;
+    --bg-color: #0a0a0a;
+    --text-color: #ffffff;
+    --accent-burgundy: #800020;
+    --gold-accent: #C9A96E;
+    --accent-gold: #C9A96E;
   }
   
   html {
     font-family: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: #ffffff;
+    background-color: #0a0a0a;
   }
   
   body {
-    @apply bg-white text-[#0b0b0e] font-sans antialiased overflow-x-hidden selection:bg-[#006039] selection:text-white;
+    @apply bg-black text-white font-sans antialiased overflow-x-hidden selection:bg-[#800020] selection:text-white;
     font-family: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: #ffffff;
+    background-color: #000000;
   }
 }
 
 @layer utilities {
-  .google-ai-card {
-    background: rgba(18, 18, 26, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(24px);
-    border-radius: 1.75rem;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
 
-  .google-ai-card:hover {
-    border-color: rgba(0, 240, 255, 0.4);
-    box-shadow: 0 30px 90px rgba(0, 240, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    transform: translateY(-4px);
-  }
 
-  .btn-google-pill {
-    background: linear-gradient(110deg, #4285F4 0%, #9B51E0 25%, #FF4081 50%, #00F0FF 75%, #4285F4 100%);
+  .btn-burgundy-pill {
+    background: linear-gradient(110deg, #800020 0%, #A52A2A 30%, #800020 70%, #5C0018 100%);
     background-size: 300% 300%;
-    animation: geminiLiveFlow 4s ease-in-out infinite;
+    animation: burgundyFlow 4s ease-in-out infinite;
     color: #ffffff;
     font-family: "Plus Jakarta Sans", "Inter", sans-serif;
     font-weight: 700;
     letter-spacing: 0.05em;
     border-radius: 9999px;
     padding: 1rem 2.5rem;
-    box-shadow: 0 10px 40px rgba(155, 81, 224, 0.5), 0 0 20px rgba(0, 240, 255, 0.4);
+    box-shadow: 0 10px 40px rgba(128, 0, 32, 0.5);
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     cursor: pointer;
     border: 1px solid rgba(255, 255, 255, 0.25);
   }
 
-  .btn-google-pill:hover {
-    box-shadow: 0 15px 50px rgba(0, 240, 255, 0.8), 0 0 40px rgba(255, 64, 129, 0.6);
+  .btn-burgundy-pill:hover {
+    box-shadow: 0 15px 50px rgba(128, 0, 32, 0.8);
   }
 
-  .btn-google-pill-gold {
+  .btn-gold-pill {
     background: linear-gradient(135deg, #FFD700 0%, #C9A96E 100%);
     color: #000000;
     font-family: "Plus Jakarta Sans", "Inter", sans-serif;
@@ -80,25 +68,48 @@
     cursor: pointer;
   }
 
-  .btn-google-pill-gold:hover {
+  .btn-gold-pill:hover {
     background: #ffffff;
     color: #000000;
     box-shadow: 0 15px 40px rgba(255, 255, 255, 0.6);
     transform: scale(1.04);
   }
 
-  .text-gradient-cyan-lime {
-    background: linear-gradient(135deg, #00F0FF 0%, #00FF88 50%, #CCFF00 100%);
+  .text-rainbow-shimmer {
+    background: linear-gradient(
+      to right,
+      #FF6B6B 0%,
+      #FFD93D 20%,
+      #6BCB77 40%,
+      #4D96FF 60%,
+      #9B59B6 80%,
+      #FF6B6B 100%
+    );
+    background-size: 200% auto;
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.95));
+    animation: velvet-shimmer 4s ease-in-out infinite;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
   }
 
-  .text-outline {
-    -webkit-text-stroke: 1px var(--text-color);
-    color: transparent;
+  .rainbow-shimmer {
+    background: linear-gradient(
+      to right,
+      #FF6B6B 0%,
+      #FFD93D 20%,
+      #6BCB77 40%,
+      #4D96FF 60%,
+      #9B59B6 80%,
+      #FF6B6B 100%
+    );
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: velvet-shimmer 4s ease-in-out infinite;
   }
-  
+
   .text-outline-thick {
     -webkit-text-stroke: 3px var(--text-color);
     color: transparent;
@@ -108,42 +119,36 @@
     font-family: 'Anton', sans-serif;
   }
 
-  .gemini-aurora-bg {
-    background: radial-gradient(circle at 30% 40%, rgba(0, 240, 255, 0.45) 0%, rgba(255, 215, 0, 0.4) 30%, rgba(255, 0, 127, 0.35) 55%, rgba(0, 255, 136, 0.3) 80%, transparent 100%);
+  .burgundy-aurora-bg {
+    background: radial-gradient(circle at 30% 40%, rgba(128, 0, 32, 0.6) 0%, rgba(201, 169, 110, 0.25) 30%, rgba(92, 0, 24, 0.4) 55%, rgba(128, 0, 32, 0.2) 80%, transparent 100%);
     animation: floatAurora 5s ease-in-out infinite;
   }
 
-  .gemini-rainbow-wave {
+  .burgundy-wave {
     background: linear-gradient(
       -45deg,
-      #00F0FF,
-      #9B51E0,
-      #FF007F,
-      #FFD700,
-      #00FF88,
-      #00F0FF
+      #800020,
+      #A52A2A,
+      #5C0018,
+      #800020,
+      #A52A2A,
+      #800020
     );
     background-size: 400% 400%;
-    animation: rainbowWaveMesh 6s ease-in-out infinite;
+    animation: burgundyWaveMesh 6s ease-in-out infinite;
   }
 
-  .gemini-laser-glow {
-    animation: laserGlow 3s ease-in-out infinite;
-  }
 }
 
-@keyframes rainbowWaveMesh {
+@keyframes burgundyWaveMesh {
   0% {
     background-position: 0% 50%;
-    filter: hue-rotate(0deg) saturate(1.4);
   }
   50% {
     background-position: 100% 50%;
-    filter: hue-rotate(180deg) saturate(1.8);
   }
   100% {
     background-position: 0% 50%;
-    filter: hue-rotate(360deg) saturate(1.4);
   }
 }
 
@@ -153,64 +158,10 @@
   66% { transform: scale(1.1) translate(-30px, 20px) rotate(-10deg); opacity: 0.6; }
 }
 
-@keyframes laserGlow {
-  0% {
-    filter: drop-shadow(0 0 15px rgba(0, 240, 255, 0.8)) drop-shadow(0 0 35px rgba(255, 215, 0, 0.6));
-    transform: scale(0.98);
-  }
-  50% {
-    filter: drop-shadow(0 0 45px rgba(0, 240, 255, 0.95)) drop-shadow(0 0 90px rgba(255, 0, 127, 0.9)) drop-shadow(0 0 140px rgba(0, 255, 136, 0.8));
-    transform: scale(1.02);
-  }
-  100% {
-    filter: drop-shadow(0 0 15px rgba(0, 240, 255, 0.8)) drop-shadow(0 0 35px rgba(255, 215, 0, 0.6));
-    transform: scale(0.98);
-  }
-}
-
-/* MAGICAL GEMINI LIVE BRIGHT ELECTRIC RAINBOW SPECTRUM TYPOGRAPHY */
-h1, h2, h3, h4, h5, h6,
-.hero-title, .legacy-text, .porsche-line, .manifesto-line, .text-gemini-gradient {
-  background: linear-gradient(
-    110deg,
-    #ffffff 0%,
-    #00F0FF 15%,
-    #FFD700 35%,
-    #FF007F 55%,
-    #00FF88 75%,
-    #3B82F6 90%,
-    #ffffff 100%
-  ) !important;
-  background-size: 300% 300% !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  animation: geminiLiveFlow 4s ease-in-out infinite !important;
-}
-
-.gemini-rainbow-subtext {
-  background: linear-gradient(
-    120deg,
-    #ffffff 0%,
-    #8ab4f8 25%,
-    #c58af9 50%,
-    #ff8bcb 75%,
-    #78d9ec 100%
-  ) !important;
-  background-size: 200% 200% !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  animation: geminiLiveFlow 7s ease-in-out infinite !important;
-}
-
-@keyframes geminiLiveFlow {
+@keyframes burgundyFlow {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
-}
-
-@keyframes floatAurora {
-  0%, 100% { transform: scale(1) translate(0px, 0px); opacity: 0.3; }
-  50% { transform: scale(1.2) translate(30px, -30px); opacity: 0.6; }
 }
 
 /* Hide scrollbar for cleaner look */
@@ -239,6 +190,12 @@ h1, h2, h3, h4, h5, h6,
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
+@keyframes velvet-shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 @keyframes gold-shimmer-smooth {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -264,57 +221,6 @@ h1, h2, h3, h4, h5, h6,
   }
 }
 
-@keyframes holographic-fluid {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-.holographic-bg {
-  background: linear-gradient(
-    -45deg,
-    #ff0080,
-    #ff8c00,
-    #40e0d0,
-    #8a2be2,
-    #ff0080
-  );
-  background-size: 400% 400%;
-  animation: holographic-fluid 15s ease infinite;
-}
-
-.holographic-border {
-  position: relative;
-  background: transparent;
-}
-.holographic-border::before {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: inherit;
-  padding: 2px;
-  background: linear-gradient(
-    -45deg,
-    #ff0080,
-    #ff8c00,
-    #40e0d0,
-    #8a2be2,
-    #ff0080
-  );
-  background-size: 400% 400%;
-  animation: holographic-fluid 8s ease infinite;
-  -webkit-mask: 
-     linear-gradient(#fff 0 0) content-box, 
-     linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-          mask-composite: exclude;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-.holographic-border:focus-within::before {
-  opacity: 1;
-}
 
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
@@ -335,48 +241,13 @@ h1, h2, h3, h4, h5, h6,
   animation-play-state: paused;
 }
 
-/* ⏱️ SUBTLE HOROLOGICAL MICRO-ANIMATIONS */
-@keyframes horologicalTick {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-.animate-tick-60s {
-  animation: horologicalTick 60s linear infinite;
-  transform-origin: center center;
-}
-
-@keyframes navbarHighlight {
+/* Subtle horological micro-animations */
+@keyframes burgundyNavbarSweep {
   0% { transform: translateX(-100%); }
   50%, 100% { transform: translateX(100%); }
 }
-.animate-navbar-sweep {
-  animation: navbarHighlight 6s ease-in-out infinite;
+.animate-burgundy-sweep {
+  animation: burgundyNavbarSweep 6s ease-in-out infinite;
 }
 
-@keyframes buttonSheen {
-  0% { transform: translateX(-150%) skewX(-25deg); }
-  100% { transform: translateX(250%) skewX(-25deg); }
-}
-.group:hover .btn-sheen {
-  animation: buttonSheen 0.75s ease-out;
-}
 
-@keyframes radarPulse {
-  0% { transform: scale(1); opacity: 0.8; }
-  70% { transform: scale(2.2); opacity: 0; }
-  100% { transform: scale(2.2); opacity: 0; }
-}
-.animate-radar-pulse {
-  animation: radarPulse 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
-/* Fluid ambient rainbow backlight wave for IntroSplash */
-@keyframes rainbowMeshWave {
-  0%   { transform: scale(1.1) rotate(0deg);   filter: blur(90px) hue-rotate(0deg); }
-  33%  { transform: scale(1.25) rotate(4deg);   filter: blur(95px) hue-rotate(120deg); }
-  66%  { transform: scale(1.15) rotate(-4deg);  filter: blur(90px) hue-rotate(240deg); }
-  100% { transform: scale(1.1) rotate(0deg);    filter: blur(90px) hue-rotate(360deg); }
-}
-.animate-rainbow-mesh {
-  animation: rainbowMeshWave 12s ease-in-out infinite;
-}

@@ -45,9 +45,9 @@ export default function CelestialCanvas() {
     const embers = [];
     const emberColors = [
       'rgba(255, 215, 0, ',   // Gold
-      'rgba(0, 240, 255, ',   // Electric Cyan
-      'rgba(255, 0, 127, ',   // Hot Coral
-      'rgba(0, 255, 136, '    // Emerald
+      'rgba(201, 169, 110, ', // Subtle Gold
+      'rgba(200, 80, 60, ',   // Burgundy Red
+      'rgba(165, 42, 42, '    // Deep Burgundy
     ];
 
     let mouse = { x: -1000, y: -1000, active: false };

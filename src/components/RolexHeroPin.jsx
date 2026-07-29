@@ -18,6 +18,21 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
     const glowEl = glowRef.current;
     if (!container || !videoEl) return;
 
+    // Entrance — cross-fade from dark section above
+    const entranceTl = gsap.fromTo(".rolex-hero-pin",
+      { autoAlpha: 0, y: 40 },
+      {
+        autoAlpha: 1, y: 0,
+        duration: 1.2,
+        ease: "power1.out",
+        scrollTrigger: {
+          trigger: ".rolex-hero-pin",
+          start: "top 100%",
+          toggleActions: "play none none none"
+        }
+      }
+    );
+
     // 1. FULL-WIDTH ROLEX CINEMATIC PINNED ZOOM TIMELINE (GPU HARDWARE ACCELERATED)
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -69,18 +84,19 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
 
     return () => {
       tl.kill();
+      entranceTl.kill();
     };
   }, []);
 
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-screen bg-white overflow-hidden flex items-center justify-center pointer-events-auto"
+      className="relative w-full h-screen bg-white overflow-hidden flex items-center justify-center pointer-events-auto rolex-hero-pin"
     >
       {/* Ambient Gold Radial Glow */}
       <div
         ref={glowRef}
-        className="absolute w-[800px] h-[800px] rounded-full bg-radial from-[#C9A96E]/20 via-[#FFD700]/5 to-transparent blur-3xl pointer-events-none z-10"
+        className="absolute w-[800px] h-[800px] rounded-full bg-radial from-[#800020]/25 via-[#A52A2A]/10 to-transparent blur-3xl pointer-events-none z-10"
         style={{ willChange: 'transform, opacity' }}
       />
 
@@ -108,32 +124,32 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
       </div>
 
       {/* Text Reveal 1: Top Left */}
-      <div className="absolute left-8 sm:left-20 top-1/3 z-30 overflow-hidden pointer-events-none">
+      <div className="absolute left-8 sm:left-20 right-8 top-1/3 z-30 overflow-hidden pointer-events-none">
         <div
           ref={text1Ref}
           className="transform transition-transform"
           style={{ willChange: 'transform, opacity' }}
         >
-          <span className="text-xs font-mono tracking-[0.4em] text-[#00F0FF] uppercase block mb-2">
+          <span className="text-xs font-mono tracking-[0.4em] text-[#800020] uppercase block mb-2">
             316L SURGICAL STEEL
           </span>
-          <h2 className="text-3xl sm:text-5xl font-sans font-normal tracking-[-0.02em] text-gradient-cyan-lime">
+          <h2 className="text-3xl sm:text-5xl font-sans font-normal tracking-[-0.02em] text-rainbow-shimmer">
             Looks like 50 Lacs. Costs less than your weekend tab.
           </h2>
         </div>
       </div>
 
       {/* Text Reveal 2: Bottom Right */}
-      <div className="absolute right-8 sm:right-20 bottom-1/3 z-30 overflow-hidden text-right pointer-events-none">
+      <div className="absolute left-8 sm:left-auto right-8 sm:right-20 bottom-1/3 z-30 overflow-hidden pointer-events-none sm:text-right text-left">
         <div
           ref={text2Ref}
           className="transform transition-transform"
           style={{ willChange: 'transform, opacity' }}
         >
-          <span className="text-xs font-mono tracking-[0.4em] text-[#00FF88] uppercase block mb-2">
+          <span className="text-xs font-mono tracking-[0.4em] text-[#800020] uppercase block mb-2">
             SAPPHIRE CRYSTAL GLASS
           </span>
-          <h2 className="text-3xl sm:text-5xl font-sans font-normal tracking-[-0.02em] text-gradient-cyan-lime">
+          <h2 className="text-3xl sm:text-5xl font-sans font-normal tracking-[-0.02em] text-rainbow-shimmer">
             No notifications. No software updates. Just pure unadulterated steel.
           </h2>
         </div>
@@ -145,10 +161,10 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
           ref={text3Ref}
           className="transform transition-transform max-w-5xl mx-auto"
         >
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-sans font-normal tracking-[-0.02em] text-gradient-cyan-lime mb-3 leading-tight">
+          <h2 className="text-xl sm:text-5xl lg:text-6xl font-sans font-normal tracking-[-0.02em] text-rainbow-shimmer mb-3 leading-tight">
             Your smartwatch tells you to stand up. Ours tells people you own the building.
           </h2>
-          <span className="text-xs font-mono tracking-[0.4em] text-[#CCFF00] uppercase">
+          <span className="text-xs font-mono tracking-[0.4em] text-[#800020] uppercase">
             MERIDIAN HOROLOGY — ATELIER EDITION
           </span>
         </div>

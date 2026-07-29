@@ -55,7 +55,7 @@ export default function WatchSection({ watch, index, onClick }) {
     // ROLEX CINEMATIC CLIP-PATH & DEPTH REVEAL ANIMATION
     if (contentRef.current) {
       gsap.fromTo(contentRef.current,
-        { clipPath: "inset(12% 8% 12% 8% round 40px)", scale: 1.1, opacity: 0.7 },
+        { clipPath: "inset(12% 8% 12% 8% round 40px)", scale: 1.25, opacity: 0.6 },
         {
           clipPath: "inset(0% 0% 0% 0% round 0px)",
           scale: 1.0,
@@ -107,8 +107,8 @@ export default function WatchSection({ watch, index, onClick }) {
           loop
           playsInline
           preload="auto"
-          className="w-full h-full object-cover transition-transform duration-1000 scale-125 origin-center"
-          style={{ transform: 'scale(1.25) translateZ(0)', willChange: 'transform' }}
+          className="w-full h-full object-cover transition-transform duration-1000 origin-center"
+          style={{ willChange: 'transform' }}
         >
           <source src={watch.cinematicVideo || watch.video} type="video/mp4" />
         </video>
@@ -129,11 +129,11 @@ export default function WatchSection({ watch, index, onClick }) {
               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
               className="space-y-2 pointer-events-auto"
             >
-              <span className="text-xs font-mono tracking-[0.4em] text-[#00F0FF] uppercase block font-semibold">
+              <span className="text-xs font-mono tracking-[0.4em] text-[#800020] uppercase block font-semibold">
                 EDITION 0{index + 1} // {watch.brand}
               </span>
               <h2
-                className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal tracking-[0.05em] text-gemini-gradient uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
+                className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal tracking-[0.05em] text-white uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
                 style={{ fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif" }}
               >
                 {watch.model}
@@ -151,7 +151,7 @@ export default function WatchSection({ watch, index, onClick }) {
         {/* SOUND CONTROL PILL */}
         <button
           onClick={toggleAudio}
-          className="pointer-events-auto px-5 py-2.5 rounded-full bg-black/60 hover:bg-black/90 border border-white/20 backdrop-blur-2xl transition-all duration-300 flex items-center gap-3 cursor-pointer shadow-2xl"
+          className="pointer-events-auto px-5 py-3 rounded-full bg-black/60 hover:bg-black/90 border border-white/20 backdrop-blur-2xl transition-all duration-300 flex items-center gap-3 cursor-pointer shadow-2xl min-h-[44px]"
         >
           <span className={`w-2.5 h-2.5 rounded-full ${isAudioEnabled ? 'bg-[#10B981] animate-ping' : 'bg-white/50'}`} />
           <span className="text-[10px] sm:text-xs font-mono tracking-[0.2em] font-semibold text-white uppercase">
@@ -184,9 +184,9 @@ export default function WatchSection({ watch, index, onClick }) {
               <button
                 onClick={() => onClick(watch)}
                 style={{ fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif" }}
-                className="group relative px-10 py-5 rounded-full border border-white/40 bg-white/10 hover:bg-white/25 hover:border-white/80 backdrop-blur-3xl transition-all duration-500 flex items-center gap-4 cursor-pointer shadow-[0_20px_60px_rgba(0,0,0,0.8),0_0_40px_rgba(0,240,255,0.4)] active:scale-95 z-30"
+                className="group relative px-10 py-5 rounded-full border border-white/40 bg-white/10 hover:bg-white/25 hover:border-[#800020] backdrop-blur-3xl transition-all duration-500 flex items-center gap-4 cursor-pointer shadow-[0_20px_60px_rgba(0,0,0,0.8),0_0_40px_rgba(128,0,32,0.4)] active:scale-95 z-30"
               >
-                <span className="text-xs sm:text-sm tracking-[0.3em] uppercase font-bold text-white group-hover:text-[#00F0FF] transition-colors">
+                <span className="text-xs sm:text-sm tracking-[0.3em] uppercase font-bold text-white group-hover:text-[#800020] transition-colors">
                   CHECK IT OUT
                 </span>
                 <span className="text-lg text-white group-hover:translate-x-2 transition-transform duration-300">

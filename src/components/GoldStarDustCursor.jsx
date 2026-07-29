@@ -6,7 +6,7 @@ export default function GoldStarDustCursor() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
+    const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
     let width = (canvas.width = window.innerWidth);
@@ -19,9 +19,12 @@ export default function GoldStarDustCursor() {
     window.addEventListener('resize', handleResize, { passive: true });
 
     const particles = [];
-    const colors = ['#FFD700', '#C9A96E', '#FFF8DC', '#00F0FF'];
+    const colors = ['#FFD700', '#C9A96E', '#FFF8DC', '#E8D5A3'];
 
     const handleMouseMove = (e) => {
+      isIdle = false;
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => { isIdle = true; }, 2000);
       for (let i = 0; i < 2; i++) {
         particles.push({
           x: e.clientX + (Math.random() - 0.5) * 8,
@@ -39,8 +42,15 @@ export default function GoldStarDustCursor() {
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
     let animationFrameId;
+    let idleTimer = null;
+    let isIdle = false;
     const render = () => {
       ctx.clearRect(0, 0, width, height);
+
+      if (particles.length === 0 && isIdle) {
+        cancelAnimationFrame(animationFrameId);
+        return;
+      }
 
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];

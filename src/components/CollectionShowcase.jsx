@@ -86,7 +86,7 @@ function ProductCard({ watch, index, onClick }) {
       className="relative rounded-2xl overflow-hidden cursor-pointer group"
       onClick={() => onClick(watch)}
       style={{
-        backgroundColor: '#ffffff',
+        backgroundColor: '#0a0a0a',
         minHeight: 'min(520px, 70vh)',
         transformStyle: 'preserve-3d',
         perspective: '1000px',
@@ -98,7 +98,7 @@ function ProductCard({ watch, index, onClick }) {
           z: 120,
           scale: 1.08,
           rotateX: -6,
-          boxShadow: '0 40px 90px rgba(0,0,0,0.85), 0 0 50px rgba(255,215,0,0.2)',
+          boxShadow: '0 40px 90px rgba(0,0,0,0.85), 0 0 50px rgba(128,0,32,0.3)',
           duration: 0.4,
           ease: 'power3.out',
         });
@@ -171,8 +171,7 @@ function ProductCard({ watch, index, onClick }) {
           onLoad={() => setImgLoaded(true)}
           className="w-full h-full object-contain transition-all duration-700 drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]"
           style={{
-            mixBlendMode: 'multiply',
-            filter: 'contrast(1.08) saturate(1.15)',
+            filter: 'drop-shadow(0 20px 60px rgba(0,0,0,0.8))',
             opacity: imgLoaded ? 1 : 0,
           }}
         />
@@ -200,7 +199,7 @@ function ProductCard({ watch, index, onClick }) {
             </span>
           ) : (
             <MagneticButton
-              className="px-5 py-2.5 border border-white/30 text-white text-xs tracking-[0.25em] uppercase font-medium
+              className="px-5 py-2.5 border border-white/30 text-white text-xs tracking-[0.25em] uppercase font-medium min-h-[44px] flex items-center
                          hover:bg-white hover:text-black transition-all duration-300 rounded-full backdrop-blur-md"
             >
               View →
@@ -233,18 +232,33 @@ export default function CollectionShowcase({ onSelectWatch }) {
   useEffect(() => {
     const ctx = gsap.context(() => {
 
+      // Entrance — cross-fade from dark section above
+      gsap.fromTo(".product-reveal",
+        { autoAlpha: 0, y: 40 },
+        {
+          autoAlpha: 1, y: 0,
+          duration: 1.4,
+          ease: "power1.out",
+          scrollTrigger: {
+            trigger: ".product-reveal",
+            start: "top 100%",
+            toggleActions: "play none none none"
+          }
+        }
+      );
+
       // "Choose Your Legacy" — staggered reveal with scale
       const legacyEls = gsap.utils.toArray(".legacy-text");
       gsap.fromTo(legacyEls,
-        { autoAlpha: 0, y: 50, scale: 0.96 },
+        { autoAlpha: 0, y: 40, scale: 0.97, filter: "blur(4px)" },
         {
-          autoAlpha: 1, y: 0, scale: 1,
-          duration: 1.2,
-          stagger: 0.2,
-          ease: "power3.out",
+          autoAlpha: 1, y: 0, scale: 1, filter: "blur(0px)",
+          duration: 0.9,
+          stagger: 0.15,
+          ease: "power2.out",
           scrollTrigger: {
             trigger: taglineRef.current,
-            start: "top 70%",
+            start: "top 75%",
             toggleActions: "play none none none"
           }
         }
@@ -253,30 +267,30 @@ export default function CollectionShowcase({ onSelectWatch }) {
       // Closer section — staggered cinematic reveal
       const closerEls = gsap.utils.toArray(".closer-text");
       gsap.fromTo(closerEls,
-        { autoAlpha: 0, y: 60, scale: 0.97 },
+        { autoAlpha: 0, y: 40, scale: 0.97, filter: "blur(4px)" },
         {
-          autoAlpha: 1, y: 0, scale: 1,
-          duration: 1.2,
-          stagger: 0.2,
-          ease: "power3.out",
+          autoAlpha: 1, y: 0, scale: 1, filter: "blur(0px)",
+          duration: 0.9,
+          stagger: 0.15,
+          ease: "power2.out",
           scrollTrigger: {
             trigger: closerRef.current,
-            start: "top 70%",
+            start: "top 75%",
             toggleActions: "play none none none"
           }
         }
       );
 
       gsap.fromTo(".closer-btn",
-        { autoAlpha: 0, y: 30, scale: 0.95 },
+        { autoAlpha: 0, y: 20, scale: 0.95 },
         {
           autoAlpha: 1, y: 0, scale: 1,
-          duration: 1,
-          delay: 0.6,
-          ease: "power3.out",
+          duration: 0.7,
+          delay: 0.4,
+          ease: "power2.out",
           scrollTrigger: {
             trigger: closerRef.current,
-            start: "top 60%",
+            start: "top 65%",
             toggleActions: "play none none none"
           }
         }
@@ -325,11 +339,11 @@ export default function CollectionShowcase({ onSelectWatch }) {
           >
             <source src="/Gold_skeleton_watch_showcase_202606290837.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black pointer-events-none z-5" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black pointer-events-none z-10" />
 
           <div className="relative z-10 text-center px-4">
             <h2
-              className="legacy-text text-[2.5rem] sm:text-[4.5rem] md:text-[6rem] lg:text-[7.5rem] font-normal tracking-[0.08em] text-gemini-gradient text-center leading-[1.1] uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
+              className="legacy-text text-[2.5rem] sm:text-[4.5rem] md:text-[6rem] lg:text-[7.5rem] font-normal tracking-[0.08em] text-rainbow-shimmer text-center leading-[1.1] uppercase"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
               Choose Your<br />Legacy.
@@ -343,14 +357,14 @@ export default function CollectionShowcase({ onSelectWatch }) {
           className="relative z-10 w-full h-screen flex flex-col items-center justify-center bg-black pointer-events-none overflow-hidden"
         >
           {/* Animated Gemini Aurora Fluid Backdrop */}
-          <div className="absolute inset-0 gemini-aurora-bg pointer-events-none" />
+          <div className="absolute inset-0 burgundy-aurora-bg pointer-events-none" />
 
           <div 
             className="story-text-container relative z-10 text-center px-6 max-w-6xl mx-auto"
             style={{ transform: "translateZ(0)", willChange: "transform, opacity" }}
           >
             <h3
-              className="text-[2.2rem] sm:text-[3.8rem] md:text-[4.8rem] lg:text-[5.5rem] font-normal tracking-[0.06em] leading-[1.15] uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)] text-gemini-gradient"
+              className="text-[2.2rem] sm:text-[3.8rem] md:text-[4.8rem] lg:text-[5.5rem] font-normal tracking-[0.06em] leading-[1.15] uppercase text-rainbow-shimmer"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
               Every timepiece tells a story.<br />
@@ -376,7 +390,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
       {/* ======================================== */}
       <section
         ref={closerRef}
-        className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center bg-transparent overflow-hidden pointer-events-none"
+        className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center bg-white overflow-hidden pointer-events-none"
       >
 
         {/* Cinematic Closer Background Video */}
@@ -386,7 +400,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
           muted 
           playsInline 
           className="absolute inset-0 w-full h-full object-cover z-0 opacity-30 scale-[1.3]"
-          style={{ mixBlendMode: 'screen' }}
+          style={{ mixBlendMode: 'multiply' }}
         >
           <source src="/Watch_gears_Clean.mp4" type="video/mp4" />
         </video>
@@ -394,17 +408,17 @@ export default function CollectionShowcase({ onSelectWatch }) {
         {/* Content */}
         <div className="relative z-10 flex flex-col items-center text-center px-8 pointer-events-auto">
           <p
-            className="closer-text text-[10px] font-light tracking-[0.5em] uppercase text-white/30 mb-6"
+            className="closer-text text-[10px] font-light tracking-[0.5em] uppercase text-black/30 mb-6"
           >
             Time is fleeting
           </p>
           <h2
-            className="closer-text text-[2.2rem] sm:text-[3rem] md:text-[5rem] lg:text-[7rem] xl:text-[6rem] font-light tracking-[-0.02em] text-white leading-none mb-4 gold-shimmer pb-2"
+            className="closer-text text-[2.2rem] sm:text-[3rem] md:text-[5rem] lg:text-[7rem] xl:text-[6rem] font-light tracking-[-0.02em] text-black leading-none mb-4 gold-shimmer pb-2"
           >
             Time Waits<br />For No One.
           </h2>
           <p
-            className="closer-text text-base md:text-lg text-white/25 max-w-md mt-4 mb-12 font-light"
+            className="closer-text text-base md:text-lg text-black/40 max-w-md mt-4 mb-12 font-light"
           >
             Your legacy starts with what you wear. Make it count.
           </p>
@@ -414,8 +428,8 @@ export default function CollectionShowcase({ onSelectWatch }) {
               const watchGrid = document.getElementById('watch-collection-grid');
               if (watchGrid) watchGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }}
-            className="closer-btn px-12 py-5 bg-white text-black text-xs font-mono tracking-[0.3em] uppercase font-extrabold
-                       rounded-full hover:bg-white/90 hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_10px_40px_rgba(255,255,255,0.3)] cursor-pointer"
+            className="closer-btn px-12 py-5 bg-black text-white text-xs font-mono tracking-[0.3em] uppercase font-extrabold
+                       rounded-full hover:bg-black/90 hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_10px_40px_rgba(0,0,0,0.1)] cursor-pointer"
           >
             EXPLORE ARCHIVE →
           </MagneticButton>
@@ -426,9 +440,9 @@ export default function CollectionShowcase({ onSelectWatch }) {
           <div className="max-w-6xl mx-auto px-8 py-16">
             {/* Top: Logo + Newsletter */}
             <div className="flex flex-col md:flex-row items-center justify-between gap-12 mb-16">
-              <img src="/logo.jpg" alt="Meridian" className="h-12 w-auto object-contain opacity-60" />
+              <img src="/logo.jpg" alt="Meridian" className="h-12 w-auto object-contain opacity-40" />
               <div className="flex flex-col items-center md:items-end gap-3">
-                <p className="text-xs tracking-[0.3em] uppercase text-white/25 font-light">
+                <p className="text-xs tracking-[0.3em] uppercase text-black/40 font-light">
                   Stay in the loop
                 </p>
                 <div className="flex flex-col items-end gap-2">
@@ -444,17 +458,17 @@ export default function CollectionShowcase({ onSelectWatch }) {
                       type="email" 
                       required
                       placeholder="your@email.com"
-                      className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-xs text-white placeholder:text-white/20 focus:outline-none focus:border-[#C9A96E] w-56 transition-colors"
+                      className="px-4 py-2 bg-black/5 border border-black/10 rounded-full text-xs text-black placeholder:text-black/30 focus:outline-none focus:border-[#800020] w-56 transition-colors"
                     />
                     <button 
                       type="submit"
-                      className="px-5 py-2 bg-[#C9A96E] text-black text-xs font-mono font-bold tracking-[0.2em] uppercase rounded-full hover:bg-white transition-all duration-300 cursor-pointer shadow-lg shadow-[#C9A96E]/20"
+                      className="px-5 py-3 bg-[#800020] text-white text-xs font-mono font-bold tracking-[0.2em] uppercase rounded-full min-h-[44px] hover:bg-black hover:text-white transition-all duration-300 cursor-pointer shadow-lg shadow-[#800020]/20"
                     >
                       Join
                     </button>
                   </form>
                   {joinedMessage && (
-                    <span className="text-[10px] font-mono tracking-widest text-[#C9A96E] uppercase animate-pulse">
+                    <span className="text-[10px] font-mono tracking-widest text-[#800020] uppercase animate-pulse">
                       ✨ VIP Access Granted. Check your inbox.
                     </span>
                   )}
@@ -469,7 +483,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
                   const watchGrid = document.getElementById('watch-collection-grid');
                   if (watchGrid) watchGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }}
-                className="text-xs tracking-[0.25em] uppercase text-white/40 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer font-light"
+                className="text-xs tracking-[0.25em] uppercase text-black/60 hover:text-[#800020] transition-colors duration-300 cursor-pointer font-light py-3 min-h-[44px] flex items-center"
               >
                 Shop
               </button>
@@ -478,7 +492,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
                   const firstSec = document.querySelector('section');
                   if (firstSec) firstSec.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="text-xs tracking-[0.25em] uppercase text-white/40 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer font-light"
+                className="text-xs tracking-[0.25em] uppercase text-black/60 hover:text-[#800020] transition-colors duration-300 cursor-pointer font-light py-3 min-h-[44px] flex items-center"
               >
                 Heritage
               </button>
@@ -486,7 +500,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
                 href="https://www.instagram.com/meri.dianwatches"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs tracking-[0.25em] uppercase text-white/40 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer font-light"
+                className="text-xs tracking-[0.25em] uppercase text-black/60 hover:text-[#800020] transition-colors duration-300 cursor-pointer font-light py-3 min-h-[44px] flex items-center"
               >
                 Instagram
               </a>
@@ -494,18 +508,18 @@ export default function CollectionShowcase({ onSelectWatch }) {
                 href="https://wa.me/918431724851"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs tracking-[0.25em] uppercase text-white/40 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer font-light"
+                className="text-xs tracking-[0.25em] uppercase text-black/60 hover:text-[#800020] transition-colors duration-300 cursor-pointer font-light py-3 min-h-[44px] flex items-center"
               >
                 Contact
               </a>
             </div>
 
             {/* Divider */}
-            <div className="w-full h-[1px] bg-white/5 mb-8" />
+            <div className="w-full h-[1px] bg-black/10 mb-8" />
 
             {/* Bottom: Copyright + Social */}
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <p className="text-[10px] tracking-[0.3em] uppercase text-white/15">
+              <p className="text-[10px] tracking-[0.3em] uppercase text-black/30">
                 © 2026 Meridian — All Rights Reserved
               </p>
               <div className="flex items-center gap-6">
@@ -513,7 +527,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
                   href="https://www.instagram.com/meri.dianwatches" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-[10px] tracking-[0.3em] uppercase text-white/20 hover:text-[#C9A96E] transition-colors duration-300"
+                  className="text-[10px] tracking-[0.3em] uppercase text-black/40 hover:text-[#800020] transition-colors duration-300 py-3 min-h-[44px] flex items-center"
                 >
                   Instagram
                 </a>
@@ -521,7 +535,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
                   href="https://wa.me/918431724851" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-[10px] tracking-[0.3em] uppercase text-white/20 hover:text-[#C9A96E] transition-colors duration-300"
+                  className="text-[10px] tracking-[0.3em] uppercase text-black/40 hover:text-[#800020] transition-colors duration-300 py-3 min-h-[44px] flex items-center"
                 >
                   WhatsApp
                 </a>

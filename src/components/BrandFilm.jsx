@@ -8,6 +8,10 @@ export default function BrandFilm() {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
   const textRef = useRef(null);
+  const beamRef = useRef(null);
+  const topBarRef = useRef(null);
+  const bottomBarRef = useRef(null);
+  const textContainerRef = useRef(null);
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
 
   useEffect(() => {
@@ -17,7 +21,6 @@ export default function BrandFilm() {
 
     vid.muted = true;
 
-    // IntersectionObserver to auto-play video cleanly
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -32,7 +35,6 @@ export default function BrandFilm() {
     );
     observer.observe(section);
 
-    // Scale effect on scroll
     gsap.fromTo(vid,
       { scale: 1.1 },
       {
@@ -46,19 +48,37 @@ export default function BrandFilm() {
       }
     );
 
-    // Text Reveal Animation
-    gsap.fromTo(textRef.current,
-      { autoAlpha: 0, y: 50, scale: 0.95 },
-      {
-        autoAlpha: 1, y: 0, scale: 1,
-        duration: 1.5,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: section,
-          start: "top 50%",
-          toggleActions: "play none none reverse"
-        }
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top 50%",
+        toggleActions: "play none none reverse"
       }
+    });
+
+    // Letterbox bars retract
+    tl.fromTo(topBarRef.current,
+      { scaleY: 1 },
+      { scaleY: 0, duration: 0.8, ease: "power4.out", transformOrigin: "top" }, 0
+    );
+    tl.fromTo(bottomBarRef.current,
+      { scaleY: 1 },
+      { scaleY: 0, duration: 0.8, ease: "power4.out", transformOrigin: "bottom" }, 0
+    );
+
+    // Text center-split reveal
+    tl.fromTo(textContainerRef.current,
+      { clipPath: 'inset(50% 0 50% 0)' },
+      { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.8, ease: "power4.out" }, 0.2
+    );
+
+    // Beam sweep
+    tl.fromTo(beamRef.current,
+      { left: '-15%', opacity: 0 },
+      { left: '115%', opacity: 1, duration: 1.2, ease: "power2.inOut" }, 0.4
+    );
+    tl.to(beamRef.current,
+      { opacity: 0, duration: 0.4 }, 1.6
     );
 
     return () => observer.disconnect();
@@ -112,11 +132,24 @@ export default function BrandFilm() {
       {/* LUXURY GRADIENT OVERLAYS */}
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/60 pointer-events-none z-10" />
 
+      {/* LETTERBOX BARS — RETRACT ON SCROLL */}
+      <div ref={topBarRef} className="absolute top-0 left-0 right-0 h-[15vh] bg-black z-20 pointer-events-none" />
+      <div ref={bottomBarRef} className="absolute bottom-0 left-0 right-0 h-[15vh] bg-black z-20 pointer-events-none" />
+
+      {/* BEAM SWEEP */}
+      <div
+        ref={beamRef}
+        className="absolute top-0 bottom-0 w-[40vw] z-20 pointer-events-none opacity-0"
+        style={{
+          background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 30%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.08) 70%, transparent 100%)',
+        }}
+      />
+
       {/* MINIMALIST GLASSMORPHISM AUDIO CONTROL PILL */}
       <div className="absolute top-8 right-8 sm:top-12 sm:right-12 z-30">
         <button
           onClick={toggleAudio}
-          className={`group relative px-6 py-3 rounded-full border backdrop-blur-xl transition-all duration-300 flex items-center gap-3 cursor-pointer ${
+          className={`group relative px-6 py-3 rounded-full border backdrop-blur-xl transition-all duration-300 flex items-center gap-3 cursor-pointer min-h-[44px] ${
             isAudioEnabled
               ? 'bg-white/20 border-white shadow-[0_0_30px_rgba(255,255,255,0.3)]'
               : 'bg-black/60 border-white/20 hover:border-white/50 hover:bg-black/80'
@@ -133,13 +166,15 @@ export default function BrandFilm() {
         </button>
       </div>
 
-      {/* HERO OVERLAY TEXT — PURE MASSIVE ICONIC STATEMENT */}
+      {/* HERO OVERLAY TEXT — CENTER-SPLIT ROLEX REVEAL */}
       <div
-        ref={textRef}
+        ref={textContainerRef}
         className="relative z-20 text-center px-6 max-w-5xl mx-auto flex flex-col items-center pointer-events-none"
+        style={{ clipPath: 'inset(50% 0 50% 0)' }}
       >
         <h2 
-          className="text-3xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-normal tracking-[0.06em] uppercase text-white leading-[1.1] drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)]"
+          ref={textRef}
+          className="text-3xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-normal tracking-[0.06em] uppercase text-rainbow-shimmer leading-[1.1]"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
           "I'm the king of the world."

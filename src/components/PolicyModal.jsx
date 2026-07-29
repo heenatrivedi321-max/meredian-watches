@@ -70,7 +70,7 @@ export default function PolicyModal({ type, onClose }) {
         {/* Header */}
         <div className="flex items-center justify-between border-b border-white/10 pb-6 mb-6">
           <div>
-            <span className="text-[10px] font-mono tracking-[0.4em] text-[#10B981] uppercase font-bold block mb-1">
+            <span className="text-[10px] font-mono tracking-[0.4em] text-[#800020] uppercase font-bold block mb-1">
               OFFICIAL POLICY // {activePolicy.url}
             </span>
             <h2 className="text-xl sm:text-3xl font-extrabold uppercase tracking-tight">

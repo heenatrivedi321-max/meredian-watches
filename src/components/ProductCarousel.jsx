@@ -81,30 +81,12 @@ export default function ProductCarousel() {
             transition={{ duration: 0.6, delay: index * 0.1 }}
             className="group flex-none w-[85vw] md:w-[400px] lg:w-[450px] h-[70vh] md:h-[75vh] rounded-[2rem] snap-center relative overflow-hidden flex flex-col justify-between pt-10 pb-8 px-8 shadow-[0_0_40px_rgba(255,255,255,0.05)] border border-[#ffffff10] bg-gradient-to-b from-[#111] to-[#050505] transition-all duration-700 hover:shadow-[0_0_60px_rgba(212,175,55,0.15)] hover:border-[#d4af37]/30"
           >
-            {/* The Image Container with a trick to blend JPGs into dark themes: 
-                We use a radial gradient glow behind the watch, and apply mix-blend-screen if it has a dark bg, 
-                or if it's a PNG it just looks great. For white background JPGs, we can use an internal light card.
-                Let's use a beautiful floating container. */}
-            <div className="absolute inset-0 bg-[#e0e0e0] z-0 transition-opacity duration-700 opacity-0 group-hover:opacity-100" />
-            <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#0a0a0a] to-[#1a1a1a] group-hover:opacity-0 transition-opacity duration-700" />
-            
-            <div className="absolute inset-0 flex items-center justify-center p-8 z-10 pointer-events-none">
-               {/* We render the image with a subtle floating animation. 
-                   mix-blend-multiply works perfectly when the background turns light (#e0e0e0) on hover, 
-                   making the white background of the image disappear. When not hovered, it's a dark card. 
-                   Actually, let's just make the card a premium silver/light grey by default so the multiply blend ALWAYS works beautifully. */}
-            </div>
-
-            {/* Let's redefine the base to be light-themed cards inside the dark carousel for extreme contrast and premium feel */}
-            <div className="absolute inset-0 bg-[#f5f5f5] z-0" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.8)_0%,rgba(220,220,220,1)_100%)] z-0" />
-            
             {/* Watch Image */}
             <div className="absolute inset-0 flex items-center justify-center z-10 p-12 mt-12 mb-20 pointer-events-none">
               <img 
                 src={product.image} 
                 alt={product.title} 
-                className="w-full h-full object-contain mix-blend-multiply filter contrast-[1.1] saturate-[1.1] transition-transform duration-1000 group-hover:scale-110 drop-shadow-2xl" 
+                className="w-full h-full object-contain filter contrast-[1.1] saturate-[1.1] transition-all duration-1000 group-hover:scale-110 drop-shadow-[0_0_60px_rgba(201,169,110,0.3)]" 
               />
             </div>
 
@@ -112,18 +94,18 @@ export default function ProductCarousel() {
             <div className="relative z-20 flex flex-col items-center">
               {/* Massive Faded Typography Watermark */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden select-none -top-16">
-                <span className="font-anton text-[12rem] text-black/5 leading-none tracking-tighter">
+                <span className="font-anton text-[12rem] text-white/[0.03] leading-none tracking-tighter">
                   0{index + 1}
                 </span>
               </div>
 
               {/* Title */}
-              <h3 className="font-anton text-3xl md:text-4xl text-black text-center leading-[1.1] tracking-wide uppercase mt-4">
+              <h3 className="font-anton text-3xl md:text-4xl text-white text-center leading-[1.1] tracking-wide uppercase mt-4">
                 {product.title}
               </h3>
 
               {/* Description */}
-              <p className="text-black/50 text-xs md:text-sm font-sans text-center mt-2 tracking-widest uppercase">
+              <p className="text-white/40 text-xs md:text-sm font-sans text-center mt-2 tracking-widest uppercase">
                 {product.desc}
               </p>
             </div>
@@ -134,13 +116,13 @@ export default function ProductCarousel() {
                 onClick={() => {
                   window.open(`https://meridianwatches.store/cart/${product.variantId.split('/').pop()}:1`, '_blank');
                 }}
-                className="hover-target flex-1 bg-black text-white font-anton text-lg tracking-widest py-4 rounded shadow-xl hover:bg-[#d4af37] active:scale-95 transition-all duration-300 flex justify-between px-6 items-center border border-transparent"
+                className="hover-target flex-1 bg-white text-black font-anton text-lg tracking-widest py-4 rounded shadow-xl hover:bg-[#C9A96E] hover:text-white active:scale-95 transition-all duration-300 flex justify-between px-6 items-center border border-transparent"
               >
                 <span>ADD TO CART</span>
                 <span>{product.price}</span>
               </button>
               
-              <button className="hover-target relative overflow-hidden bg-transparent border border-black/20 text-black font-anton text-lg tracking-widest px-6 py-4 rounded shadow-xl hover:bg-black hover:text-white hover:border-black active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 group">
+              <button className="hover-target relative overflow-hidden bg-transparent border border-white/20 text-white font-anton text-lg tracking-widest px-6 py-4 rounded shadow-xl hover:bg-white hover:text-black hover:border-white active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 group">
                 <span className="hidden md:inline relative z-10">VIEW</span>
                 <div className="relative w-6 h-6 overflow-hidden">
                   <ArrowUpRight className="absolute inset-0 transform group-hover:translate-x-full group-hover:-translate-y-full transition-transform duration-300 ease-in-out" size={24} />
@@ -152,16 +134,6 @@ export default function ProductCarousel() {
         ))}
 
       </div>
-
-      <style jsx>{`
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .hide-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
 
     </section>
   );
