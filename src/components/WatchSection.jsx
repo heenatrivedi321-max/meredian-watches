@@ -89,13 +89,14 @@ export default function WatchSection({ watch, index, onClick, isActive }) {
               animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
               exit={{ y: -60, opacity: 0 }}
               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-2 pointer-events-auto"
+              className="relative overflow-hidden rounded-2xl px-6 py-5 bg-white/5 backdrop-blur-2xl border border-white/10 space-y-2 pointer-events-auto"
             >
+              <span className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/25 to-transparent" />
               <span className="text-xs font-mono tracking-[0.4em] text-[#800020] uppercase block font-semibold">
                 EDITION 0{index + 1} // {watch.brand}
               </span>
               <h2
-                className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal tracking-[0.05em] text-white uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)]"
+                className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal tracking-[0.05em] text-white uppercase"
                 style={{ fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif" }}
               >
                 {watch.model}
@@ -110,11 +111,12 @@ export default function WatchSection({ watch, index, onClick, isActive }) {
           )}
         </AnimatePresence>
 
-        {/* SOUND CONTROL PILL */}
+        {/* SOUND CONTROL PILL — ROLEX GLASSMORPHISM */}
         <button
           onClick={toggleAudio}
-          className="pointer-events-auto px-5 py-3 rounded-full bg-black/60 hover:bg-black/90 border border-white/20 backdrop-blur-2xl transition-all duration-300 flex items-center gap-3 cursor-pointer shadow-2xl min-h-[44px]"
+          className="pointer-events-auto relative overflow-hidden px-5 py-3 rounded-full bg-white/5 hover:bg-white/15 border border-white/20 backdrop-blur-3xl transition-all duration-500 flex items-center gap-3 cursor-pointer shadow-2xl min-h-[44px] group"
         >
+          <span className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent" />
           <span className={`w-2.5 h-2.5 rounded-full ${isAudioEnabled ? 'bg-[#10B981] animate-ping' : 'bg-white/50'}`} />
           <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             {isAudioEnabled ? (
@@ -157,12 +159,13 @@ export default function WatchSection({ watch, index, onClick, isActive }) {
                 </p>
               )}
 
-              {/* SEXY GLASSMORPHISM BUTTON WITH GOOGLE TYPOGRAPHY (PLUS JAKARTA SANS / INTER) */}
+              {/* ROLEX GLASSMORPHISM CTA BUTTON */}
               <button
                 onClick={() => onClick(watch)}
                 style={{ fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif" }}
-                className="group relative px-10 py-5 rounded-full border border-white/40 bg-white/10 hover:bg-white/25 hover:border-[#800020] backdrop-blur-3xl transition-all duration-500 flex items-center gap-4 cursor-pointer shadow-[0_20px_60px_rgba(0,0,0,0.8),0_0_40px_rgba(128,0,32,0.4)] active:scale-95 z-30"
+                className="group relative overflow-hidden px-10 py-5 rounded-full border border-white/30 bg-white/8 hover:bg-white/20 hover:border-[#800020]/80 backdrop-blur-3xl transition-all duration-500 flex items-center gap-4 cursor-pointer shadow-[0_20px_60px_rgba(0,0,0,0.8),0_0_40px_rgba(128,0,32,0.3)] active:scale-95 z-30"
               >
+                <span className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
                 <span className="text-xs sm:text-sm tracking-[0.3em] uppercase font-bold text-white group-hover:text-[#800020] transition-colors">
                   CHECK IT OUT
                 </span>
