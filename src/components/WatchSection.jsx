@@ -20,8 +20,8 @@ export default function WatchSection({ watch, index, onClick, isActive }) {
     clearTimeout(timerRef.current);
     if (isActive) {
       if (vid) vid.play().catch(() => {});
-      // Slow scroll to near-lock for 2.2s while UI delays
-      if (window.lenis) window.lenis.options.duration = 3.5;
+      // Gentle scroll slowdown for 2.2s while UI delays
+      if (window.lenis) window.lenis.options.duration = 2.0;
       timerRef.current = setTimeout(() => {
         setShowUI(true);
         if (window.lenis) window.lenis.options.duration = 1.0;

@@ -307,19 +307,17 @@ export default function CollectionShowcase({ onSelectWatch }) {
         }
       );
 
-      // Smooth 3D Zoom Stagger into Product Grid without scroll pin locking
+      // Story text — simple fade-in, stays visible
       gsap.fromTo(".story-text-container",
-        { scale: 1, opacity: 1, y: 0 },
+        { autoAlpha: 0, y: 20 },
         {
-          scale: 3,
-          opacity: 0,
-          y: -40,
-          ease: "power1.inOut",
+          autoAlpha: 1, y: 0,
+          duration: 1.0,
+          ease: "power2.out",
           scrollTrigger: {
             trigger: storyRef.current,
-            start: "top 60%",
-            end: "bottom top",
-            scrub: 0.1,
+            start: "top 80%",
+            toggleActions: "play none none none"
           }
         }
       );
