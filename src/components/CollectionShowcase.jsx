@@ -426,7 +426,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
             Time is fleeting
           </p>
           <h2
-            className="closer-text text-[2.2rem] sm:text-[3rem] md:text-[5rem] lg:text-[7rem] xl:text-[6rem] font-light tracking-[-0.02em] text-black leading-none mb-4 gold-shimmer pb-2"
+            className="closer-text text-[2.2rem] sm:text-[3rem] md:text-[5rem] lg:text-[7rem] xl:text-[8rem] font-light tracking-[-0.02em] text-black leading-none mb-4 gold-shimmer pb-2"
           >
             Time Waits<br />For No One.
           </h2>
@@ -477,6 +477,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
                   >
                     <input 
                       type="email" 
+                      name="email"
                       required
                       placeholder="your@email.com"
                       className="px-4 py-2 bg-black/5 border border-black/10 rounded-full text-xs text-black placeholder:text-black/30 focus:outline-none focus:border-[#800020] w-56 transition-colors"
