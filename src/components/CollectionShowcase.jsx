@@ -237,6 +237,23 @@ export default function CollectionShowcase({ onSelectWatch }) {
   const storyRef = useRef(null);
   const closerRef = useRef(null);
   const [joinedMessage, setJoinedMessage] = useState(false);
+  const [activeWatchIndex, setActiveWatchIndex] = useState(-1);
+
+  useEffect(() => {
+    const sections = document.querySelectorAll('#watch-collection-grid > section');
+    const triggers = [];
+    sections.forEach((section, idx) => {
+      const t = ScrollTrigger.create({
+        trigger: section,
+        start: "top center",
+        end: "bottom center",
+        onEnter: () => setActiveWatchIndex(idx),
+        onEnterBack: () => setActiveWatchIndex(idx),
+      });
+      triggers.push(t);
+    });
+    return () => triggers.forEach(t => t.kill());
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -370,7 +387,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
         {/* Product Grid Section — Full-Screen Watch Sections */}
         <div id="watch-collection-grid" className="relative z-20 pointer-events-auto">
           {WATCHES.map((watch, idx) => (
-            <WatchSection key={watch.id} watch={watch} index={idx} onClick={onSelectWatch} />
+            <WatchSection key={watch.id} watch={watch} index={idx} onClick={onSelectWatch} isActive={idx === activeWatchIndex} />
           ))}
         </div>
 

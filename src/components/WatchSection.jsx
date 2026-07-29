@@ -1,55 +1,34 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function WatchSection({ watch, index, onClick }) {
+export default function WatchSection({ watch, index, onClick, isActive }) {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
   const [showUI, setShowUI] = useState(false);
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
   const timerRef = useRef(null);
-  const observerRef = useRef(null);
 
   useEffect(() => {
     const vid = videoRef.current;
-    const section = sectionRef.current;
-    if (!section) return;
+    if (!vid) return;
+    vid.muted = true;
+    vid.playsInline = true;
+  }, []);
 
-    if (vid) {
-      vid.muted = true;
-      vid.playsInline = true;
-      vid.pause();
+  useEffect(() => {
+    const vid = videoRef.current;
+    clearTimeout(timerRef.current);
+    if (isActive) {
+      if (vid) vid.play().catch(() => {});
+      timerRef.current = setTimeout(() => {
+        setShowUI(true);
+      }, 2200);
+    } else {
+      setShowUI(false);
+      if (vid) vid.pause();
     }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // Pause all other section videos so only one plays at a time
-            document.querySelectorAll('.watch-section-video').forEach(v => {
-              if (v !== vid) v.pause();
-            });
-            if (vid) vid.play().catch(() => {});
-            timerRef.current = setTimeout(() => {
-              setShowUI(true);
-            }, 2200);
-          } else {
-            clearTimeout(timerRef.current);
-            setShowUI(false);
-            if (vid) vid.pause();
-          }
-        });
-      },
-      { threshold: 0.6 }
-    );
-
-    observer.observe(section);
-    observerRef.current = observer;
-
-    return () => {
-      clearTimeout(timerRef.current);
-      observer.disconnect();
-    };
-  }, [index]);
+    return () => clearTimeout(timerRef.current);
+  }, [isActive]);
 
   const toggleAudio = useCallback((e) => {
     if (e) {
