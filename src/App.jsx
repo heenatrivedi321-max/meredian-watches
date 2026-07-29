@@ -154,13 +154,14 @@ export default function App() {
 
   // 120 FPS High-Velocity Lenis Momentum Engine
   // Native smooth scrolling & 60 FPS Lenis scroll engine
+  const touchMultiplier = isMobile ? 0.8 : 1.5;
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.0,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       wheelMultiplier: 1.0,
-      touchMultiplier: isMobile ? 0.8 : 1.5,
+      touchMultiplier,
       infinite: false,
     });
 
@@ -179,7 +180,7 @@ export default function App() {
       gsap.ticker.remove(update);
       lenis.destroy();
     };
-  }, [isMobile]);
+  }, []);
 
   const handleHeroMouseMove = useCallback((e) => {
     if (isMobile) return;
