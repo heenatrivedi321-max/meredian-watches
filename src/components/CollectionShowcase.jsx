@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import useIsMobile from '../hooks/useIsMobile';
 import ReviewsMarquee from './ReviewsMarquee';
 import WatchSection from './WatchSection';
 
@@ -17,10 +16,8 @@ import { WATCHES } from '../data/watches';
 // ============================================
 function MagneticButton({ children, className = '', onClick }) {
   const btnRef = useRef(null);
-  const isMobile = useIsMobile();
 
   const handleMouseMove = (e) => {
-    if (isMobile) return;
     const btn = btnRef.current;
     const rect = btn.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
@@ -35,7 +32,6 @@ function MagneticButton({ children, className = '', onClick }) {
   };
 
   const handleMouseLeave = () => {
-    if (isMobile) return;
     gsap.to(btnRef.current, {
       x: 0,
       y: 0,
@@ -65,7 +61,6 @@ function ProductCard({ watch, index, onClick }) {
   const videoRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
-  const isMobile = useIsMobile();
 
   useEffect(() => {
     gsap.fromTo(cardRef.current,
@@ -99,7 +94,6 @@ function ProductCard({ watch, index, onClick }) {
       onMouseEnter={() => {
         setIsHovered(true);
         if (videoRef.current) videoRef.current.play();
-        if (isMobile) return;
         gsap.to(cardRef.current, {
           z: 120,
           scale: 1.08,
@@ -112,7 +106,6 @@ function ProductCard({ watch, index, onClick }) {
       onMouseLeave={() => {
         setIsHovered(false);
         if (videoRef.current) videoRef.current.pause();
-        if (isMobile) return;
         gsap.to(cardRef.current, {
           z: 0,
           scale: 1,
@@ -353,7 +346,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
         >
           {/* Scoped 4K Gold Skeleton Watch Video */}
           <video
-            autoPlay loop muted playsInline preload="metadata"
+            autoPlay loop muted playsInline preload="auto"
             className="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none z-0"
             style={{ transform: 'translateZ(0)', willChange: 'transform' }}
           >
@@ -419,7 +412,6 @@ export default function CollectionShowcase({ onSelectWatch }) {
           loop 
           muted 
           playsInline 
-          preload="none"
           className="absolute inset-0 w-full h-full object-cover z-0 opacity-30 scale-[1.3]"
           style={{ mixBlendMode: 'multiply' }}
         >

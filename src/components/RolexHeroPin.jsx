@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import useIsMobile from '../hooks/useIsMobile';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,7 +11,6 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
   const text1Ref = useRef(null);
   const text2Ref = useRef(null);
   const text3Ref = useRef(null);
-  const isMobile = useIsMobile();
 
   useEffect(() => {
     const container = containerRef.current;
@@ -117,7 +115,7 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
           loop
           muted
           playsInline
-          preload={isMobile ? "metadata" : "auto"}
+          preload="auto"
           src={watch?.cinematicVideo || watch?.video || "/Gold_skeleton_watch_showcase_202606290837.mp4"}
           className="w-full h-full object-cover transition-transform duration-700 scale-125 origin-center"
         />

@@ -3,7 +3,6 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import WebGLFluid from 'webgl-fluid';
-import useIsMobile from './hooks/useIsMobile';
 import CollectionShowcase from './components/CollectionShowcase';
 import WhatsAppButton from './components/WhatsAppButton';
 import ScrollToTop from './components/ScrollToTop';
@@ -146,7 +145,6 @@ export default function App() {
   const [soundOn, setSoundOn] = useState(false);
   const audioRef = useRef(null);
   const handleIntroComplete = useCallback(() => setIntroDone(true), []);
-  const isMobile = useIsMobile();
 
   const [activePolicy, setActivePolicy] = useState(null);
   const [showAi, setShowAi] = useState(false);
@@ -154,14 +152,13 @@ export default function App() {
 
   // 120 FPS High-Velocity Lenis Momentum Engine
   // Native smooth scrolling & 60 FPS Lenis scroll engine
-  const touchMultiplier = isMobile ? 0.8 : 1.5;
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.0,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       wheelMultiplier: 1.0,
-      touchMultiplier,
+      touchMultiplier: 1.5,
       infinite: false,
     });
 
@@ -183,18 +180,16 @@ export default function App() {
   }, []);
 
   const handleHeroMouseMove = useCallback((e) => {
-    if (isMobile) return;
     const { clientX, clientY } = e;
     const { innerWidth, innerHeight } = window;
     const x = ((clientX / innerWidth) - 0.5) * 16;
     const y = ((clientY / innerHeight) - 0.5) * -16;
     setHeroTilt({ x, y });
-  }, [isMobile]);
+  }, []);
 
   const handleHeroMouseLeave = useCallback(() => {
-    if (isMobile) return;
     setHeroTilt({ x: 0, y: 0 });
-  }, [isMobile]);
+  }, []);
 
   const toggleSound = useCallback(() => {
     if (!audioRef.current) return;
@@ -328,9 +323,6 @@ export default function App() {
       {/* Intro Splash */}
       {!introDone && <IntroSplash onComplete={handleIntroComplete} />}
 
-      {/* WebGL Fluid Background — desktop only (kills mobile GPU) */}
-      {!isMobile && <FluidBackground />}
-
       {/* Scroll Progress */}
       <ScrollProgress />
 
@@ -343,7 +335,7 @@ export default function App() {
         <div className="fixed inset-0 w-full h-screen z-0 pointer-events-none bg-black overflow-hidden">
           
           <video 
-            autoPlay loop muted playsInline preload={isMobile ? "metadata" : "auto"} fetchPriority={isMobile ? "low" : "high"}
+            autoPlay loop muted playsInline preload="auto" fetchPriority="high"
             className="bg-stars absolute inset-0 w-full h-full object-cover opacity-90"
             style={{ transform: 'scale(1.3) translateZ(0)', willChange: 'transform' }}
           >
@@ -351,7 +343,7 @@ export default function App() {
           </video>
 
           {/* Ambient audio for hero video */}
-          <audio ref={audioRef} loop preload={isMobile ? "metadata" : "auto"}>
+          <audio ref={audioRef} loop preload="auto">
             <source src="/ambient.mp3" type="audio/mpeg" />
           </audio>
 
@@ -466,7 +458,7 @@ export default function App() {
               loop
               muted
               playsInline
-              preload={isMobile ? "metadata" : "auto"}
+              preload="auto"
               className="absolute inset-0 w-full h-full object-cover opacity-80 z-0 scale-[1.05]"
               style={{ transform: 'translateZ(0)', willChange: 'transform' }}
             >
@@ -525,7 +517,7 @@ export default function App() {
           <section className="manifesto-spacer relative w-full h-screen pointer-events-auto overflow-hidden bg-black">
             {/* Scoped 4K Watch Gears Video Background */}
             <video
-              autoPlay loop muted playsInline preload={isMobile ? "metadata" : "auto"}
+              autoPlay loop muted playsInline preload="auto"
               className="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none z-0"
             >
               <source src="/Watch_gears_forming_watch_dial_202606291025.mp4" type="video/mp4" />
@@ -557,7 +549,7 @@ export default function App() {
           <section className="porsche-spacer relative w-full h-screen pointer-events-auto overflow-hidden bg-black">
             {/* Scoped 4K Porsche Video Background */}
             <video
-              autoPlay loop muted playsInline preload={isMobile ? "metadata" : "auto"}
+              autoPlay loop muted playsInline preload="auto"
               className="absolute inset-0 w-full h-full object-cover opacity-70 pointer-events-none z-0"
             >
               <source src="/Porsche_driving_through_tunnel_202606281316.mp4" type="video/mp4" />
@@ -638,7 +630,7 @@ export default function App() {
 
       {/* Floating UI — above everything */}
       <WhatsAppButton />
-      {!isMobile && <GoldStarDustCursor />}
+      <GoldStarDustCursor />
       <ScrollToTop />
 
       {/* Brand Story Overlay */}
