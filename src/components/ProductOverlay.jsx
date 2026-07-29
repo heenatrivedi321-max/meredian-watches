@@ -52,6 +52,7 @@ export default function ProductOverlay({ watch, onClose }) {
   const [isMuted, setIsMuted] = useState(true);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [closing, setClosing] = useState(false);
+  const [showSizeGuide, setShowSizeGuide] = useState(false);
   const savedScrollY = useRef(0);
   const videoRef = useRef(null);
 
@@ -376,6 +377,56 @@ export default function ProductOverlay({ watch, onClose }) {
                 </span>
               </div>
             </FadeIn>
+
+            {/* Size Guide */}
+            <FadeIn delay={0.4} className="sm:col-span-2" style={{ textAlign: 'center' }}>
+              <button onClick={() => setShowSizeGuide(!showSizeGuide)}
+                style={{
+                  background: 'none', border: '1px solid rgba(255,255,255,0.15)', color: '#C9A96E',
+                  padding: '12px 32px', borderRadius: 9999, cursor: 'pointer',
+                  fontSize: 11, letterSpacing: '0.3em', textTransform: 'uppercase', fontWeight: 800,
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(201,169,110,0.1)'; e.currentTarget.style.borderColor = '#C9A96E'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; }}
+              >
+                📐 Size Guide
+              </button>
+
+              {showSizeGuide && (
+                <div style={{
+                  marginTop: 24, padding: 32, borderRadius: 20,
+                  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+                  textAlign: 'left',
+                }}>
+                  <h4 style={{ fontSize: 14, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#C9A96E', marginBottom: 20, fontWeight: 800 }}>
+                    Case Dimensions
+                  </h4>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                    {[
+                      { label: 'Diameter', value: watch.specs?.diameter },
+                      { label: 'Thickness', value: watch.specs?.thickness },
+                      { label: 'Movement', value: watch.specs?.movement },
+                      { label: 'Case Material', value: watch.specs?.caseMaterial },
+                      { label: 'Glass', value: watch.specs?.glass },
+                      { label: 'Water Resistance', value: watch.specs?.waterResistance },
+                      { label: 'Strap', value: watch.specs?.strap },
+                    ].map((s, i) => (
+                      <div key={i} style={{
+                        padding: '12px 16px', borderRadius: 12,
+                        background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)',
+                      }}>
+                        <div style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.4)', marginBottom: 4, fontWeight: 700 }}>{s.label}</div>
+                        <div style={{ fontSize: 15, color: '#fff', fontWeight: 600, fontFamily: "'Inter', sans-serif" }}>{s.value}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', marginTop: 20, fontStyle: 'italic', textAlign: 'center' }}>
+                    Fits standard wrists (adjustable link bracelet included)
+                  </p>
+                </div>
+              )}
+            </FadeIn>
           </div>
         </div>
       </div>
@@ -409,8 +460,30 @@ export default function ProductOverlay({ watch, onClose }) {
             {watch.price}
           </div>
         </FadeIn>
+
+        {/* Trust Badges */}
+        <FadeIn delay={0.25}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center', marginBottom: 48 }}>
+            {[
+              { icon: "🚚", label: "Free Express Shipping" },
+              { icon: "↩️", label: "7-Day Returns" },
+              { icon: "✓", label: "100% Authentic" },
+              { icon: "🛡️", label: "Insured Delivery" }
+            ].map((item, i) => (
+              <div key={i} style={{
+                display: 'flex', alignItems: 'center', gap: 8,
+                padding: '10px 18px', borderRadius: 9999,
+                background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.06)',
+                fontSize: 11, fontWeight: 700, letterSpacing: '0.05em', color: 'rgba(0,0,0,0.7)',
+              }}>
+                <span style={{ fontSize: 14 }}>{item.icon}</span>
+                <span>{item.label}</span>
+              </div>
+            ))}
+          </div>
+        </FadeIn>
         
-        <FadeIn delay={0.3}>
+        <FadeIn delay={0.35}>
           {watch.outOfStock ? (
             <button 
               onClick={() => window.location.href = `https://wa.me/918431724851?text=Hi%2C%20I%27m%20interested%20in%20the%20${encodeURIComponent(watch.brand + ' ' + watch.model)}.%20Is%20it%20available%3F`}

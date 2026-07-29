@@ -116,7 +116,7 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
           muted
           playsInline
           preload="auto"
-          src="/Gold_skeleton_watch_showcase_202606290837.mp4"
+          src={watch?.cinematicVideo || watch?.video || "/Gold_skeleton_watch_showcase_202606290837.mp4"}
           className="w-full h-full object-cover transition-transform duration-700 scale-125 origin-center"
         />
         {/* Subtle Gradient Vignette for Text Contrast */}

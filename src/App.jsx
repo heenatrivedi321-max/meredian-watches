@@ -373,7 +373,7 @@ export default function App() {
 
           <div 
             onClick={() => {
-              const grid = document.querySelector('.max-w-screen-2xl');
+              const grid = document.getElementById('watch-collection-grid');
               if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }}
             className="hidden md:block flex-1 text-right text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] font-semibold uppercase hover:text-[#800020] transition-all duration-300 cursor-pointer text-white/70 nav-link"
@@ -422,7 +422,7 @@ export default function App() {
                 </button>
                 <button 
                   onClick={() => {
-                    const grid = document.querySelector('.max-w-screen-2xl');
+                    const grid = document.getElementById('watch-collection-grid');
                     if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     setMenuOpen(false);
                   }}

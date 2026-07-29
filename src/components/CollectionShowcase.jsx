@@ -139,16 +139,25 @@ function ProductCard({ watch, index, onClick }) {
 
       {/* Brand Name — Top */}
       <div className="absolute top-6 left-6 right-6 z-30">
-        <h3
-          className="text-[1.8rem] sm:text-[2.5rem] md:text-[3.5rem] font-light tracking-[-0.02em] leading-none text-white/90 uppercase"
-        >
-          {watch.brand}
-        </h3>
-        <p
-          className="text-sm md:text-base font-light tracking-[0.2em] uppercase text-white/40 mt-1"
-        >
-          {watch.model}
-        </p>
+        <div className="flex items-start justify-between">
+          <div>
+            <h3
+              className="text-[1.8rem] sm:text-[2.5rem] md:text-[3.5rem] font-light tracking-[-0.02em] leading-none text-white/90 uppercase"
+            >
+              {watch.brand}
+            </h3>
+            <p
+              className="text-sm md:text-base font-light tracking-[0.2em] uppercase text-white/40 mt-1"
+            >
+              {watch.model}
+            </p>
+          </div>
+          {watch.badge && (
+            <span className="shrink-0 ml-4 px-3 py-1.5 bg-[#800020] text-white text-[9px] font-mono tracking-[0.15em] uppercase font-bold rounded-full shadow-lg shadow-[#800020]/40">
+              {watch.badge}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Watch Image — 3D POP-OUT FLY TO FACE EFFECT */}
@@ -374,7 +383,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
         </section>
 
         {/* Product Grid Section — Full-Screen Watch Sections */}
-        <div className="relative z-20 pointer-events-auto">
+        <div id="watch-collection-grid" className="relative z-20 pointer-events-auto">
           {WATCHES.map((watch, idx) => (
             <WatchSection key={watch.id} watch={watch} index={idx} onClick={onSelectWatch} />
           ))}

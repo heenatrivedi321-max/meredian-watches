@@ -35,34 +35,34 @@ export default function Reviews() {
 
   const reviews = [
     {
-      name: "TREY M.",
-      quote: "BEST PRINT I EVER BOUGHT... AND IT'S NOT CLOSE.",
-      body: "I put it in a cheap IKEA frame which was trash. This made that frame look amazing. Apex Prints for life!"
+      name: "ARJUN M.",
+      quote: "GOT IT ON MY WRIST. MY BOSS THINKS I GOT A PROMOTION.",
+      body: "Walked into the boardroom and three people asked what I was wearing. I let them think it costs more than my rent. Insane value."
     },
     {
-      name: "JEFFREY R.",
-      quote: "WE DON'T TALK ABOUT THE OLD ART ANYMORE.",
-      body: "It's still in the closet. Nobody looks at it. It knows what it did."
+      name: "VIKRAM R.",
+      quote: "MY SMARTWATCH IS IN A DRAWER. IT DESERVES TO BE THERE.",
+      body: "Notifications stress me out. This just sits there looking like a million bucks. No buzzing. No updates. Just pure class."
     },
     {
-      name: "JASON M.",
-      quote: "YEAH... THIS REPLACED EVERY PIECE OF ART I HAD.",
-      body: "Not exaggerating — this is the first print I've had that actually feels like real gallery stock."
+      name: "KARAN J.",
+      quote: "I ORDERED AT 11 PM. IT WAS AT MY DOOR BY LUNCH.",
+      body: "South Mumbai delivery in under 24 hours. The packaging alone felt like I was unboxing something from Geneva. Absolutely elite."
     },
     {
-      name: "SARAH K.",
-      quote: "I BOUGHT IT JUST SO MY EX WOULD FEEL INFERIOR.",
-      body: "He came over to get his stuff, saw the Bauhaus print, and started crying. Best $150 I ever spent."
+      name: "NEHA S.",
+      quote: "MY HUSBAND HASN'T STOPPED STARING AT HIS WRIST.",
+      body: "I bought this for his birthday. He keeps saying 'look at the second hand glide.' I don't get it. But he's happy. Worth every rupee."
     },
     {
-      name: "DAVID L.",
-      quote: "MY LANDLORD THINKS I'M RICH NOW.",
-      body: "He saw this hanging in my living room and immediately tried to raise my rent by 20%. Luckily, I changed the locks."
+      name: "ROHAN D.",
+      quote: "WORE IT TO A WEDDING. THE GROOM ASKED FOR THE LINK.",
+      body: "The rose gold caught the light and suddenly everyone wanted one. I said 'Meridian. You're welcome.' Felt like a celebrity."
     },
     {
-      name: "EMILY T.",
-      quote: "I THREW AWAY MY TV TO MAKE ROOM FOR THIS.",
-      body: "Who needs Netflix when you have a 250gsm matte black masterpiece staring directly into your soul?"
+      name: "PRIYA T.",
+      quote: "THE AUTOMATIC MOVEMENT IS MESMERIZING.",
+      body: "I just sit there watching the skeleton dial tick. No battery. No screen. Just pure mechanical poetry on my wrist."
     }
   ];
 
