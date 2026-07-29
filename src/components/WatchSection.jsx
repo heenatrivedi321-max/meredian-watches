@@ -25,62 +25,24 @@ export default function WatchSection({ watch, index, onClick }) {
 
     let revealTimer;
 
-    // GSAP PIN LOCKING: Locks section & delayed 2.2s UI reveal
-    const pinTrigger = ScrollTrigger.create({
+    const trigger = ScrollTrigger.create({
       trigger: section,
-      start: "top top",
-      end: "+=80%",
-      pin: true,
-      pinSpacing: true,
-      anticipatePin: 1,
-      fastScrollEnd: true,
+      start: "top 40%",
       onEnter: () => {
         if (vid) vid.play().catch(() => {});
         revealTimer = setTimeout(() => {
           setShowUI(true);
         }, 2200);
       },
-      onLeave: () => {
-        clearTimeout(revealTimer);
-        if (vid) {
-          vid.muted = true;
-          setIsAudioEnabled(false);
-        }
-        setShowUI(false);
-      },
       onLeaveBack: () => {
         clearTimeout(revealTimer);
-        if (vid) {
-          vid.muted = true;
-          setIsAudioEnabled(false);
-        }
         setShowUI(false);
       }
     });
 
-    // ROLEX CINEMATIC CLIP-PATH & DEPTH REVEAL ANIMATION
-    if (contentRef.current) {
-      gsap.fromTo(contentRef.current,
-        { clipPath: "inset(12% 8% 12% 8% round 40px)", scale: 1.1, opacity: 0.7 },
-        {
-          clipPath: "inset(0% 0% 0% 0% round 0px)",
-          scale: 1.0,
-          opacity: 1,
-          duration: 1.2,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 90%",
-            end: "top top",
-            scrub: 0.5
-          }
-        }
-      );
-    }
-
     return () => {
       clearTimeout(revealTimer);
-      pinTrigger.kill();
+      trigger.kill();
     };
   }, [index]);
 
