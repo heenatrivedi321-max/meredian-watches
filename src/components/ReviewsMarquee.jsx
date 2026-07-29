@@ -1,5 +1,4 @@
 import React from 'react';
-import WebGLFluidBg from './WebGLFluidBg';
 
 const REVIEWS = [
   "\"My boss asked if I got a promotion. I let him think I did.\"",
@@ -17,11 +16,6 @@ export default function ReviewsMarquee() {
   return (
     <section className="w-full bg-white py-24 overflow-hidden relative border-y border-black/10 pointer-events-auto z-50">
       
-      {/* WebGL Fluid Background Injection */}
-      <div className="absolute inset-0 z-0 opacity-60 pointer-events-none">
-        <WebGLFluidBg />
-      </div>
-
       {/* Label */}
       <div className="absolute top-8 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
         <p className="text-[10px] tracking-[0.5em] uppercase text-black/40 font-light" style={{ fontFamily: "'Inter', sans-serif" }}>

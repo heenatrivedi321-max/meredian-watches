@@ -8,7 +8,6 @@ import WhatsAppButton from './components/WhatsAppButton';
 import ScrollToTop from './components/ScrollToTop';
 import ProductSchema from './components/ProductSchema';
 import IntroSplash from './components/IntroSplash';
-import CelestialCanvas from './components/CelestialCanvas';
 import RolexHeroPin from './components/RolexHeroPin';
 import GoldStarDustCursor from './components/GoldStarDustCursor';
 import { WATCHES } from './data/watches';
@@ -328,9 +327,6 @@ export default function App() {
       <ProductSchema watch={selectedWatch} />
 
       <div ref={mainRef} className="w-full bg-black min-h-screen text-white font-sans overflow-x-hidden selection:bg-[#800020] selection:text-white">
-        
-        {/* UNIFIED HYPER-OPTIMIZED 120 FPS CELESTIAL & LIQUID EMBER CANVAS */}
-        <CelestialCanvas />
         
         {/* FIXED BACKGROUND MEDIA LAYER */}
         <div className="fixed inset-0 w-full h-screen z-0 pointer-events-none bg-black overflow-hidden">

@@ -53,6 +53,7 @@ export default function ProductOverlay({ watch, onClose }) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [closing, setClosing] = useState(false);
   const [showSizeGuide, setShowSizeGuide] = useState(false);
+  const [zoom, setZoom] = useState({ active: false, x: 50, y: 50 });
   const savedScrollY = useRef(0);
   const videoRef = useRef(null);
 
@@ -159,16 +160,32 @@ export default function ProductOverlay({ watch, onClose }) {
           {/* Watch Image */}
           <FadeIn className="w-full lg:w-[55%]" delay={0.05} direction="scale" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
             <div style={{ position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <img 
-                src={activeImage} alt={watch.model}
-                loading="eager" decoding="async" fetchPriority="high"
-                style={{
-                  width: '100%', maxHeight: '72vh', objectFit: 'contain',
-                  filter: 'drop-shadow(0 35px 70px rgba(0,0,0,0.2))',
-                  transform: 'translateZ(0)',
-                  animation: 'floatBounce 6s ease-in-out infinite',
+              <div
+                style={{ width: '100%', overflow: 'hidden', cursor: 'crosshair', borderRadius: 20, position: 'relative' }}
+                onMouseEnter={() => setZoom(z => ({ ...z, active: true }))}
+                onMouseLeave={() => setZoom(z => ({ ...z, active: false }))}
+                onMouseMove={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const x = ((e.clientX - rect.left) / rect.width) * 100;
+                  const y = ((e.clientY - rect.top) / rect.height) * 100;
+                  setZoom({ active: true, x, y });
                 }}
-              />
+              >
+                <img 
+                  src={activeImage} alt={watch.model}
+                  loading="eager" decoding="async" fetchPriority="high"
+                  style={{
+                    width: '100%', maxHeight: '72vh', objectFit: 'contain',
+                    filter: 'drop-shadow(0 35px 70px rgba(0,0,0,0.2))',
+                    animation: 'floatBounce 6s ease-in-out infinite',
+                    display: 'block',
+                    transform: zoom.active ? `scale(2)` : 'translateZ(0)',
+                    transformOrigin: `${zoom.x}% ${zoom.y}%`,
+                    transition: zoom.active ? 'none' : 'transform 0.3s ease',
+                    willChange: 'transform',
+                  }}
+                />
+              </div>
               {/* Image gallery dots */}
               {images.length > 1 && (
                 <div style={{ display: 'flex', gap: 10, justifyContent: 'center', marginTop: 28 }}>
