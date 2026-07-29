@@ -63,7 +63,18 @@ export default function ProductOverlay({ watch, onClose }) {
   const images = allImages.length >= 3 ? allImages.slice(0, 3) : [...allImages, ...Array(Math.max(1, 3 - allImages.length)).fill(allImages[0] || watch?.image)];
   const activeImage = images[activeImageIndex] || watch?.image || '/watches_new/MK9218_gold_auto_1.jpg';
 
-  useEffect(() => { if (watch) { setActiveImageIndex(0); setClosing(false); } }, [watch]);
+  useEffect(() => { if (watch) { setActiveImageIndex(0); setClosing(false); 
+    if (typeof fbq === 'function') {
+      fbq('track', 'ViewContent', {
+        content_name: `${watch.brand} ${watch.model}`,
+        content_category: 'Luxury Watches',
+        content_ids: [watch.shopifyVariantId],
+        content_type: 'product',
+        value: watch.amount / 100,
+        currency: 'INR',
+      });
+    }
+  } }, [watch]);
 
   // Hide app, show overlay as normal page
   useEffect(() => {
@@ -520,6 +531,22 @@ export default function ProductOverlay({ watch, onClose }) {
               onClick={async () => {
                 if (isRedirecting) return;
                 setIsRedirecting(true);
+                if (typeof fbq === 'function') {
+                  fbq('track', 'AddToCart', {
+                    content_name: `${watch.brand} ${watch.model}`,
+                    content_ids: [watch.shopifyVariantId],
+                    content_type: 'product',
+                    value: watch.amount / 100,
+                    currency: 'INR',
+                  });
+                  fbq('track', 'InitiateCheckout', {
+                    content_name: `${watch.brand} ${watch.model}`,
+                    content_ids: [watch.shopifyVariantId],
+                    content_type: 'product',
+                    value: watch.amount / 100,
+                    currency: 'INR',
+                  });
+                }
                 try {
                   const cart = await createCheckout(watch.shopifyVariantId);
                   window.location.href = cart.checkoutUrl;

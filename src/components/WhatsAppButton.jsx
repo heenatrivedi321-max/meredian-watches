@@ -50,6 +50,7 @@ export default function WhatsAppButton() {
               href={`https://wa.me/${phone}?text=${message}`}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => { if (typeof fbq === 'function') fbq('track', 'Contact'); }}
               className="block w-full py-3 bg-[#25D366] hover:bg-[#20b858] text-white text-center rounded-xl text-xs font-bold tracking-wider uppercase transition-colors"
             >
               Chat on WhatsApp

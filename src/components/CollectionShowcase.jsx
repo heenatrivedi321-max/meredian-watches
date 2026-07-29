@@ -458,7 +458,11 @@ export default function CollectionShowcase({ onSelectWatch }) {
                   <form 
                     onSubmit={(e) => {
                       e.preventDefault();
+                      const email = e.target.email.value;
                       setJoinedMessage(true);
+                      if (typeof fbq === 'function') {
+                        fbq('track', 'Lead', { value: 1, currency: 'INR' });
+                      }
                       setTimeout(() => setJoinedMessage(false), 4000);
                     }}
                     className="flex items-center gap-2"
