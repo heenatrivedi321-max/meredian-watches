@@ -8,6 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function WatchSection({ watch, index, onClick }) {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
+  const contentRef = useRef(null);
   const [showUI, setShowUI] = useState(false);
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
 
@@ -24,7 +25,6 @@ export default function WatchSection({ watch, index, onClick }) {
 
     let revealTimer;
 
-    // GSAP PIN LOCKING: Locks section & delayed 2.2s UI reveal
     const pinTrigger = ScrollTrigger.create({
       trigger: section,
       start: "top top",
@@ -57,6 +57,25 @@ export default function WatchSection({ watch, index, onClick }) {
       }
     });
 
+    if (contentRef.current) {
+      gsap.fromTo(contentRef.current,
+        { clipPath: "inset(12% 8% 12% 8% round 40px)", scale: 1.1, opacity: 0.7 },
+        {
+          clipPath: "inset(0% 0% 0% 0% round 0px)",
+          scale: 1.0,
+          opacity: 1,
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 90%",
+            end: "top top",
+            scrub: 0.5
+          }
+        }
+      );
+    }
+
     return () => {
       clearTimeout(revealTimer);
       pinTrigger.kill();
@@ -86,8 +105,7 @@ export default function WatchSection({ watch, index, onClick }) {
       ref={sectionRef}
       className="relative w-full h-screen bg-black text-white flex flex-col justify-between overflow-hidden pointer-events-auto"
     >
-      {/* 100% FULL-SCREEN EDGE-TO-EDGE 4K VIDEO */}
-      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
+      <div ref={contentRef} className="absolute inset-0 w-full h-full z-0 overflow-hidden">
         <video
           ref={videoRef}
           autoPlay
@@ -101,12 +119,10 @@ export default function WatchSection({ watch, index, onClick }) {
           <source src={watch.cinematicVideo || watch.video} type="video/mp4" />
         </video>
 
-        {/* Cinematic Radial & Vertical Gradient Vignettes */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/70 pointer-events-none" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(0,0,0,0.85)_100%)] pointer-events-none" />
       </div>
 
-      {/* TOP LEFT REVEAL: TITLE & BRAND (SLIDES DOWN AFTER VIDEO PLAYS) */}
       <div className="relative z-20 p-8 sm:p-14 md:p-20 flex justify-between items-start pointer-events-none">
         <AnimatePresence>
           {showUI && (
@@ -136,7 +152,6 @@ export default function WatchSection({ watch, index, onClick }) {
           )}
         </AnimatePresence>
 
-        {/* SOUND CONTROL PILL */}
         <button
           onClick={toggleAudio}
           className="pointer-events-auto px-5 py-3 rounded-full bg-black/60 hover:bg-black/90 border border-white/20 backdrop-blur-2xl transition-all duration-300 flex items-center gap-3 cursor-pointer shadow-2xl min-h-[44px]"
@@ -148,7 +163,6 @@ export default function WatchSection({ watch, index, onClick }) {
         </button>
       </div>
 
-      {/* BOTTOM CENTER REVEAL: SEXY GLASSMORPHISM BUTTON WITH GOOGLE TYPOGRAPHY (PLUS JAKARTA SANS / INTER) */}
       <div className="relative z-20 pb-16 sm:pb-24 px-6 flex flex-col items-center text-center pointer-events-none">
         <AnimatePresence>
           {showUI && (
@@ -168,7 +182,6 @@ export default function WatchSection({ watch, index, onClick }) {
                 </p>
               )}
 
-              {/* SEXY GLASSMORPHISM BUTTON WITH GOOGLE TYPOGRAPHY (PLUS JAKARTA SANS / INTER) */}
               <button
                 onClick={() => onClick(watch)}
                 style={{ fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif" }}
@@ -188,4 +201,3 @@ export default function WatchSection({ watch, index, onClick }) {
     </section>
   );
 }
-
