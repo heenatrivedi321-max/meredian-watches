@@ -10,6 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 // PRODUCT DATA — ONLY YOUR BRANDS
 // ============================================
 import { WATCHES } from '../data/watches';
+import { useNearPlay } from '../hooks/useNearPlay';
 
 // ============================================
 // MAGNETIC BUTTON
@@ -240,24 +241,48 @@ export default function CollectionShowcase({ onSelectWatch }) {
   const taglineRef = useRef(null);
   const storyRef = useRef(null);
   const closerRef = useRef(null);
+  const legacyVideoRef = useRef(null);
+  const closerVideoRef = useRef(null);
   const [joinedMessage, setJoinedMessage] = useState(false);
   const [activeWatchIndex, setActiveWatchIndex] = useState(-1);
 
+  useNearPlay(taglineRef, legacyVideoRef);
+  useNearPlay(closerRef, closerVideoRef);
+
   useEffect(() => {
     const sections = document.querySelectorAll('#watch-collection-grid > section');
-    const triggers = [];
-    sections.forEach((section, idx) => {
-      const t = ScrollTrigger.create({
-        trigger: section,
-        start: "top top",
-        end: "bottom top",
-        onEnter: () => setActiveWatchIndex(idx),
-        onEnterBack: () => setActiveWatchIndex(idx),
-      });
-      triggers.push(t);
-    });
-    return () => triggers.forEach(t => t.kill());
+    if (!sections.length) return;
+
+    let prevIdx = -1;
+
+    function checkActive() {
+      let found = -1;
+      const threshold = window.innerWidth < 768 ? window.innerHeight * 0.75 : 0;
+      for (let i = 0; i < sections.length; i++) {
+        if (sections[i].getBoundingClientRect().top <= threshold) {
+          found = i;
+        }
+      }
+      if (found !== prevIdx) {
+        prevIdx = found;
+        setActiveWatchIndex(found);
+      }
+    }
+
+    checkActive();
+
+    if (window.lenis) window.lenis.on('scroll', checkActive);
+    window.addEventListener('scroll', checkActive, { passive: true });
+    const interval = setInterval(checkActive, 100);
+
+    return () => {
+      if (window.lenis) window.lenis.off('scroll', checkActive);
+      window.removeEventListener('scroll', checkActive);
+      clearInterval(interval);
+    };
   }, []);
+
+
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -311,24 +336,52 @@ export default function CollectionShowcase({ onSelectWatch }) {
         }
       );
 
-      // Story text — simple fade-in, stays visible
-      gsap.fromTo(".story-text-container",
-        { autoAlpha: 0, y: 20 },
-        {
-          autoAlpha: 1, y: 0,
-          duration: 1.0,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: storyRef.current,
-            start: "top 80%",
-            toggleActions: "play none none none"
-          }
-        }
-      );
-
     }, sectionRef);
 
     return () => ctx.revert();
+  }, []);
+
+  useEffect(() => {
+    const el = storyRef.current?.querySelector('.story-text-container');
+    if (!el) return;
+
+    el.style.opacity = '0';
+    el.style.transform = 'scale(3)';
+    el.style.filter = 'blur(15px)';
+    el.style.visibility = 'hidden';
+
+    let rafId = null;
+
+    function tick() {
+      const rect = storyRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      const vh = window.innerHeight;
+      let p = (vh * 0.8 - rect.top) / (vh * 0.8);
+      p = Math.min(1, Math.max(0, p));
+      const s = 1 + (1 - p) * 2;
+      el.style.opacity = p;
+      el.style.transform = `scale(${s})`;
+      el.style.filter = `blur(${(1 - p) * 15}px)`;
+      el.style.visibility = p > 0 ? 'visible' : 'hidden';
+    }
+
+    function onScroll() {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        tick();
+      });
+    }
+
+    if (window.lenis) window.lenis.on('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    tick();
+
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      if (window.lenis) window.lenis.off('scroll', onScroll);
+      window.removeEventListener('scroll', onScroll);
+    };
   }, []);
 
   return (
@@ -346,7 +399,8 @@ export default function CollectionShowcase({ onSelectWatch }) {
         >
           {/* Scoped 4K Gold Skeleton Watch Video */}
           <video
-            autoPlay loop muted playsInline preload="auto"
+            ref={legacyVideoRef}
+            loop muted playsInline preload="none"
             className="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none z-0"
             style={{ transform: 'translateZ(0)', willChange: 'transform' }}
           >
@@ -374,7 +428,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
 
           <div 
             className="story-text-container relative z-10 text-center px-6 max-w-6xl mx-auto"
-            style={{ transform: "translateZ(0)", willChange: "transform, opacity" }}
+            style={{ transform: "translateZ(0)", willChange: "transform, opacity, filter" }}
           >
             <h3
               className="text-[2.2rem] sm:text-[3.8rem] md:text-[4.8rem] lg:text-[5.5rem] font-normal tracking-[0.06em] leading-[1.15] uppercase text-rainbow-shimmer"
@@ -408,10 +462,11 @@ export default function CollectionShowcase({ onSelectWatch }) {
 
         {/* Cinematic Closer Background Video */}
         <video 
-          autoPlay 
+          ref={closerVideoRef}
           loop 
           muted 
           playsInline 
+          preload="none"
           className="absolute inset-0 w-full h-full object-cover z-0 opacity-30 scale-[1.3]"
           style={{ mixBlendMode: 'multiply' }}
         >

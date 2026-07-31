@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import { X, ChevronDown } from 'lucide-react';
-import { createCheckout } from '../shopify';
+import { createCheckout, SHOPIFY_DOMAIN } from '../shopify';
 
 // Ultra-smooth reveal on scroll using native IntersectionObserver
 function FadeIn({ children, delay = 0, className = '', style = {}, direction = 'up' }) {
@@ -56,12 +56,28 @@ export default function ProductOverlay({ watch, onClose }) {
   const [zoom, setZoom] = useState({ active: false, x: 50, y: 50 });
   const savedScrollY = useRef(0);
   const videoRef = useRef(null);
+  const touchStartX = useRef(0);
 
   const allImages = watch?.gallery?.length 
     ? watch.gallery.filter(Boolean) 
     : [watch?.image, watch?.image, watch?.image].filter(Boolean);
   const images = allImages.length >= 3 ? allImages.slice(0, 3) : [...allImages, ...Array(Math.max(1, 3 - allImages.length)).fill(allImages[0] || watch?.image)];
   const activeImage = images[activeImageIndex] || watch?.image || '/watches_new/MK9218_gold_auto_1.jpg';
+
+  const handleTouchStart = useCallback((e) => {
+    touchStartX.current = e.touches[0].clientX;
+  }, []);
+
+  const handleTouchEnd = useCallback((e) => {
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        setActiveImageIndex(i => Math.min(i + 1, images.length - 1));
+      } else {
+        setActiveImageIndex(i => Math.max(i - 1, 0));
+      }
+    }
+  }, [images.length]);
 
   useEffect(() => { if (watch) { setActiveImageIndex(0); setClosing(false); 
     if (typeof fbq === 'function') {
@@ -181,6 +197,8 @@ export default function ProductOverlay({ watch, onClose }) {
                   const y = ((e.clientY - rect.top) / rect.height) * 100;
                   setZoom({ active: true, x, y });
                 }}
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
               >
                 <img 
                   src={activeImage} alt={watch.model}
@@ -276,7 +294,7 @@ export default function ProductOverlay({ watch, onClose }) {
           ref={videoRef} autoPlay loop muted={isMuted} playsInline preload="metadata" poster={activeImage}
           style={{
             position: 'absolute', inset: 0, width: '100%', height: '100%',
-            objectFit: 'cover', transform: 'scale(1.15) translateZ(0)',
+            objectFit: 'cover', transform: 'scale(1.3) translateZ(0)',
           }}
         >
           <source src={watch.cinematicVideo} type="video/mp4" />
@@ -285,23 +303,11 @@ export default function ProductOverlay({ watch, onClose }) {
         {/* Subtle vignette gradient — transparent focus on video */}
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 25%, transparent 75%, rgba(0,0,0,0.7) 100%)', pointerEvents: 'none' }} />
         
-        {/* Sound toggle */}
+        {/* Sound toggle — glassmorphism */}
         <button onClick={() => setIsMuted(!isMuted)}
-          style={{
-            position: 'absolute', bottom: 36, right: 36, zIndex: 20,
-            padding: '14px 28px', borderRadius: 9999,
-            background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.25)', color: '#fff',
-            fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', fontWeight: 700,
-            cursor: 'pointer', transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
-            willChange: 'transform, background-color',
-          }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.25)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)'; e.currentTarget.style.transform = 'scale(1.06)'; }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.12)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)'; e.currentTarget.style.transform = 'scale(1)'; }}
-          onMouseDown={e => { e.currentTarget.style.transform = 'scale(0.95)'; }}
-          onMouseUp={e => { e.currentTarget.style.transform = 'scale(1.06)'; }}
+          className="absolute bottom-9 right-9 z-20 px-7 py-3.5 rounded-full backdrop-blur-2xl bg-white/5 border border-white/20 text-white hover:bg-[#C9A96E]/15 hover:border-[#C9A96E]/50 hover:scale-[1.04] active:scale-[0.96] transition-all duration-500 cursor-pointer font-sans font-semibold text-[11px] tracking-[0.25em] uppercase shadow-xl shadow-black/30 will-change-transform drop-shadow-[0_2px_8px_rgba(255,255,255,0.1)]"
         >
-          <svg className="w-4 h-4 inline-block mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg className="w-4 h-4 inline-block mr-2.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             {!isMuted ? (
               <>
                 <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
@@ -564,11 +570,17 @@ export default function ProductOverlay({ watch, onClose }) {
                 }
                 try {
                   const cart = await createCheckout(watch.shopifyVariantId);
-                  window.location.href = cart.checkoutUrl;
-                } catch (err) {
-                  console.warn("Checkout failed:", err);
-                  window.location.href = `https://smgnhj-dr.myshopify.com/cart/${watch.shopifyVariantId}:1`;
-                }
+                  if (cart?.checkoutUrl) {
+                    const win = window.open(cart.checkoutUrl, '_blank');
+                    if (win) {
+                      setIsRedirecting(false);
+                      return;
+                    }
+                    window.location.href = cart.checkoutUrl;
+                    return;
+                  }
+                } catch (_) {}
+                window.location.href = `https://${SHOPIFY_DOMAIN}/cart/${watch.shopifyVariantId}:1`;
               }}
               disabled={isRedirecting}
               style={{

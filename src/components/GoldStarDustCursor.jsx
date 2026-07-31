@@ -21,14 +21,14 @@ export default function GoldStarDustCursor() {
     const particles = [];
     const colors = ['#FFD700', '#C9A96E', '#FFF8DC', '#E8D5A3'];
 
-    const handleMouseMove = (e) => {
+    const spawnParticles = (x, y) => {
       isIdle = false;
       clearTimeout(idleTimer);
       idleTimer = setTimeout(() => { isIdle = true; }, 2000);
       for (let i = 0; i < 2; i++) {
         particles.push({
-          x: e.clientX + (Math.random() - 0.5) * 8,
-          y: e.clientY + (Math.random() - 0.5) * 8,
+          x: x + (Math.random() - 0.5) * 8,
+          y: y + (Math.random() - 0.5) * 8,
           size: Math.random() * 2 + 1,
           vx: (Math.random() - 0.5) * 0.8,
           vy: (Math.random() - 0.5) * 0.8 - 0.3,
@@ -39,7 +39,15 @@ export default function GoldStarDustCursor() {
       }
     };
 
+    const handleMouseMove = (e) => spawnParticles(e.clientX, e.clientY);
+    const handleTouchMove = (e) => {
+      if (e.touches.length > 0) {
+        spawnParticles(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    };
+
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
 
     let animationFrameId;
     let idleTimer = null;
@@ -82,6 +90,7 @@ export default function GoldStarDustCursor() {
     return () => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);

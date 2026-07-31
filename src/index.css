@@ -93,6 +93,21 @@
     filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
   }
 
+  .text-gold-static {
+    background: linear-gradient(
+      to right,
+      #C9A96E 0%,
+      #E8C97A 40%,
+      #d4a843 60%,
+      #C9A96E 100%
+    );
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
+  }
+
   .rainbow-shimmer {
     background: linear-gradient(
       to right,

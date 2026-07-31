@@ -6,7 +6,10 @@ export default function WatchSection({ watch, index, onClick, isActive }) {
   const videoRef = useRef(null);
   const [showUI, setShowUI] = useState(false);
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
-  const timerRef = useRef(null);
+  const uiTimerRef = useRef(null);
+  const releaseTimerRef = useRef(null);
+  const blockerRef = useRef(null);
+  const savedScrollRef = useRef(0);
 
   useEffect(() => {
     const vid = videoRef.current;
@@ -17,23 +20,57 @@ export default function WatchSection({ watch, index, onClick, isActive }) {
 
   useEffect(() => {
     const vid = videoRef.current;
-    clearTimeout(timerRef.current);
+    clearTimeout(uiTimerRef.current);
+    clearTimeout(releaseTimerRef.current);
+    if (blockerRef.current) {
+      window.removeEventListener('wheel', blockerRef.current, { capture: true });
+      window.removeEventListener('touchmove', blockerRef.current, { capture: true });
+      blockerRef.current = null;
+    }
+
     if (isActive) {
       if (vid) vid.play().catch(() => {});
-      // Gentle scroll slowdown for 2.2s while UI delays
-      if (window.lenis) window.lenis.options.duration = 2.0;
-      timerRef.current = setTimeout(() => {
+      savedScrollRef.current = window.scrollY;
+
+      if (window.lenis) window.lenis.stop();
+
+      const blockInput = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      };
+      blockerRef.current = blockInput;
+      window.addEventListener('wheel', blockInput, { capture: true, passive: false });
+      window.addEventListener('touchmove', blockInput, { capture: true, passive: false });
+
+      uiTimerRef.current = setTimeout(() => {
         setShowUI(true);
-        if (window.lenis) window.lenis.options.duration = 1.0;
-      }, 2200);
+      }, 2000);
+
+      releaseTimerRef.current = setTimeout(() => {
+        if (blockerRef.current) {
+          window.removeEventListener('wheel', blockerRef.current, { capture: true });
+          window.removeEventListener('touchmove', blockerRef.current, { capture: true });
+          blockerRef.current = null;
+        }
+        if (window.lenis) {
+          window.lenis.scrollTo(savedScrollRef.current, { immediate: true });
+          window.lenis.start();
+        }
+      }, 3000);
     } else {
       setShowUI(false);
       if (vid) vid.pause();
-      if (window.lenis) window.lenis.options.duration = 1.0;
+      if (window.lenis) window.lenis.start();
     }
     return () => {
-      clearTimeout(timerRef.current);
-      if (window.lenis) window.lenis.options.duration = 1.0;
+      clearTimeout(uiTimerRef.current);
+      clearTimeout(releaseTimerRef.current);
+      if (blockerRef.current) {
+        window.removeEventListener('wheel', blockerRef.current, { capture: true });
+        window.removeEventListener('touchmove', blockerRef.current, { capture: true });
+        blockerRef.current = null;
+      }
+      if (window.lenis) window.lenis.start();
     };
   }, [isActive]);
 
@@ -64,11 +101,10 @@ export default function WatchSection({ watch, index, onClick, isActive }) {
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
         <video
           ref={videoRef}
-          autoPlay
           muted
           loop
           playsInline
-          preload="auto"
+          preload="none"
           className="watch-section-video w-full h-full object-cover transition-transform duration-1000 scale-125 origin-center"
           style={{ transform: 'scale(1.25) translateZ(0)', willChange: 'transform' }}
         >
@@ -89,20 +125,25 @@ export default function WatchSection({ watch, index, onClick, isActive }) {
               animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
               exit={{ y: -60, opacity: 0 }}
               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              className="relative overflow-hidden rounded-2xl px-6 py-5 bg-white/5 backdrop-blur-2xl border border-white/10 space-y-2 pointer-events-auto"
+              className="pointer-events-auto"
             >
-              <span className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/25 to-transparent" />
-              <span className="text-xs font-mono tracking-[0.4em] text-[#800020] uppercase block font-semibold">
-                EDITION 0{index + 1} // {watch.brand}
+              <span className="text-[10px] sm:text-[11px] font-mono tracking-[0.5em] text-[#800020] uppercase block font-bold mb-2">
+                EDITION 0{index + 1}
               </span>
               <h2
-                className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal tracking-[0.05em] text-white uppercase"
+                className="text-5xl sm:text-7xl lg:text-8xl font-light text-rainbow-shimmer leading-none mb-2"
                 style={{ fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif" }}
               >
-                {watch.model}
+                {watch.model.toLowerCase().replace(/\b\w/g, c => c.toUpperCase())}
               </h2>
               <span 
-                className="text-lg sm:text-2xl font-light text-white/90 tracking-tight block"
+                className="text-[11px] font-mono tracking-[0.35em] text-white/50 uppercase block"
+                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+              >
+                {watch.brand}
+              </span>
+              <span 
+                className="text-lg sm:text-xl font-light text-white/70 tracking-tight block"
                 style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
                 {watch.price}
@@ -111,14 +152,13 @@ export default function WatchSection({ watch, index, onClick, isActive }) {
           )}
         </AnimatePresence>
 
-        {/* SOUND CONTROL PILL — ROLEX GLASSMORPHISM */}
+        {/* SOUND CONTROL — glassmorphism */}
         <button
           onClick={toggleAudio}
-          className="pointer-events-auto relative overflow-hidden px-5 py-3 rounded-full bg-white/5 hover:bg-white/15 border border-white/20 backdrop-blur-3xl transition-all duration-500 flex items-center gap-3 cursor-pointer shadow-2xl min-h-[44px] group"
+          className="pointer-events-auto relative px-5 py-3 rounded-full backdrop-blur-2xl bg-white/5 border border-white/20 hover:bg-[#C9A96E]/15 hover:border-[#C9A96E]/50 hover:scale-[1.03] active:scale-[0.97] transition-all duration-500 flex items-center gap-3 cursor-pointer shadow-xl shadow-black/30 min-h-[44px] group text-white"
         >
-          <span className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-          <span className={`w-2.5 h-2.5 rounded-full ${isAudioEnabled ? 'bg-[#10B981] animate-ping' : 'bg-white/50'}`} />
-          <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <span className={`w-2 h-2 rounded-full ${isAudioEnabled ? 'bg-[#C9A96E] animate-ping' : 'bg-white/40'}`} />
+          <svg className="w-3.5 h-3.5 text-white/70 group-hover:text-white transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             {isAudioEnabled ? (
               <>
                 <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
@@ -133,8 +173,8 @@ export default function WatchSection({ watch, index, onClick, isActive }) {
               </>
             )}
           </svg>
-          <span className="text-[10px] sm:text-xs font-mono tracking-[0.2em] font-semibold text-white uppercase">
-            {isAudioEnabled ? 'AUDIO LIVE' : 'ENABLE SOUND'}
+          <span className="text-[10px] font-sans tracking-[0.2em] font-semibold text-white/80 group-hover:text-white uppercase transition-colors drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
+            {isAudioEnabled ? 'AUDIO LIVE' : 'SOUND OFF'}
           </span>
         </button>
       </div>
@@ -159,17 +199,15 @@ export default function WatchSection({ watch, index, onClick, isActive }) {
                 </p>
               )}
 
-              {/* ROLEX GLASSMORPHISM CTA BUTTON */}
+              {/* CTA BUTTON — glassmorphism */}
               <button
                 onClick={() => onClick(watch)}
-                style={{ fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif" }}
-                className="group relative overflow-hidden px-10 py-5 rounded-full border border-white/30 bg-white/8 hover:bg-white/20 hover:border-[#800020]/80 backdrop-blur-3xl transition-all duration-500 flex items-center gap-4 cursor-pointer shadow-[0_20px_60px_rgba(0,0,0,0.8),0_0_40px_rgba(128,0,32,0.3)] active:scale-95 z-30"
+                className="group relative overflow-hidden px-10 py-4 rounded-full backdrop-blur-2xl bg-white/5 border border-white/20 hover:bg-[#C9A96E]/15 hover:border-[#C9A96E]/50 hover:scale-[1.02] active:scale-[0.97] transition-all duration-500 flex items-center gap-4 cursor-pointer shadow-xl shadow-black/30 z-30 text-white"
               >
-                <span className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-                <span className="text-xs sm:text-sm tracking-[0.3em] uppercase font-bold text-white group-hover:text-[#800020] transition-colors">
+                <span className="text-xs sm:text-sm tracking-[0.3em] uppercase font-sans font-semibold text-white/90 group-hover:text-white group-hover:tracking-[0.35em] transition-all duration-500 drop-shadow-[0_2px_8px_rgba(255,255,255,0.15)]">
                   CHECK IT OUT
                 </span>
-                <svg className="w-5 h-5 text-white group-hover:translate-x-1.5 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg className="w-4 h-4 text-white/70 group-hover:text-[#C9A96E] group-hover:translate-x-1.5 transition-all duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="5" y1="12" x2="19" y2="12" />
                   <polyline points="12 5 19 12 12 19" />
                 </svg>

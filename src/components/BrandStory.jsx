@@ -26,7 +26,7 @@ export default function BrandStory({ onClose }) {
       <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-[#0a0a0a]" />
         <video
-          autoPlay loop muted playsInline
+          autoPlay loop muted playsInline preload="none"
           className="absolute inset-0 w-full h-full object-cover opacity-40"
           src="/Porsche_driving_through_tunnel_202606281316.mp4"
         />

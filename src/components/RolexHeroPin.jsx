@@ -1,16 +1,20 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useNearPlay } from '../hooks/useNearPlay';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function RolexHeroPin({ watch, onSelectWatch }) {
   const containerRef = useRef(null);
   const pinnedVideoRef = useRef(null);
+  const videoRef = useRef(null);
   const glowRef = useRef(null);
   const text1Ref = useRef(null);
   const text2Ref = useRef(null);
   const text3Ref = useRef(null);
+
+  useNearPlay(pinnedVideoRef, videoRef);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -108,14 +112,11 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
         style={{ willChange: 'transform, borderRadius' }}
       >
         <video
-          ref={(el) => {
-            if (el) el.play().catch(() => {});
-          }}
-          autoPlay
+          ref={videoRef}
           loop
           muted
           playsInline
-          preload="auto"
+          preload="none"
           src={watch?.cinematicVideo || watch?.video || "/Gold_skeleton_watch_showcase_202606290837.mp4"}
           className="w-full h-full object-cover transition-transform duration-700 scale-125 origin-center"
         />

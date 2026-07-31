@@ -4,12 +4,13 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import WebGLFluid from 'webgl-fluid';
 import CollectionShowcase from './components/CollectionShowcase';
-import WhatsAppButton from './components/WhatsAppButton';
 import ScrollToTop from './components/ScrollToTop';
 import ProductSchema from './components/ProductSchema';
 import IntroSplash from './components/IntroSplash';
 import RolexHeroPin from './components/RolexHeroPin';
 import GoldStarDustCursor from './components/GoldStarDustCursor';
+import { isLowEndDevice } from './utils/device';
+import { useNearPlay } from './hooks/useNearPlay';
 import { WATCHES } from './data/watches';
 
 const ProductOverlay = React.lazy(() => import('./components/ProductOverlay'));
@@ -37,6 +38,8 @@ function FluidBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
+    if (isLowEndDevice()) return;
 
     const isMobile = window.innerWidth < 768;
 
@@ -142,17 +145,37 @@ export default function App() {
   const [showBrand, setShowBrand] = useState(false);
   const [introDone, setIntroDone] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
   const [soundOn, setSoundOn] = useState(false);
   const audioRef = useRef(null);
+  const heroCharsRef = useRef([]);
+  const svgRef = useRef(null);
+  const constellationTl = useRef(null);
+  const manifestoRef = useRef(null);
+  const manifestoVideoRef = useRef(null);
+  const porscheRef = useRef(null);
+  const porscheVideoRef = useRef(null);
   const handleIntroComplete = useCallback(() => setIntroDone(true), []);
 
   const [activePolicy, setActivePolicy] = useState(null);
-  const [showAi, setShowAi] = useState(false);
   const [heroTilt, setHeroTilt] = useState({ x: 0, y: 0 });
+  const isLow = isLowEndDevice();
+
+  useNearPlay(manifestoRef, manifestoVideoRef);
+  useNearPlay(porscheRef, porscheVideoRef);
 
   // 120 FPS High-Velocity Lenis Momentum Engine
   // Native smooth scrolling & 60 FPS Lenis scroll engine
   useEffect(() => {
+    if (isLow) return;
+
     const lenis = new Lenis({
       duration: 1.0,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -202,23 +225,83 @@ export default function App() {
   }, [soundOn]);
 
   useEffect(() => {
+    // ============================================================
+    // HERO — Constellation entrance (outside context, direct DOM)
+    // ============================================================
+    const chars = document.querySelectorAll('.hero-char');
+    if (chars.length) {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const isMobile = vw < 768;
+
+      const titleEl = document.querySelector('.hero-title');
+      if (titleEl) titleEl.style.opacity = '0';
+
+      chars.forEach((c, i) => {
+        const x = (Math.random() - 0.5) * vw * 1.2;
+        const y = (Math.random() - 0.5) * vh * 1.2;
+        const rot = (Math.random() - 0.5) * 360;
+        const blur = isMobile ? '' : ';filter:blur(3px)';
+        c.style.cssText = `opacity:0.3;transform:translate(${x}px,${y}px) scale(0.08) rotate(${rot}deg);display:inline-block;will-change:transform,opacity${blur}`;
+      });
+
+      if (titleEl) titleEl.style.opacity = '1';
+
+      const tl = gsap.timeline();
+
+      // Quick twinkle — opacity only (single pass, no yoyo)
+      tl.to(chars, {
+        opacity: 0.6,
+        duration: 0.35,
+        stagger: 0.03,
+        ease: 'power1.out',
+      });
+
+      // Fly to center — smooth power2 easing, tighter stagger
+      tl.to(chars, {
+        opacity: 1,
+        scale: 1,
+        x: 0,
+        y: 0,
+        rotation: 0,
+        filter: 'blur(0px)',
+        duration: 0.9,
+        stagger: 0.04,
+        ease: 'power2.out',
+      }, '+=0.05');
+
+      // Settle with shimmer
+      tl.call(() => {
+        chars.forEach(c => {
+          c.style.transform = '';
+          c.style.textShadow = '0 0 30px rgba(201,169,110,0.4)';
+          c.classList.add('text-rainbow-shimmer');
+        });
+      });
+
+      tl.to(".accent-line-hero", { width: '6rem', opacity: 1, duration: 0.5, ease: 'power2.out' }, '-=0.3');
+      tl.to(".scroll-indicator-hero", { autoAlpha: 1, duration: 0.6, ease: 'power2.out' }, '-=0.2');
+
+      constellationTl.current = tl;
+
+      const heroSound = new Audio('/space-riser.mp3');
+      heroSound.volume = 0.4;
+      heroSound.play().catch(() => {});
+    }
+
+    // ============================================================
+    // Other effects — use gsap.context for proper cleanup
+    // ============================================================
     let ctx = gsap.context(() => {
 
-      // ============================================================
-      // 1. HERO — entrance + scroll zoom into darkness
-      // ============================================================
-      const heroTl = gsap.timeline();
-      heroTl.fromTo(".hero-title",
-        { autoAlpha: 0, y: 25, scale: 0.96, filter: "blur(8px)" },
-        { autoAlpha: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 1.2, ease: "power3.out" }, 0
-      );
-      heroTl.fromTo(".logo-entrance",
+      // Logo + nav entrance
+      gsap.fromTo(".logo-entrance",
         { autoAlpha: 0, y: -10 },
-        { autoAlpha: 1, y: 0, duration: 0.8, ease: "power2.out" }, 0
+        { autoAlpha: 1, y: 0, duration: 0.8, ease: "power2.out" }
       );
-      heroTl.fromTo(".nav-link",
+      gsap.fromTo(".nav-link",
         { autoAlpha: 0, y: -8 },
-        { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" }, 0.2
+        { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" }
       );
 
       // Hero zoom + blur on scroll (entering the watch)
@@ -231,7 +314,7 @@ export default function App() {
         },
         scale: 2.5,
         opacity: 0,
-        filter: "blur(20px)",
+        filter: window.innerWidth < 768 ? "none" : "blur(20px)",
         ease: "none"
       });
 
@@ -248,13 +331,11 @@ export default function App() {
         ease: "none"
       });
 
-      // ============================================================
       // 2. MANIFESTO — Butter-Smooth 120 FPS Reveal
-      // ============================================================
       const manifestoLines = gsap.utils.toArray(".manifesto-line");
       manifestoLines.forEach((line, i) => {
         gsap.fromTo(line,
-          { autoAlpha: 0, y: 50, scale: 0.98 },
+          { autoAlpha: 0, y: isLow ? 30 : 50, scale: 0.98 },
           {
             autoAlpha: 1, y: 0, scale: 1,
             duration: 0.8,
@@ -262,20 +343,17 @@ export default function App() {
             scrollTrigger: {
               trigger: ".manifesto-spacer",
               start: `top ${75 - i * 15}%`,
-              end: `top ${40 - i * 15}%`,
-              scrub: 0.5,
+              ...(isLow ? { toggleActions: "play none none none" } : { end: `top ${40 - i * 15}%`, scrub: 0.5 }),
             }
           }
         );
       });
 
-      // ============================================================
       // 3. PORSCHE — Butter-Smooth 120 FPS Reveal
-      // ============================================================
       const porscheLines = gsap.utils.toArray(".porsche-line");
       porscheLines.forEach((line, i) => {
         gsap.fromTo(line,
-          { autoAlpha: 0, y: 50, scale: 0.98 },
+          { autoAlpha: 0, y: isLow ? 30 : 50, scale: 0.98 },
           {
             autoAlpha: 1, y: 0, scale: 1,
             duration: 0.8,
@@ -283,8 +361,7 @@ export default function App() {
             scrollTrigger: {
               trigger: ".porsche-spacer",
               start: `top ${75 - i * 15}%`,
-              end: `top ${40 - i * 15}%`,
-              scrub: 0.5,
+              ...(isLow ? { toggleActions: "play none none none" } : { end: `top ${40 - i * 15}%`, scrub: 0.5 }),
             }
           }
         );
@@ -297,7 +374,7 @@ export default function App() {
           trigger: ".product-reveal",
           start: "top 90%",
           end: "top 40%",
-          scrub: true,
+          scrub: !isLow,
         }
       });
 
@@ -364,9 +441,9 @@ export default function App() {
 
           <div className="flex-1 flex justify-center">
             <img 
-              src="/logo.jpg" 
-              alt="Meridian Logo" 
-              className="h-10 sm:h-14 lg:h-20 w-auto object-contain drop-shadow-[0_0_30px_rgba(201,169,110,0.3)] hover:scale-105 transition-transform duration-500 cursor-pointer logo-entrance" 
+              src="/logo-mark.png" 
+              alt="Meridian" 
+              className="h-10 sm:h-12 lg:h-16 w-auto object-contain drop-shadow-[0_0_30px_rgba(201,169,110,0.3)] hover:scale-105 transition-transform duration-500 cursor-pointer logo-entrance" 
             />
           </div>
 
@@ -449,63 +526,70 @@ export default function App() {
           <section 
             onMouseMove={handleHeroMouseMove}
             onMouseLeave={handleHeroMouseLeave}
-            className="hero-spacer relative w-full h-screen flex flex-col items-center justify-center pointer-events-auto overflow-hidden bg-black text-white"
+            className="hero-spacer relative w-full h-screen flex flex-col items-center justify-center pointer-events-auto bg-black text-white"
             style={{ perspective: "1000px" }}
           >
-            {/* 4K Hero Background Video */}
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="auto"
-              className="absolute inset-0 w-full h-full object-cover opacity-80 z-0 scale-[1.05]"
-              style={{ transform: 'translateZ(0)', willChange: 'transform' }}
-            >
-              <source src="/hero-4k.mp4" type="video/mp4" />
-            </video>
-
-            {/* High-Velocity Wavy Rainbow Liquid Mesh Overlay */}
-            <div className="absolute inset-0 burgundy-wave opacity-30 mix-blend-color-dodge pointer-events-none z-10" />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 z-10 pointer-events-none" />
+            {/* Background media wrapper — clips only video + overlays */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="none"
+                className="absolute inset-0 w-full h-full object-cover opacity-80 scale-[1.05] md:object-center object-[center_30%]"
+                style={{ transform: 'translateZ(0)', willChange: 'transform' }}
+              >
+                <source src="/hero-4k.mp4" type="video/mp4" />
+              </video>
+              <div className="absolute inset-0 burgundy-wave opacity-30 mix-blend-color-dodge pointer-events-none max-md:opacity-0" />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 pointer-events-none" />
+              {/* Film grain overlay for cinematic texture */}
+              <div className="absolute inset-0 opacity-[0.08] mix-blend-overlay pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc0IiBudW1PY3RhdmVzPSIzIiAvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNmKSIgb3BhY2l0eT0iMCIgLz48L3N2Zz4=')] bg-repeat bg-[length:128px_128px] block md:hidden" />
+              {/* Cinematic letterbox bars on mobile */}
+              <div className="absolute top-0 left-0 w-full h-[8vh] bg-black z-20 pointer-events-none block md:hidden" />
+              <div className="absolute bottom-0 left-0 w-full h-[8vh] bg-black z-20 pointer-events-none block md:hidden" />
+            </div>
 
             <div 
-              className="hero-content relative z-10 flex flex-col items-center text-center pointer-events-auto px-4 space-y-3 transition-transform duration-300 ease-out"
+              className="hero-content relative z-10 flex flex-col items-center text-center pointer-events-auto px-4 space-y-3"
               style={{
                 transform: `rotateX(${heroTilt.y}deg) rotateY(${heroTilt.x}deg) translateZ(40px)`
               }}
             >
-              {/* Gemini Iridescent Accent Hairline */}
-              <div className="w-24 h-[1.5px] bg-gradient-to-r from-[#800020] via-[#A52A2A] to-[#C95A5A] rounded-full opacity-80 mb-1" />
-
               <h1 
-                className="hero-title text-[3.5rem] sm:text-7xl md:text-[7.5rem] lg:text-[9.5rem] font-normal tracking-[0.1em] leading-none text-rainbow-shimmer uppercase select-none" 
-                style={{ fontFamily: "'Inter', sans-serif" }}
+                className="hero-title text-[13vw] sm:text-7xl md:text-[7.5rem] lg:text-[9.5rem] font-normal tracking-[0.1em] leading-none uppercase select-none" 
+                style={{ fontFamily: "'Inter', sans-serif", position: 'relative', zIndex: 1 }}
               >
-                Meridian
+                {"MERIDIAN".split('').map((c, i) => (
+                  <span key={i} className="hero-char" style={{ display: 'inline-block' }}>{c}</span>
+                ))}
               </h1>
+
+              {/* Gemini Iridescent Accent Hairline */}
+              <div className="accent-line-hero w-0 h-[1.5px] bg-gradient-to-r from-[#800020] via-[#A52A2A] to-[#C95A5A] rounded-full opacity-0" style={{ transition: 'none' }} />
             </div>
 
             {/* Scroll Indicator with Gemini Gradient Line */}
-            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none opacity-80 z-20">
+            <div className="scroll-indicator-hero absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none opacity-0 z-20">
               <span className="text-[9px] font-mono tracking-[0.4em] uppercase text-white/70 font-bold">SCROLL</span>
               <div className="w-[1.5px] h-8 bg-gradient-to-b from-[#800020] to-transparent" />
             </div>
 
-            {/* Sound toggle — minimal */}
+            {/* Sound toggle — glassmorphism */}
             <button 
               onClick={toggleSound}
-              className="absolute bottom-8 right-6 sm:right-10 w-12 h-12 flex items-center justify-center rounded-full border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all duration-300 pointer-events-auto z-[60] cursor-pointer"
+              className="absolute bottom-8 right-6 sm:right-10 w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-2xl bg-white/5 border border-white/20 hover:bg-[#C9A96E]/15 hover:border-[#C9A96E]/50 hover:scale-105 active:scale-95 transition-all duration-500 pointer-events-auto z-[60] cursor-pointer shadow-xl shadow-black/30 text-white"
               aria-label={soundOn ? "Mute sound" : "Play sound"}
             >
               {soundOn ? (
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-white/70">
-                  <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="currentColor" opacity="0.3" />
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-white">
+                  <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="currentColor" opacity="0.5" />
                   <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
                 </svg>
               ) : (
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-white/30">
-                  <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="currentColor" opacity="0.2" />
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-white/70">
+                  <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" fill="currentColor" opacity="0.4" />
                   <line x1="23" y1="9" x2="17" y2="15" />
                   <line x1="17" y1="9" x2="23" y2="15" />
                 </svg>
@@ -514,10 +598,11 @@ export default function App() {
           </section>
 
           {/* MANIFESTO — GASP 4K WATCH GEARS FORMING DIAL VIDEO */}
-          <section className="manifesto-spacer relative w-full h-screen pointer-events-auto overflow-hidden bg-black">
+          <section ref={manifestoRef} className="manifesto-spacer relative w-full h-screen pointer-events-auto overflow-hidden bg-black">
             {/* Scoped 4K Watch Gears Video Background */}
             <video
-              autoPlay loop muted playsInline preload="auto"
+              ref={manifestoVideoRef}
+              loop muted playsInline preload="none"
               className="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none z-0"
             >
               <source src="/Watch_gears_forming_watch_dial_202606291025.mp4" type="video/mp4" />
@@ -546,10 +631,11 @@ export default function App() {
           </section>
 
           {/* PORSCHE — GASP 4K PORSCHE TUNNEL VIDEO */}
-          <section className="porsche-spacer relative w-full h-screen pointer-events-auto overflow-hidden bg-black">
+          <section ref={porscheRef} className="porsche-spacer relative w-full h-screen pointer-events-auto overflow-hidden bg-black">
             {/* Scoped 4K Porsche Video Background */}
             <video
-              autoPlay loop muted playsInline preload="auto"
+              ref={porscheVideoRef}
+              loop muted playsInline preload="none"
               className="absolute inset-0 w-full h-full object-cover opacity-70 pointer-events-none z-0"
             >
               <source src="/Porsche_driving_through_tunnel_202606281316.mp4" type="video/mp4" />
@@ -629,8 +715,7 @@ export default function App() {
       </div>
 
       {/* Floating UI — above everything */}
-      <WhatsAppButton />
-      <GoldStarDustCursor />
+      {!isLow && <GoldStarDustCursor />}
       <ScrollToTop />
 
       {/* Brand Story Overlay */}

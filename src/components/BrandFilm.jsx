@@ -31,7 +31,7 @@ export default function BrandFilm() {
           }
         });
       },
-      { threshold: 0.2 }
+      { threshold: 0.2, rootMargin: '1500px 0px' }
     );
     observer.observe(section);
 
@@ -122,7 +122,7 @@ export default function BrandFilm() {
         muted
         loop
         playsInline
-        preload="auto"
+        preload="none"
         className="absolute inset-0 w-full h-full object-cover transition-all duration-1000"
         style={{ transform: 'translateZ(0)', willChange: 'transform' }}
       >
@@ -145,22 +145,22 @@ export default function BrandFilm() {
         }}
       />
 
-      {/* MINIMALIST GLASSMORPHISM AUDIO CONTROL PILL */}
+      {/* GLASSMORPHISM AUDIO CONTROL PILL */}
       <div className="absolute top-8 right-8 sm:top-12 sm:right-12 z-30">
         <button
           onClick={toggleAudio}
-          className={`group relative px-6 py-3 rounded-full border backdrop-blur-xl transition-all duration-300 flex items-center gap-3 cursor-pointer min-h-[44px] ${
+          className={`group relative px-6 py-3 rounded-full border backdrop-blur-2xl transition-all duration-500 flex items-center gap-3 cursor-pointer min-h-[44px] shadow-xl shadow-black/30 ${
             isAudioEnabled
-              ? 'bg-white/20 border-white shadow-[0_0_30px_rgba(255,255,255,0.3)]'
-              : 'bg-black/60 border-white/20 hover:border-white/50 hover:bg-black/80'
+              ? 'bg-[#C9A96E]/15 border-[#C9A96E]/50 text-white'
+              : 'bg-white/5 border-white/20 text-white/80 hover:bg-[#C9A96E]/15 hover:border-[#C9A96E]/50 hover:scale-[1.03]'
           }`}
         >
           <span className="relative flex h-2.5 w-2.5">
-            <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${isAudioEnabled ? 'bg-white' : 'bg-white/40'}`} />
-            <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${isAudioEnabled ? 'bg-white' : 'bg-white/60'}`} />
+            <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${isAudioEnabled ? 'bg-[#C9A96E]' : 'bg-white/40'}`} />
+            <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${isAudioEnabled ? 'bg-[#C9A96E]' : 'bg-white/60'}`} />
           </span>
           
-          <svg className="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg className="w-4 h-4 shrink-0 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             {isAudioEnabled ? (
               <>
                 <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
@@ -175,7 +175,7 @@ export default function BrandFilm() {
               </>
             )}
           </svg>
-          <span className="text-xs font-mono tracking-[0.2em] uppercase font-semibold text-white transition-colors">
+          <span className="text-xs font-sans tracking-[0.2em] uppercase font-semibold text-white/90 drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
             {isAudioEnabled ? 'AUDIO LIVE' : 'ENABLE SOUND'}
           </span>
         </button>

@@ -1,4 +1,4 @@
-const SHOPIFY_DOMAIN = import.meta.env.VITE_SHOPIFY_STORE_DOMAIN || 'smgnhj-dr.myshopify.com';
+export const SHOPIFY_DOMAIN = import.meta.env.VITE_SHOPIFY_STORE_DOMAIN || 'shop.meredianwatches.store';
 const STOREFRONT_TOKEN = import.meta.env.VITE_SHOPIFY_STOREFRONT_ACCESS_TOKEN || '';
 
 const API_URL = `https://${SHOPIFY_DOMAIN}/api/2024-01/graphql.json`;
