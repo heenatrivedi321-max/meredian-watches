@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import WebGLFluid from 'webgl-fluid';
+import { Analytics } from '@vercel/analytics/react';
 import CollectionShowcase from './components/CollectionShowcase';
 import ScrollToTop from './components/ScrollToTop';
 import ProductSchema from './components/ProductSchema';
@@ -723,6 +724,9 @@ export default function App() {
 
       {/* Official Policy Overlay Modal */}
       {activePolicy && <Suspense fallback={null}><PolicyModal type={activePolicy} onClose={() => setActivePolicy(null)} /></Suspense>}
+      
+      {/* Vercel Web Analytics */}
+      <Analytics />
     </>
   );
 }
