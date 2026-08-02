@@ -134,7 +134,7 @@ function GoldBurst({ active, count = 20 }) {
   );
 }
 
-export default function IntroSplash({ onComplete }) {
+export default function IntroSplash({ onComplete, fast = false }) {
   const [phase, setPhase] = useState(0);
   const [ready, setReady] = useState(false);
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
@@ -142,6 +142,15 @@ export default function IntroSplash({ onComplete }) {
 
   useEffect(() => {
     playIntroSound();
+    if (fast) {
+      setPhase(1);
+      const tFast = setTimeout(() => {
+        setPhase(3);
+        setTimeout(onComplete, 500);
+      }, 1200);
+      return () => clearTimeout(tFast);
+    }
+
     const t1 = setTimeout(() => setPhase(1), 1740);
     const t2 = setTimeout(() => setPhase(2), 2640);
     const t3 = setTimeout(() => setReady(true), 3540);
@@ -150,7 +159,7 @@ export default function IntroSplash({ onComplete }) {
       setTimeout(onComplete, 800);
     }, 5240);
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); };
-  }, []);
+  }, [fast]);
 
   const handleEnter = () => {
     if (!ready) return;

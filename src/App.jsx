@@ -143,9 +143,10 @@ export default function App() {
   const mainRef = useRef(null);
   const [selectedWatch, setSelectedWatch] = useState(null);
   const [showBrand, setShowBrand] = useState(false);
-  const [introDone, setIntroDone] = useState(() => {
+  const [introDone, setIntroDone] = useState(false);
+  const [fastIntro, setFastIntro] = useState(() => {
     if (typeof window === 'undefined') return false;
-    return window.innerWidth < 768 || window.location.search.includes('fbclid') || window.location.search.includes('utm') || document.referrer.includes('instagram');
+    return window.location.search.includes('fbclid') || window.location.search.includes('utm');
   });
   const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
@@ -401,7 +402,7 @@ export default function App() {
   return (
     <>
       {/* Intro Splash */}
-      {!introDone && <IntroSplash onComplete={handleIntroComplete} />}
+      {!introDone && <IntroSplash onComplete={handleIntroComplete} fast={fastIntro} />}
 
       {/* Scroll Progress */}
       <ScrollProgress />
