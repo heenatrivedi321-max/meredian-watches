@@ -144,10 +144,6 @@ export default function App() {
   const [selectedWatch, setSelectedWatch] = useState(null);
   const [showBrand, setShowBrand] = useState(false);
   const [introDone, setIntroDone] = useState(false);
-  const [fastIntro, setFastIntro] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return window.location.search.includes('fbclid') || window.location.search.includes('utm');
-  });
   const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     if (menuOpen) {
@@ -402,7 +398,7 @@ export default function App() {
   return (
     <>
       {/* Intro Splash */}
-      {!introDone && <IntroSplash onComplete={handleIntroComplete} fast={fastIntro} />}
+      {!introDone && <IntroSplash onComplete={handleIntroComplete} />}
 
       {/* Scroll Progress */}
       <ScrollProgress />
