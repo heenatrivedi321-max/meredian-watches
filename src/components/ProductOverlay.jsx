@@ -571,11 +571,6 @@ export default function ProductOverlay({ watch, onClose }) {
                 try {
                   const cart = await createCheckout(watch.shopifyVariantId);
                   if (cart?.checkoutUrl) {
-                    const win = window.open(cart.checkoutUrl, '_blank');
-                    if (win) {
-                      setIsRedirecting(false);
-                      return;
-                    }
                     window.location.href = cart.checkoutUrl;
                     return;
                   }
