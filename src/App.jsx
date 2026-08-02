@@ -143,7 +143,10 @@ export default function App() {
   const mainRef = useRef(null);
   const [selectedWatch, setSelectedWatch] = useState(null);
   const [showBrand, setShowBrand] = useState(false);
-  const [introDone, setIntroDone] = useState(false);
+  const [introDone, setIntroDone] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth < 768 || window.location.search.includes('fbclid') || window.location.search.includes('utm') || document.referrer.includes('instagram');
+  });
   const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     if (menuOpen) {
