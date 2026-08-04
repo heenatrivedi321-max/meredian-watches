@@ -532,23 +532,6 @@ export default function ProductOverlay({ watch, onClose }) {
           </div>
         </FadeIn>
         
-        {/* EXTREME URGENCY & PREPAID TRUST INCENTIVE */}
-        <FadeIn delay={0.3}>
-          <div style={{
-            display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center',
-            marginBottom: 32, padding: '16px 24px', borderRadius: 12,
-            background: 'linear-gradient(90deg, rgba(128,0,32,0.05) 0%, rgba(128,0,32,0.1) 50%, rgba(128,0,32,0.05) 100%)',
-            border: '1px solid rgba(128,0,32,0.2)',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#800020', fontWeight: 800, fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-              <span style={{ animation: 'pulseGlow 2s infinite' }}>🔴</span> ONLY 2 PIECES REMAINING
-            </div>
-            <div style={{ color: 'rgba(0,0,0,0.6)', fontSize: 11, fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-              🔒 PREPAID ONLY — EXPRESS DELIVERY GUARANTEED
-            </div>
-          </div>
-        </FadeIn>
-        
         <FadeIn delay={0.35}>
           {watch.outOfStock ? (
             <button 
