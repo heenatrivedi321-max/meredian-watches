@@ -568,10 +568,6 @@ export default function ProductOverlay({ watch, onClose }) {
                     currency: 'INR',
                   });
                 }
-                if (watch.whatsappCheckout) {
-                  window.location.href = `https://wa.me/918431724851?text=Hi%2C%20I%20want%20to%20order%20the%20${encodeURIComponent(watch.brand + ' ' + watch.model)}%20for%20${watch.price}.`;
-                  return;
-                }
                 try {
                   const cart = await createCheckout(watch.shopifyVariantId);
                   if (cart?.checkoutUrl) {
