@@ -1,6 +1,5 @@
 export const WATCHES = [
   {
-    id: 9,
     brand: "AMERICANVIBER",
     model: "MINIMALIST ESSENTIAL",
     badge: "NEW ARRIVAL",
@@ -8,6 +7,7 @@ export const WATCHES = [
     price: "₹999",
     amount: 99900,
     color: "#a9a9a9",
+    whatsappCheckout: true,
     amazonLink: "https://www.amazon.in/AMERICANVIBER%C2%AE-Affordable-Movement-Stainless-Lightweight/dp/B0GQLS1J6K",
     shopifyVariantId: "44408773935147",
     video: "/americanviber_showcase.mp4",
