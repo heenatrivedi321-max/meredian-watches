@@ -1,5 +1,47 @@
 export const WATCHES = [
   {
+    id: 9,
+    brand: "AMERICANVIBER",
+    model: "MINIMALIST ESSENTIAL",
+    badge: "NEW ARRIVAL",
+    tagline: "Uncompromised style. Unbelievable price.",
+    price: "₹999",
+    amount: 99900,
+    color: "#a9a9a9",
+    amazonLink: "https://www.amazon.in/AMERICANVIBER%C2%AE-Affordable-Movement-Stainless-Lightweight/dp/B0GQLS1J6K",
+    shopifyVariantId: "44408773935147",
+    video: "/americanviber_showcase.mp4",
+    cinematicVideo: "/AMERICANVIBER_INTERSTELLAR_MASTER.mp4",
+    image: "/watches_new/americanviber_1.jpg",
+    gallery: [
+      "/watches_new/americanviber_1.jpg",
+      "/watches_new/americanviber_2.jpg",
+      "/watches_new/americanviber_3.jpg",
+      "/watches_new/americanviber_4.jpg",
+      "/watches_new/americanviber_5.jpg"
+    ],
+    quotes: [
+      "The perfect everyday watch. Sharp, lightweight, and versatile.",
+      "Why spend a fortune when you can look this good for less?"
+    ],
+    description: "Meet the American Viber Minimalist. An ultra-affordable, lightweight stainless steel watch designed for everyday wear. Featuring a clean dial and reliable quartz movement, it proves that great style doesn't have to break the bank.",
+    specs: {
+      movement: "Quartz",
+      caseMaterial: "Stainless Steel / Alloy",
+      diameter: "40mm",
+      thickness: "9mm",
+      glass: "Mineral Crystal",
+      waterResistance: "Water Resistant",
+      strap: "Stainless Steel Chain"
+    },
+    features: [
+      "Lightweight Construction",
+      "Minimalist Clean Dial",
+      "Durable Stainless Steel Band",
+      "Everyday Versatility"
+    ]
+  },
+  {
     id: 1,
     brand: "OLEVS",
     model: "BROWN LEATHER",
