@@ -5,6 +5,7 @@ import Lenis from 'lenis';
 import WebGLFluid from 'webgl-fluid';
 import CollectionShowcase from './components/CollectionShowcase';
 import ScrollToTop from './components/ScrollToTop';
+import FloatingShopButton from './components/FloatingShopButton';
 import ProductSchema from './components/ProductSchema';
 import IntroSplash from './components/IntroSplash';
 import RolexHeroPin from './components/RolexHeroPin';
@@ -168,6 +169,11 @@ export default function App() {
   const porscheVideoRef = useRef(null);
   const handleIntroComplete = useCallback(() => setIntroDone(true), []);
 
+  const scrollToCollection = useCallback(() => {
+    const grid = document.getElementById('watch-collection-grid');
+    if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, []);
+
   const [activePolicy, setActivePolicy] = useState(null);
   const [heroTilt, setHeroTilt] = useState({ x: 0, y: 0 });
   const isLow = isLowEndDevice();
@@ -284,6 +290,7 @@ export default function App() {
       });
 
       tl.to(".accent-line-hero", { width: '6rem', opacity: 1, duration: 0.5, ease: 'power2.out' }, '-=0.3');
+      tl.to(".shop-cta-hero", { opacity: 1, duration: 0.6, ease: 'power2.out' }, '-=0.15');
       tl.to(".scroll-indicator-hero", { autoAlpha: 1, duration: 0.6, ease: 'power2.out' }, '-=0.2');
 
       constellationTl.current = tl;
@@ -407,6 +414,9 @@ export default function App() {
       {/* Scroll Progress */}
       <ScrollProgress />
 
+      {/* Floating sticky Shop button — appears after scrolling past hero */}
+      <FloatingShopButton onClick={scrollToCollection} />
+
       {/* Product Schema for SEO */}
       <ProductSchema watch={selectedWatch} />
 
@@ -451,16 +461,17 @@ export default function App() {
             />
           </div>
 
-          <div 
-            onClick={() => {
-              const grid = document.getElementById('watch-collection-grid');
-              if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }}
-            className="hidden md:block flex-1 text-right text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] font-semibold uppercase hover:text-[#800020] transition-all duration-300 cursor-pointer text-white/70 nav-link"
-          >
-            <span className="relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-[#800020] after:scale-x-0 after:origin-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-left">
-              Collection
-            </span>
+          <div className="flex-1 flex justify-end">
+            <button
+              onClick={scrollToCollection}
+              className="hidden md:inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-[#C9A96E]/60 text-[10px] tracking-[0.25em] font-bold uppercase text-[#C9A96E] hover:bg-[#C9A96E] hover:text-black hover:shadow-[0_0_30px_rgba(201,169,110,0.4)] transition-all duration-300 cursor-pointer nav-link"
+            >
+              Shop
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </button>
           </div>
 
           {/* Mobile: Hamburger */}
@@ -494,6 +505,12 @@ export default function App() {
               </button>
 
               <div className="flex flex-col items-center gap-10">
+                <button 
+                  onClick={() => { scrollToCollection(); setMenuOpen(false); }}
+                  className="px-10 py-3.5 rounded-full bg-gradient-to-r from-[#C9A96E] via-[#E8D5A3] to-[#C9A96E] text-black text-sm tracking-[0.3em] font-bold uppercase cursor-pointer shadow-[0_0_40px_rgba(201,169,110,0.35)] hover:scale-105 active:scale-95 transition-all duration-300"
+                >
+                  Shop
+                </button>
                 <button 
                   onClick={() => { setShowBrand(true); setMenuOpen(false); }}
                   className="text-2xl tracking-[0.15em] uppercase text-white/80 hover:text-[#C9A96E] transition-colors duration-300 cursor-pointer font-light py-3 min-h-[44px] flex items-center"
@@ -572,6 +589,20 @@ export default function App() {
 
               {/* Gemini Iridescent Accent Hairline */}
               <div className="accent-line-hero w-0 h-[1.5px] bg-gradient-to-r from-[#800020] via-[#A52A2A] to-[#C95A5A] rounded-full opacity-0" style={{ transition: 'none' }} />
+
+              <button
+                onClick={scrollToCollection}
+                className="shop-cta-hero group relative overflow-hidden px-8 py-4 mt-6 rounded-full bg-gradient-to-r from-[#C9A96E] via-[#E8D5A3] to-[#C9A96E] text-black text-[11px] sm:text-xs tracking-[0.3em] uppercase font-bold cursor-pointer transition-all duration-500 hover:scale-[1.04] active:scale-[0.97] shadow-[0_0_40px_rgba(201,169,110,0.35)] hover:shadow-[0_0_60px_rgba(201,169,110,0.55)] opacity-0"
+                style={{ opacity: 0 }}
+              >
+                <span className="relative z-10 flex items-center gap-3">
+                  Shop the Collection
+                  <svg className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </span>
+              </button>
             </div>
 
             {/* Scroll Indicator with Gemini Gradient Line */}
