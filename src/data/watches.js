@@ -8,7 +8,7 @@ export const WATCHES = [
     amount: 99900,
     color: "#a9a9a9",
     amazonLink: "https://www.amazon.in/AMERICANVIBER%C2%AE-Affordable-Movement-Stainless-Lightweight/dp/B0GQLS1J6K",
-    shopifyVariantId: "55555555555555",
+    shopifyVariantId: "44570259193899",
     video: "/americanviber_showcase.mp4",
     cinematicVideo: "/AMERICANVIBER_INTERSTELLAR_MASTER.mp4",
     image: "/watches_new/americanviber_1.jpg",
