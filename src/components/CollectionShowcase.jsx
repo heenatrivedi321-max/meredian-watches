@@ -286,13 +286,14 @@ export default function CollectionShowcase({ onSelectWatch }) {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      const isMobile = window.innerWidth < 768;
 
       // "Choose Your Legacy" — staggered reveal with scale
       const legacyEls = gsap.utils.toArray(".legacy-text");
       gsap.fromTo(legacyEls,
-        { autoAlpha: 0, y: 80, rotationX: -20, scale: 0.95, filter: "blur(10px)" },
+        { autoAlpha: 0, y: 80, rotationX: -20, scale: 0.95, filter: isMobile ? "none" : "blur(10px)" },
         {
-          autoAlpha: 1, y: 0, rotationX: 0, scale: 1, filter: "blur(0px)",
+          autoAlpha: 1, y: 0, rotationX: 0, scale: 1, filter: isMobile ? "none" : "blur(0px)",
           duration: 1.2,
           stagger: 0.2,
           ease: "expo.out",
@@ -306,10 +307,10 @@ export default function CollectionShowcase({ onSelectWatch }) {
 
       // "More than an instrument of time" story — word-by-word stagger reveal
       gsap.fromTo(".story-word",
-        { autoAlpha: 0, y: 80, rotationX: -20, scale: 0.95, filter: "blur(10px)" },
+        { autoAlpha: 0, y: 80, rotationX: -20, scale: 0.95, filter: isMobile ? "none" : "blur(10px)" },
         {
-          autoAlpha: 1, y: 0, rotationX: 0, scale: 1, filter: "blur(0px)",
-          duration: 1.0,
+          autoAlpha: 1, y: 0, rotationX: 0, scale: 1, filter: isMobile ? "none" : "blur(0px)",
+          duration: isMobile ? 0.7 : 1.0,
           stagger: 0.08,
           ease: "expo.out",
           scrollTrigger: {
@@ -320,7 +321,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
         }
       );
 
-      // Story star icon — subtle fade in
+      // Story star icon — subtle spin-in
       gsap.fromTo(".story-icon",
         { autoAlpha: 0, scale: 0.5, rotation: -45 },
         {
@@ -338,9 +339,9 @@ export default function CollectionShowcase({ onSelectWatch }) {
       // Closer section — staggered cinematic reveal
       const closerEls = gsap.utils.toArray(".closer-text");
       gsap.fromTo(closerEls,
-        { autoAlpha: 0, y: 60, rotationX: -15, filter: "blur(8px)" },
+        { autoAlpha: 0, y: 60, rotationX: -15, filter: isMobile ? "none" : "blur(8px)" },
         {
-          autoAlpha: 1, y: 0, rotationX: 0, filter: "blur(0px)",
+          autoAlpha: 1, y: 0, rotationX: 0, filter: isMobile ? "none" : "blur(0px)",
           duration: 1.2,
           stagger: 0.2,
           ease: "power3.out",

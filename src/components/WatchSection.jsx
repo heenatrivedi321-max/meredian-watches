@@ -93,7 +93,7 @@ export default function WatchSection({ watch, index, onClick }) {
   return (
     <section
       ref={sectionRef}
-      className="sticky top-0 w-full h-screen bg-white flex items-center justify-center pointer-events-auto px-3 py-3 sm:px-6 sm:py-4"
+      className="sticky top-0 w-full h-screen bg-black flex items-center justify-center pointer-events-auto px-3 py-3 sm:px-6 sm:py-4"
       style={{ zIndex: 10 + index }}
     >
       {/* INSET ROUNDED CARD CONTAINER WITH DISTINCT LUXURY BACKDROP */}

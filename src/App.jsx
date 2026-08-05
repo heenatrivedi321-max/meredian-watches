@@ -338,7 +338,7 @@ export default function App() {
         ease: "none"
       });
 
-      // Stars video zooms in + blurs on scroll
+      // Stars video zooms in on scroll — no blur on mobile (kills perf)
       gsap.to(".bg-stars", {
         scrollTrigger: {
           trigger: ".hero-spacer",
@@ -347,7 +347,7 @@ export default function App() {
           scrub: true,
         },
         scale: 3,
-        filter: "blur(30px)",
+        filter: window.innerWidth < 768 ? "none" : "blur(30px)",
         ease: "none"
       });
 

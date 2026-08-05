@@ -22,9 +22,11 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
     const glowEl = glowRef.current;
     if (!container || !videoEl) return;
 
+    const isMobile = window.innerWidth < 768;
+
     const ctx = gsap.context(() => {
       // Entrance — cross-fade from dark section above
-      const entranceTl = gsap.fromTo(".rolex-hero-pin",
+      gsap.fromTo(".rolex-hero-pin",
         { autoAlpha: 0, y: 40 },
         {
           autoAlpha: 1, y: 0,
@@ -38,46 +40,46 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
         }
       );
 
-      // 1. FULL-WIDTH CINEMATIC INSET-TO-FULLSCREEN EXPANSION TIMELINE
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: container,
-          start: "top top",
-          end: "bottom top",
-          scrub: 0.2,
+      // 1. CINEMATIC INSET-TO-FULLSCREEN EXPANSION — desktop only
+      if (!isMobile) {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: container,
+            start: "top top",
+            end: "bottom top",
+            scrub: 0.2,
+          }
+        });
+
+        tl.fromTo(videoEl,
+          { scale: 0.85, borderRadius: "28px", force3D: true },
+          { scale: 1.0, borderRadius: "0px", force3D: true, duration: 1, ease: "power2.out" }
+        );
+
+        if (videoRef.current) {
+          tl.fromTo(videoRef.current,
+            { scale: 1.0 },
+            { scale: 1.45, duration: 1, ease: "power1.inOut" },
+            0
+          );
         }
-      });
 
-      // Expand container from inset rounded frame to 100% full screen
-      tl.fromTo(videoEl,
-        { scale: 0.85, borderRadius: "28px", force3D: true },
-        { scale: 1.0, borderRadius: "0px", force3D: true, duration: 1, ease: "power2.out" }
-      );
-
-      // Deep zoom into video content simultaneously
-      if (videoRef.current) {
-        tl.fromTo(videoRef.current,
-          { scale: 1.0 },
-          { scale: 1.45, duration: 1, ease: "power1.inOut" },
+        tl.to(glowEl,
+          { scale: 1.8, opacity: 0.8, force3D: true, duration: 1, ease: "power2.out" },
           0
         );
       }
 
-      tl.to(glowEl,
-        { scale: 1.8, opacity: 0.8, force3D: true, duration: 1, ease: "power2.out" },
-        0
-      );
-
-      // 2. SCROLL-TIED TEXT REVEAL (MATCHING THE BLUR REVEAL ABOVE)
+      // 2. WORD REVEAL — no blur on mobile
       gsap.fromTo(".hero-word",
-        { autoAlpha: 0, y: 80, rotationX: -20, scale: 0.95, filter: "blur(10px)" },
         {
-          autoAlpha: 1,
-          y: 0,
-          rotationX: 0,
-          scale: 1,
-          filter: "blur(0px)",
-          duration: 1.2,
+          autoAlpha: 0, y: 80, rotationX: -20, scale: 0.95,
+          filter: isMobile ? "none" : "blur(10px)"
+        },
+        {
+          autoAlpha: 1, y: 0, rotationX: 0, scale: 1,
+          filter: isMobile ? "none" : "blur(0px)",
+          duration: isMobile ? 0.8 : 1.2,
           stagger: 0.15,
           ease: "expo.out",
           scrollTrigger: {
