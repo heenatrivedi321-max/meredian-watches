@@ -16,10 +16,7 @@ export default function InstagramFeed() {
   const INSTAGRAM_URL = 'https://www.instagram.com/meri.dianwatches/';
 
   return (
-    <section className="w-full py-24 sm:py-32 bg-black text-white pointer-events-auto relative overflow-hidden">
-      {/* Ambient Gemini Fluid Aurora Mesh Glow */}
-      <div className="absolute inset-0 burgundy-aurora-bg pointer-events-none opacity-40" />
-
+    <section className="w-full py-24 sm:py-32 bg-white text-black pointer-events-auto relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
         {/* Header */}
         <motion.div
@@ -30,17 +27,17 @@ export default function InstagramFeed() {
           className="text-center mb-16"
         >
           <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#800020] via-[#A52A2A] to-[#C95A5A] flex items-center justify-center animate-pulse shadow-[0_0_30px_rgba(128,0,32,0.6)]">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#800020] via-[#A52A2A] to-[#800020] flex items-center justify-center shadow-lg shadow-[#800020]/20">
               <InstagramIcon size={22} className="text-white" />
             </div>
           </div>
           <h2
-            className="text-[2.2rem] sm:text-[3.5rem] lg:text-[4.5rem] font-bold tracking-tight mb-4 text-white uppercase drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]"
+            className="text-[2.2rem] sm:text-[3.5rem] lg:text-[4.5rem] font-extrabold tracking-tight mb-4 text-black uppercase"
             style={{ fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif" }}
           >
             @meri.dianwatches
           </h2>
-          <p className="text-white/70 text-sm sm:text-base font-light tracking-wide max-w-md mx-auto">
+          <p className="text-black/70 text-sm sm:text-base font-light tracking-wide max-w-md mx-auto">
             Behind the scenes, new drops, and wrist shots from the inner circle.
           </p>
         </motion.div>
@@ -57,14 +54,13 @@ export default function InstagramFeed() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08, duration: 0.6 }}
-              className="group relative aspect-square rounded-2xl overflow-hidden bg-black/60 border border-white/10 hover:border-[#800020]/60 shadow-2xl transition-all duration-500 backdrop-blur-xl"
+              className="group relative aspect-square rounded-2xl overflow-hidden bg-gray-50 border border-black/10 hover:border-[#800020] shadow-md transition-all duration-500"
             >
               <img
                 src={watch.image}
                 alt={`${watch.brand} ${watch.model}`}
                 loading="lazy"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                style={{ mixBlendMode: 'normal' }}
               />
 
               {/* Hover overlay */}
@@ -92,7 +88,7 @@ export default function InstagramFeed() {
             href={INSTAGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-8 py-3.5 border border-white/15 rounded-full text-xs tracking-[0.25em] uppercase font-bold text-white/60 hover:text-white hover:border-white/30 hover:bg-white/5 transition-all duration-300 min-h-[44px]"
+            className="inline-flex items-center gap-3 px-8 py-3.5 border border-black/20 rounded-full text-xs tracking-[0.25em] uppercase font-bold text-black/80 hover:bg-black hover:text-white transition-all duration-300 min-h-[44px]"
           >
             <InstagramIcon size={16} />
             Follow the journey

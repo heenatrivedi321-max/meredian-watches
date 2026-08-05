@@ -290,16 +290,16 @@ export default function CollectionShowcase({ onSelectWatch }) {
       // "Choose Your Legacy" — staggered reveal with scale
       const legacyEls = gsap.utils.toArray(".legacy-text");
       gsap.fromTo(legacyEls,
-        { autoAlpha: 0, y: 40, scale: 0.97, filter: "blur(4px)" },
+        { autoAlpha: 0, y: 80, rotationX: -20, scale: 0.95, filter: "blur(10px)" },
         {
-          autoAlpha: 1, y: 0, scale: 1, filter: "blur(0px)",
-          duration: 0.9,
-          stagger: 0.15,
-          ease: "power2.out",
+          autoAlpha: 1, y: 0, rotationX: 0, scale: 1, filter: "blur(0px)",
+          duration: 1.2,
+          stagger: 0.2,
+          ease: "expo.out",
           scrollTrigger: {
             trigger: taglineRef.current,
-            start: "top 75%",
-            toggleActions: "play none none none"
+            start: "top 80%",
+            toggleActions: "play none none reverse"
           }
         }
       );
@@ -307,16 +307,16 @@ export default function CollectionShowcase({ onSelectWatch }) {
       // Closer section — staggered cinematic reveal
       const closerEls = gsap.utils.toArray(".closer-text");
       gsap.fromTo(closerEls,
-        { autoAlpha: 0, y: 40, scale: 0.97, filter: "blur(4px)" },
+        { autoAlpha: 0, y: 60, rotationX: -15, filter: "blur(8px)" },
         {
-          autoAlpha: 1, y: 0, scale: 1, filter: "blur(0px)",
-          duration: 0.9,
-          stagger: 0.15,
-          ease: "power2.out",
+          autoAlpha: 1, y: 0, rotationX: 0, filter: "blur(0px)",
+          duration: 1.2,
+          stagger: 0.2,
+          ease: "power3.out",
           scrollTrigger: {
             trigger: closerRef.current,
-            start: "top 75%",
-            toggleActions: "play none none none"
+            start: "top 80%",
+            toggleActions: "play none none reverse"
           }
         }
       );
@@ -390,52 +390,51 @@ export default function CollectionShowcase({ onSelectWatch }) {
       {/* ======================================== */}
       {/* SECTION 4 & 5: LEGACY + PRODUCTS */}
       {/* ======================================== */}
-      <div className="product-reveal relative z-0 w-full bg-black">
+      {/* ======================================== */}
+      {/* SECTION 4 & 5: LEGACY + PRODUCTS */}
+      {/* ======================================== */}
+      <div className="product-reveal relative z-0 w-full bg-white">
 
-        {/* Legacy Header Section with 4K Gold Skeleton Watch Video Background */}
+        {/* Legacy Header Section */}
         <section
           ref={taglineRef}
-          className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center pointer-events-none overflow-hidden bg-black"
+          className="relative z-10 w-full py-24 sm:py-32 flex flex-col items-center justify-center pointer-events-none overflow-hidden bg-white text-black"
         >
-          {/* Scoped 4K Gold Skeleton Watch Video */}
-          <video
-            ref={legacyVideoRef}
-            loop muted playsInline preload="none"
-            className="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none z-0"
-            style={{ transform: 'translateZ(0)', willChange: 'transform' }}
-          >
-            <source src="/Gold_skeleton_watch_showcase_202606290837.mp4" type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black pointer-events-none z-10" />
-
-          <div className="relative z-10 text-center px-4">
+          <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <span className="text-xs font-mono tracking-[0.4em] text-[#800020] uppercase font-bold block mb-4">
+              THE MERIDIAN STANDARD
+            </span>
             <h2
-              className="legacy-text text-[2.5rem] sm:text-[4.5rem] md:text-[6rem] lg:text-[7.5rem] font-normal tracking-[0.08em] text-rainbow-shimmer text-center leading-[1.1] uppercase"
-              style={{ fontFamily: "'Inter', sans-serif" }}
+              className="legacy-text text-[2.5rem] sm:text-[4.5rem] md:text-[5.5rem] font-extrabold tracking-[-0.03em] text-black text-center leading-[1.1] uppercase"
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               Choose Your<br />Legacy.
             </h2>
           </div>
         </section>
 
-        {/* Dedicated Story Section - Animated Gemini Aurora Mesh & Iridescent Gradient Typography */}
+        {/* Dedicated Story Section — High Intent Sales Quotes */}
         <section
           ref={storyRef}
-          className="relative z-10 w-full h-screen flex flex-col items-center justify-center bg-black pointer-events-none overflow-hidden"
+          className="relative z-10 w-full py-20 sm:py-28 flex flex-col items-center justify-center bg-white pointer-events-none overflow-hidden"
         >
-          {/* Animated Gemini Aurora Fluid Backdrop */}
-          <div className="absolute inset-0 burgundy-aurora-bg pointer-events-none" />
-
           <div 
-            className="story-text-container relative z-10 text-center px-6 max-w-6xl mx-auto"
-            style={{ transform: "translateZ(0)", willChange: "transform, opacity, filter" }}
+            className="story-text-container relative z-10 text-center px-6 max-w-5xl mx-auto flex flex-col items-center"
+            style={{ transform: "translateZ(0)", willChange: "transform, opacity" }}
           >
+            {/* Elegant Star Motif */}
+            <svg className="w-10 h-10 mb-8 opacity-90 drop-shadow-[0_0_15px_rgba(128,0,32,0.3)]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L13.5 10.5L22 12L13.5 13.5L12 22L10.5 13.5L2 12L10.5 10.5L12 2Z" fill="#800020"/>
+            </svg>
+
             <h3
-              className="text-[2.2rem] sm:text-[3.8rem] md:text-[4.8rem] lg:text-[5.5rem] font-normal tracking-[0.06em] leading-[1.15] uppercase text-rainbow-shimmer"
-              style={{ fontFamily: "'Inter', sans-serif" }}
+              className="text-[2.2rem] sm:text-[3.8rem] md:text-[4.5rem] font-light tracking-[-0.03em] leading-[1.1] text-black uppercase"
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
-              Every timepiece tells a story.<br />
-              <span className="text-white/50 font-normal">Find yours.</span>
+              More than an instrument of time.<br />
+              <span className="font-extrabold bg-gradient-to-r from-[#800020] via-[#A52A2A] to-[#800020] bg-clip-text text-transparent drop-shadow-sm block mt-2">
+                A mark of true prestige.
+              </span>
             </h3>
           </div>
         </section>

@@ -36,14 +36,15 @@ export default function BrandFilm() {
     observer.observe(section);
 
     gsap.fromTo(vid,
-      { scale: 1.1 },
+      { yPercent: -15, scale: 1.15 },
       {
-        scale: 1,
+        yPercent: 15,
+        ease: "none",
         scrollTrigger: {
           trigger: section,
-          start: "top 80%",
-          end: "center center",
-          scrub: 0.8,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
         }
       }
     );

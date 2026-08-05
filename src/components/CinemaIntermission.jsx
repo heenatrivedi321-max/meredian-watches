@@ -40,6 +40,21 @@ export default function CinemaIntermission({ videoSrc, title, soundDefault = fal
       }
     });
 
+    // Parallax background
+    gsap.fromTo(vid,
+      { yPercent: -15, scale: 1.15 },
+      {
+        yPercent: 15,
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        }
+      }
+    );
+
     // Letterbox bars retract
     tl.fromTo(topBarRef.current,
       { scaleY: 1 },
