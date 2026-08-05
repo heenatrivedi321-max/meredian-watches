@@ -304,6 +304,37 @@ export default function CollectionShowcase({ onSelectWatch }) {
         }
       );
 
+      // "More than an instrument of time" story — word-by-word stagger reveal
+      gsap.fromTo(".story-word",
+        { autoAlpha: 0, y: 80, rotationX: -20, scale: 0.95, filter: "blur(10px)" },
+        {
+          autoAlpha: 1, y: 0, rotationX: 0, scale: 1, filter: "blur(0px)",
+          duration: 1.0,
+          stagger: 0.08,
+          ease: "expo.out",
+          scrollTrigger: {
+            trigger: storyRef.current,
+            start: "top 75%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+
+      // Story star icon — subtle fade in
+      gsap.fromTo(".story-icon",
+        { autoAlpha: 0, scale: 0.5, rotation: -45 },
+        {
+          autoAlpha: 1, scale: 1, rotation: 0,
+          duration: 0.9,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: storyRef.current,
+            start: "top 80%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+
       // Closer section — staggered cinematic reveal
       const closerEls = gsap.utils.toArray(".closer-text");
       gsap.fromTo(closerEls,
@@ -341,49 +372,6 @@ export default function CollectionShowcase({ onSelectWatch }) {
     return () => ctx.revert();
   }, []);
 
-  useEffect(() => {
-    const el = storyRef.current?.querySelector('.story-text-container');
-    if (!el) return;
-
-    el.style.opacity = '0';
-    el.style.transform = 'scale(3)';
-    el.style.filter = 'blur(15px)';
-    el.style.visibility = 'hidden';
-
-    let rafId = null;
-
-    function tick() {
-      const rect = storyRef.current?.getBoundingClientRect();
-      if (!rect) return;
-      const vh = window.innerHeight;
-      let p = (vh * 0.8 - rect.top) / (vh * 0.8);
-      p = Math.min(1, Math.max(0, p));
-      const s = 1 + (1 - p) * 2;
-      el.style.opacity = p;
-      el.style.transform = `scale(${s})`;
-      el.style.filter = `blur(${(1 - p) * 15}px)`;
-      el.style.visibility = p > 0 ? 'visible' : 'hidden';
-    }
-
-    function onScroll() {
-      if (rafId) return;
-      rafId = requestAnimationFrame(() => {
-        rafId = null;
-        tick();
-      });
-    }
-
-    if (window.lenis) window.lenis.on('scroll', onScroll);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    tick();
-
-    return () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      if (window.lenis) window.lenis.off('scroll', onScroll);
-      window.removeEventListener('scroll', onScroll);
-    };
-  }, []);
-
   return (
     <div ref={sectionRef}>
 
@@ -418,22 +406,41 @@ export default function CollectionShowcase({ onSelectWatch }) {
           ref={storyRef}
           className="relative z-10 w-full py-20 sm:py-28 flex flex-col items-center justify-center bg-white pointer-events-none overflow-hidden"
         >
-          <div 
-            className="story-text-container relative z-10 text-center px-6 max-w-5xl mx-auto flex flex-col items-center"
-            style={{ transform: "translateZ(0)", willChange: "transform, opacity" }}
-          >
+          <div className="relative z-10 text-center px-6 max-w-5xl mx-auto flex flex-col items-center">
             {/* Elegant Star Motif */}
-            <svg className="w-10 h-10 mb-8 opacity-90 drop-shadow-[0_0_15px_rgba(128,0,32,0.3)]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg
+              className="story-icon w-10 h-10 mb-8 opacity-90 drop-shadow-[0_0_15px_rgba(128,0,32,0.3)]"
+              viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+            >
               <path d="M12 2L13.5 10.5L22 12L13.5 13.5L12 22L10.5 13.5L2 12L10.5 10.5L12 2Z" fill="#800020"/>
             </svg>
 
             <h3
-              className="text-[2.2rem] sm:text-[3.8rem] md:text-[4.5rem] font-light tracking-[-0.03em] leading-[1.1] text-black uppercase"
-              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+              className="text-[2.2rem] sm:text-[3.8rem] md:text-[4.5rem] font-light tracking-[-0.03em] leading-[1.35] text-black uppercase"
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", perspective: '800px' }}
             >
-              More than an instrument of time.<br />
-              <span className="font-extrabold bg-gradient-to-r from-[#800020] via-[#A52A2A] to-[#800020] bg-clip-text text-transparent drop-shadow-sm block mt-2">
-                A mark of true prestige.
+              {/* Line 1 — light weight words */}
+              {['More', 'than', 'an', 'instrument', 'of', 'time.'].map((word, i) => (
+                <span
+                  key={`l1-${i}`}
+                  className="story-word inline-block mr-[0.3em] last:mr-0"
+                  style={{ willChange: 'transform, opacity' }}
+                >
+                  {word}
+                </span>
+              ))}
+              <br />
+              {/* Line 2 — bold gradient words */}
+              <span className="font-extrabold bg-gradient-to-r from-[#800020] via-[#A52A2A] to-[#800020] bg-clip-text text-transparent block mt-2">
+                {['A', 'mark', 'of', 'true', 'prestige.'].map((word, i) => (
+                  <span
+                    key={`l2-${i}`}
+                    className="story-word inline-block mr-[0.3em] last:mr-0"
+                    style={{ willChange: 'transform, opacity' }}
+                  >
+                    {word}
+                  </span>
+                ))}
               </span>
             </h3>
           </div>
