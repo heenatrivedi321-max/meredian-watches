@@ -1,78 +1,76 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-export default function WatchSection({ watch, index, onClick, isActive }) {
+gsap.registerPlugin(ScrollTrigger);
+
+export default function WatchSection({ watch, index, onClick }) {
   const sectionRef = useRef(null);
+  const cardInnerRef = useRef(null);
   const videoRef = useRef(null);
-  const [showUI, setShowUI] = useState(false);
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
-  const uiTimerRef = useRef(null);
-  const releaseTimerRef = useRef(null);
-  const blockerRef = useRef(null);
-  const savedScrollRef = useRef(0);
+  const [isVisible, setIsVisible] = useState(false);
 
+  // Distinct Luxury Card Backdrops for sharp card boundaries (#2)
+  const cardBackdrops = [
+    'bg-[#14120E]', // Card 1: Obsidian Gold
+    'bg-[#1A0A0E]', // Card 2: Deep Crimson Gold
+    'bg-[#080F1B]', // Card 3: Midnight Navy Gold
+    'bg-[#071610]', // Card 4: Dark Emerald Gold
+  ];
+
+  const currentBg = cardBackdrops[index % cardBackdrops.length];
+
+  // 3D Push back scale effect when the next card scrolls over this one
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // The section is 100vh tall. When its top hits the viewport top, it sticks.
+      // Over the next 100vh of scrolling, the next card slides up to cover it.
+      // During that exact window (top top to bottom top in natural flow), we scale it down.
+      gsap.to(cardInnerRef.current, {
+        scale: 0.92,
+        y: -30,
+        opacity: 0.4,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        }
+      });
+    });
+    return () => ctx.revert();
+  }, []);
+
+  // Reliable video autoplay using IntersectionObserver
   useEffect(() => {
     const vid = videoRef.current;
     if (!vid) return;
-    vid.muted = true;
-    vid.playsInline = true;
-  }, []);
 
-  useEffect(() => {
-    const vid = videoRef.current;
-    clearTimeout(uiTimerRef.current);
-    clearTimeout(releaseTimerRef.current);
-    if (blockerRef.current) {
-      window.removeEventListener('wheel', blockerRef.current, { capture: true });
-      window.removeEventListener('touchmove', blockerRef.current, { capture: true });
-      blockerRef.current = null;
-    }
-
-    if (isActive) {
-      if (vid) vid.play().catch(() => {});
-      savedScrollRef.current = window.scrollY;
-
-      if (window.lenis) window.lenis.stop();
-
-      const blockInput = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-      };
-      blockerRef.current = blockInput;
-      window.addEventListener('wheel', blockInput, { capture: true, passive: false });
-      window.addEventListener('touchmove', blockInput, { capture: true, passive: false });
-
-      uiTimerRef.current = setTimeout(() => {
-        setShowUI(true);
-      }, 2000);
-
-      releaseTimerRef.current = setTimeout(() => {
-        if (blockerRef.current) {
-          window.removeEventListener('wheel', blockerRef.current, { capture: true });
-          window.removeEventListener('touchmove', blockerRef.current, { capture: true });
-          blockerRef.current = null;
-        }
-        if (window.lenis) {
-          window.lenis.scrollTo(savedScrollRef.current, { immediate: true });
-          window.lenis.start();
-        }
-      }, 3000);
-    } else {
-      setShowUI(false);
-      if (vid) vid.pause();
-      if (window.lenis) window.lenis.start();
-    }
-    return () => {
-      clearTimeout(uiTimerRef.current);
-      clearTimeout(releaseTimerRef.current);
-      if (blockerRef.current) {
-        window.removeEventListener('wheel', blockerRef.current, { capture: true });
-        window.removeEventListener('touchmove', blockerRef.current, { capture: true });
-        blockerRef.current = null;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            vid.play().catch((e) => console.log('Autoplay blocked:', e));
+          } else {
+            setIsVisible(false);
+            vid.pause();
+          }
+        });
+      },
+      {
+        threshold: 0.3, // Trigger when 30% of the card is visible
       }
-      if (window.lenis) window.lenis.start();
+    );
+
+    observer.observe(sectionRef.current);
+
+    return () => {
+      observer.disconnect();
     };
-  }, [isActive]);
+  }, []);
 
   const toggleAudio = useCallback((e) => {
     if (e) {
@@ -95,126 +93,93 @@ export default function WatchSection({ watch, index, onClick, isActive }) {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-screen bg-black text-white flex flex-col justify-between overflow-hidden pointer-events-auto"
+      className="sticky top-0 w-full h-screen bg-white flex items-center justify-center pointer-events-auto"
+      style={{ zIndex: 10 + index }}
     >
-      {/* 100% FULL-SCREEN EDGE-TO-EDGE 4K VIDEO STREAM WITH ROLEX ZOOM ANIMATION */}
-      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
-        <video
-          ref={videoRef}
-          muted
-          loop
-          playsInline
-          preload="none"
-          className="watch-section-video w-full h-full object-cover transition-transform duration-1000 scale-125 origin-center"
-          style={{ transform: 'scale(1.25) translateZ(0)', willChange: 'transform' }}
-        >
-          <source src={watch.cinematicVideo || watch.video} type="video/mp4" />
-        </video>
+      {/* INSET ROUNDED CARD CONTAINER WITH DISTINCT LUXURY BACKDROP */}
+      <div 
+        ref={cardInnerRef}
+        className={`relative w-full max-w-none sm:max-w-[95vw] md:max-w-7xl h-[100vh] sm:h-[92vh] sm:rounded-[32px] overflow-hidden ${currentBg} border border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.9)] flex flex-col justify-between p-6 sm:p-10 md:p-12 group`}
+      >
+        {/* 1. INLINE WATCH VIDEO BACKGROUND (AUTOPLAY) */}
+        <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
+          <video
+            ref={videoRef}
+            autoPlay
+            muted={true}
+            loop
+            playsInline
+            preload="auto"
+            src={watch.cinematicVideo || watch.video}
+            className="w-full h-full object-cover opacity-100 group-hover:scale-105 transition-transform duration-1000 origin-center"
+          />
+          {/* Strong text protection gradient at the absolute top and bottom, but transparent in the middle */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/0 to-black/80 pointer-events-none" />
+        </div>
 
-        {/* Cinematic Radial & Vertical Gradient Vignettes */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/70 pointer-events-none" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(0,0,0,0.85)_100%)] pointer-events-none" />
-      </div>
-
-      {/* TOP LEFT REVEAL: TITLE & BRAND (SLIDES DOWN AFTER VIDEO PLAYS) */}
-      <div className="relative z-20 p-8 sm:p-14 md:p-20 flex justify-between items-start pointer-events-none">
-        <AnimatePresence>
-          {showUI && (
-            <motion.div
-              initial={{ y: -60, opacity: 0, filter: "blur(12px)" }}
-              animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-              exit={{ y: -60, opacity: 0 }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              className="pointer-events-auto"
-            >
-              <span className="text-[10px] sm:text-[11px] font-mono tracking-[0.5em] text-[#800020] uppercase block font-bold mb-2">
-                EDITION 0{index + 1}
-              </span>
-              <h2
-                className="text-5xl sm:text-7xl lg:text-8xl font-light text-rainbow-shimmer leading-none mb-2"
-                style={{ fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif" }}
-              >
-                {watch.model.toLowerCase().replace(/\b\w/g, c => c.toUpperCase())}
-              </h2>
-              <span 
-                className="text-[11px] font-mono tracking-[0.35em] text-white/50 uppercase block"
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-              >
-                {watch.brand}
-              </span>
-              <span 
-                className="text-lg sm:text-xl font-light text-white/70 tracking-tight block"
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-              >
-                {watch.price}
-              </span>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* SOUND CONTROL — glassmorphism */}
-        <button
-          onClick={toggleAudio}
-          className="pointer-events-auto relative px-5 py-3 rounded-full backdrop-blur-2xl bg-white/5 border border-white/20 hover:bg-[#C9A96E]/15 hover:border-[#C9A96E]/50 hover:scale-[1.03] active:scale-[0.97] transition-all duration-500 flex items-center gap-3 cursor-pointer shadow-xl shadow-black/30 min-h-[44px] group text-white"
-        >
-          <span className={`w-2 h-2 rounded-full ${isAudioEnabled ? 'bg-[#C9A96E] animate-ping' : 'bg-white/40'}`} />
-          <svg className="w-3.5 h-3.5 text-white/70 group-hover:text-white transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            {isAudioEnabled ? (
-              <>
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-                <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-              </>
-            ) : (
-              <>
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                <line x1="23" y1="9" x2="17" y2="15" />
-                <line x1="17" y1="9" x2="23" y2="15" />
-              </>
-            )}
-          </svg>
-          <span className="text-[10px] font-sans tracking-[0.2em] font-semibold text-white/80 group-hover:text-white uppercase transition-colors drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
-            {isAudioEnabled ? 'AUDIO LIVE' : 'SOUND OFF'}
+        {/* 2. GIANT KINETIC BACKGROUND TYPOGRAPHY */}
+        <div className="absolute inset-0 flex items-center justify-center z-1 pointer-events-none overflow-hidden select-none">
+          <span 
+            className="text-[12vw] sm:text-[14vw] font-black uppercase text-white/5 tracking-tighter whitespace-nowrap leading-none transition-transform duration-700 group-hover:scale-105"
+            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+          >
+            {watch.brand}
           </span>
-        </button>
-      </div>
+        </div>
 
-      {/* BOTTOM CENTER REVEAL: SEXY GLASSMORPHISM BUTTON WITH GOOGLE TYPOGRAPHY (PLUS JAKARTA SANS / INTER) */}
-      <div className="relative z-20 pb-16 sm:pb-24 px-6 flex flex-col items-center text-center pointer-events-none">
-        <AnimatePresence>
-          {showUI && (
-            <motion.div
-              initial={{ y: 70, opacity: 0, scale: 0.9, filter: "blur(16px)" }}
-              animate={{ y: 0, opacity: 1, scale: 1, filter: "blur(0px)" }}
-              exit={{ y: 70, opacity: 0 }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col items-center gap-4 pointer-events-auto"
+        {/* 3. CARD TOP BAR: TITLE & EDITION (TOP LEFT) + INDEX (TOP RIGHT) */}
+        <div className="relative z-20 flex justify-between items-start w-full pointer-events-auto">
+          <div>
+            <span className="text-[10px] sm:text-[11px] font-mono tracking-[0.35em] text-[#C9A96E] uppercase font-bold block mb-1 drop-shadow-md">
+              2026 EDITION
+            </span>
+            <h2
+              className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-tight uppercase tracking-tight drop-shadow-lg"
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
-              {watch.tagline && (
-                <p 
-                  className="text-xs sm:text-sm font-light tracking-[0.25em] text-white/80 uppercase max-w-md drop-shadow-[0_10px_20px_rgba(0,0,0,0.9)]"
-                  style={{ fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif" }}
-                >
-                  "{watch.tagline}"
-                </p>
-              )}
+              {watch.model}
+            </h2>
+          </div>
 
-              {/* CTA BUTTON — glassmorphism */}
-              <button
-                onClick={() => onClick(watch)}
-                className="group relative overflow-hidden px-10 py-4 rounded-full backdrop-blur-2xl bg-white/5 border border-white/20 hover:bg-[#C9A96E]/15 hover:border-[#C9A96E]/50 hover:scale-[1.02] active:scale-[0.97] transition-all duration-500 flex items-center gap-4 cursor-pointer shadow-xl shadow-black/30 z-30 text-white"
-              >
-                <span className="text-xs sm:text-sm tracking-[0.3em] uppercase font-sans font-semibold text-white/90 group-hover:text-white group-hover:tracking-[0.35em] transition-all duration-500 drop-shadow-[0_2px_8px_rgba(255,255,255,0.15)]">
-                  CHECK IT OUT
-                </span>
-                <svg className="w-4 h-4 text-white/70 group-hover:text-[#C9A96E] group-hover:translate-x-1.5 transition-all duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                  <polyline points="12 5 19 12 12 19" />
-                </svg>
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+          <div className="flex items-center gap-4">
+            <span className="text-xs font-mono tracking-[0.2em] text-white/80 font-bold uppercase drop-shadow-md">
+              № 0{index + 1}/04
+            </span>
+            {/* SOUND TOGGLE */}
+            <button
+              onClick={toggleAudio}
+              className="px-3.5 py-2 rounded-full backdrop-blur-xl bg-black/50 border border-white/20 hover:bg-[#C9A96E]/20 hover:border-[#C9A96E]/50 transition-all duration-300 flex items-center gap-2 text-white cursor-pointer"
+            >
+              <span className={`w-2 h-2 rounded-full ${isAudioEnabled ? 'bg-[#C9A96E] animate-ping' : 'bg-white/40'}`} />
+              <span className="text-[9px] font-mono tracking-[0.15em] font-bold text-white/90 uppercase">
+                {isAudioEnabled ? 'AUDIO' : 'MUTED'}
+              </span>
+            </button>
+          </div>
+        </div>
+
+        {/* 4. CARD BOTTOM BAR: PRICE (BOTTOM LEFT) + BUY NOW BUTTON (BOTTOM CENTER/RIGHT) */}
+        <div className="relative z-20 w-full flex flex-col sm:flex-row items-center justify-between gap-4 pointer-events-auto pt-6 border-t border-white/10 group-hover:border-white/30 transition-colors duration-700 mt-auto">
+          <div className="text-left w-full sm:w-auto">
+            <span className="text-[10px] font-mono tracking-[0.25em] text-white/70 uppercase block mb-1">
+              SPECIAL PRICE
+            </span>
+            <span className="text-2xl sm:text-3xl font-extrabold text-[#C9A96E] tracking-tight drop-shadow-md">
+              {watch.price}
+            </span>
+          </div>
+
+          <button
+            onClick={() => onClick(watch)}
+            className="group/btn relative overflow-hidden px-8 py-3.5 sm:px-10 sm:py-4 rounded-full bg-white text-black font-extrabold text-xs sm:text-sm tracking-[0.25em] uppercase hover:bg-[#C9A96E] hover:text-black hover:scale-105 active:scale-95 transition-all duration-500 flex items-center justify-center gap-3 cursor-pointer shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(201,169,110,0.5)] w-full sm:w-auto"
+          >
+            <span className="group-hover/btn:-translate-x-1 transition-transform duration-300">BUY NOW</span>
+            <svg className="w-4 h-4 text-black group-hover/btn:translate-x-2 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
+          </button>
+        </div>
       </div>
     </section>
   );

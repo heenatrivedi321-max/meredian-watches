@@ -150,6 +150,15 @@ export default function App() {
     return window.location.search.includes('fbclid') || window.location.search.includes('utm');
   });
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = 'hidden';
@@ -342,41 +351,41 @@ export default function App() {
         ease: "none"
       });
 
-      // 2. MANIFESTO — Butter-Smooth 120 FPS Reveal
-      const manifestoLines = gsap.utils.toArray(".manifesto-line");
-      manifestoLines.forEach((line, i) => {
-        gsap.fromTo(line,
-          { autoAlpha: 0, y: isLow ? 30 : 50, scale: 0.98 },
-          {
-            autoAlpha: 1, y: 0, scale: 1,
-            duration: 0.8,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: ".manifesto-spacer",
-              start: `top ${75 - i * 15}%`,
-              ...(isLow ? { toggleActions: "play none none none" } : { end: `top ${40 - i * 15}%`, scrub: 0.5 }),
-            }
+      // 2. MANIFESTO — Scroll-tied Cinematic Reveal (Mobile Performant)
+      gsap.fromTo(".manifesto-word",
+        { opacity: 0.1, y: 40, scale: 0.9 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          stagger: 0.1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".manifesto-spacer",
+            start: "top 80%",
+            end: "bottom 60%",
+            scrub: 1
           }
-        );
-      });
+        }
+      );
 
-      // 3. PORSCHE — Butter-Smooth 120 FPS Reveal
-      const porscheLines = gsap.utils.toArray(".porsche-line");
-      porscheLines.forEach((line, i) => {
-        gsap.fromTo(line,
-          { autoAlpha: 0, y: isLow ? 30 : 50, scale: 0.98 },
-          {
-            autoAlpha: 1, y: 0, scale: 1,
-            duration: 0.8,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: ".porsche-spacer",
-              start: `top ${75 - i * 15}%`,
-              ...(isLow ? { toggleActions: "play none none none" } : { end: `top ${40 - i * 15}%`, scrub: 0.5 }),
-            }
+      // 3. PORSCHE — Scroll-tied Cinematic Reveal (Mobile Performant)
+      gsap.fromTo(".porsche-word",
+        { opacity: 0.1, y: 40, scale: 0.9 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          stagger: 0.1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".porsche-spacer",
+            start: "top 80%",
+            end: "bottom 60%",
+            scrub: 1
           }
-        );
-      });
+        }
+      );
 
       // Fade out Porsche video smoothly before products
       gsap.to(".bg-porsche", {
@@ -420,8 +429,11 @@ export default function App() {
       {/* Product Schema for SEO */}
       <ProductSchema watch={selectedWatch} />
 
-      <div ref={mainRef} className="w-full bg-black min-h-screen text-white font-sans overflow-x-hidden selection:bg-[#800020] selection:text-white">
+      <div ref={mainRef} className="w-full bg-[#050507] min-h-screen text-white font-sans overflow-clip selection:bg-[#800020] selection:text-white">
         
+        {/* GLOBAL PREMIUM FILM GRAIN NOISE */}
+        <div className="bg-noise" />
+
         {/* FIXED BACKGROUND MEDIA LAYER */}
         <div className="fixed inset-0 w-full h-screen z-0 pointer-events-none bg-black overflow-hidden">
           
@@ -442,7 +454,7 @@ export default function App() {
         </div>
 
         {/* NAVIGATION */}
-        <nav className="sticky top-0 flex items-center justify-between px-6 sm:px-12 md:px-20 py-4 sm:py-6 overflow-hidden pointer-events-auto text-white z-[100]">
+        <nav className={`sticky top-0 flex items-center justify-between px-6 sm:px-12 md:px-20 py-4 sm:py-6 overflow-hidden pointer-events-auto text-white z-[100] transition-all duration-500 ${isScrolled ? 'bg-black/60 backdrop-blur-xl border-b border-white/10 shadow-2xl' : 'bg-transparent'}`}>
           <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#800020] to-transparent animate-burgundy-sweep opacity-70" />
           <button 
             onClick={() => setShowBrand(true)} 
@@ -632,71 +644,57 @@ export default function App() {
             </button>
           </section>
 
-          {/* MANIFESTO — GASP 4K WATCH GEARS FORMING DIAL VIDEO */}
-          <section ref={manifestoRef} className="manifesto-spacer relative w-full h-screen pointer-events-auto overflow-hidden bg-black">
-            {/* Scoped 4K Watch Gears Video Background */}
-            <video
-              ref={manifestoVideoRef}
-              loop muted playsInline preload="none"
-              className="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none z-0"
-            >
-              <source src="/Watch_gears_forming_watch_dial_202606291025.mp4" type="video/mp4" />
-            </video>
-            <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black pointer-events-none z-10" />
-
-            <div className="sticky top-0 left-0 w-full h-screen flex flex-col items-center justify-center z-10">
-              <div className="relative w-full max-w-[90rem] mx-auto px-4 md:px-8 text-center flex flex-col items-center justify-center space-y-4 sm:space-y-6 md:space-y-8">
-                <div className="w-full">
-                  <h2 className="manifesto-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-normal tracking-[-0.02em] select-none w-full leading-tight text-rainbow-shimmer">
-                    Your smartwatch just told you to stand up.
-                  </h2>
-                </div>
-                <div className="w-full">
-                  <h2 className="manifesto-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-normal tracking-[-0.02em] select-none w-full leading-tight text-rainbow-shimmer">
-                    Congrats on hitting 10,000 steps.
-                  </h2>
-                </div>
-                <div className="w-full">
-                  <h2 className="manifesto-line text-[1.5rem] sm:text-[2rem] md:text-[3rem] lg:text-[4rem] xl:text-[4.5rem] font-normal tracking-[-0.02em] select-none w-full leading-tight text-rainbow-shimmer">
-                    Too bad your wrist looks like a tiny iPad.
-                  </h2>
-                </div>
-              </div>
+          {/* MANIFESTO — SCROLL REVEAL (WOW FACTOR) */}
+          <section ref={manifestoRef} className="manifesto-spacer relative w-full py-32 sm:py-48 flex flex-col items-center justify-center pointer-events-auto overflow-hidden bg-white text-black">
+            <div className="relative z-10 w-full max-w-5xl mx-auto px-6 md:px-12 text-center">
+              <span className="text-[10px] sm:text-xs font-mono tracking-[0.4em] text-[#800020] uppercase block mb-8 font-bold">
+                BEYOND DISPOSABLE TECH
+              </span>
+              <h2 className="text-4xl sm:text-6xl md:text-8xl lg:text-[7rem] font-medium tracking-tight leading-[1.1] font-sans flex flex-wrap justify-center gap-x-[0.25em] gap-y-1">
+                {[
+                  { text: 'A', highlight: false },
+                  { text: 'smartwatch', highlight: false },
+                  { text: 'tells', highlight: false },
+                  { text: 'time.', highlight: false },
+                  { text: 'A', highlight: false },
+                  { text: 'Meridian', highlight: true },
+                  { text: 'tells', highlight: true },
+                  { text: 'your', highlight: true },
+                  { text: 'story.', highlight: true }
+                ].map((word, i) => (
+                  <span key={i} className={`manifesto-word inline-block ${word.highlight ? 'font-extrabold text-[#800020]' : 'font-light text-black'}`}>
+                    {word.text}
+                  </span>
+                ))}
+              </h2>
             </div>
           </section>
 
-          {/* PORSCHE — GASP 4K PORSCHE TUNNEL VIDEO */}
-          <section ref={porscheRef} className="porsche-spacer relative w-full h-screen pointer-events-auto overflow-hidden bg-black">
-            {/* Scoped 4K Porsche Video Background */}
-            <video
-              ref={porscheVideoRef}
-              loop muted playsInline preload="none"
-              className="absolute inset-0 w-full h-full object-cover opacity-70 pointer-events-none z-0"
-            >
-              <source src="/Porsche_driving_through_tunnel_202606281316.mp4" type="video/mp4" />
-            </video>
-            <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black pointer-events-none z-10" />
-
-            <div className="sticky top-0 left-0 w-full h-screen flex flex-col items-center justify-center pt-24 pb-8 overflow-hidden z-10">
-              <div className="relative w-full max-w-[90rem] mx-auto px-4 md:px-8 text-center flex flex-col items-center justify-center space-y-4 sm:space-y-6 md:space-y-8">
-                <div className="w-full">
-                  <h2 className="porsche-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-sans font-normal tracking-[-0.02em] select-none w-full leading-tight text-rainbow-shimmer">
-                    You will inevitably perish.
-                  </h2>
-                </div>
-                <div className="w-full">
-                  <h2 className="porsche-line text-[1.8rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] xl:text-[5.5rem] font-sans font-normal tracking-[-0.02em] select-none w-full leading-tight text-rainbow-shimmer">
-                    Your legacy will be forgotten.
-                  </h2>
-                </div>
-                <div className="w-full">
-                  <h2 className="porsche-line text-[1.5rem] sm:text-[2rem] md:text-[3rem] lg:text-[4rem] xl:text-[4.5rem] font-sans font-normal tracking-[-0.02em] select-none w-full leading-tight text-rainbow-shimmer">
-                    But hey, at least your wrist looks expensive.
-                  </h2>
-                </div>
-              </div>
+          {/* PORSCHE — SCROLL REVEAL (WOW FACTOR) */}
+          <section ref={porscheRef} className="porsche-spacer relative w-full py-32 sm:py-48 flex flex-col items-center justify-center pointer-events-auto overflow-hidden bg-white text-black border-t border-black/10">
+            <div className="relative z-10 w-full max-w-5xl mx-auto px-6 md:px-12 text-center">
+              <span className="text-[10px] sm:text-xs font-mono tracking-[0.4em] text-[#8B6914] uppercase block mb-8 font-bold">
+                THE MERIDIAN STANDARD
+              </span>
+              <h2 className="text-4xl sm:text-6xl md:text-8xl lg:text-[7rem] font-medium tracking-tight leading-[1.1] font-sans flex flex-wrap justify-center gap-x-[0.25em] gap-y-1">
+                {[
+                  { text: 'Disposable', highlight: false },
+                  { text: 'tech', highlight: false },
+                  { text: 'expires.', highlight: false },
+                  { text: 'True', highlight: true },
+                  { text: 'prestige', highlight: true },
+                  { text: 'is', highlight: true },
+                  { text: 'timeless.', highlight: true }
+                ].map((word, i) => (
+                  <span key={i} className={`porsche-word inline-block ${word.highlight ? 'font-extrabold text-[#8B6914]' : 'font-light text-black'}`}>
+                    {word.text}
+                  </span>
+                ))}
+              </h2>
             </div>
           </section>
+
+
 
         </div>
 

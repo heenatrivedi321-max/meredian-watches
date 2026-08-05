@@ -204,8 +204,8 @@ export default function IntroSplash({ onComplete, fast = false }) {
 
           {/* Gold Particle Burst */}
           {!isLow && <GoldBurst active={phase >= 1} count={isMobile ? 8 : 20} />}
-          {/* 4 VOLUMETRIC CORNER AMBIENT GLOW AURAS — skip on low-end */}
-          {!isLow && (<>
+          {/* 4 VOLUMETRIC CORNER AMBIENT GLOW AURAS — skip on low-end and mobile */}
+          {!isLow && !isMobile && (<>
           <motion.div 
             className="absolute -top-32 -left-32 w-96 h-96 rounded-full pointer-events-none z-0"
             style={{ background: 'radial-gradient(circle, rgba(128, 0, 32, 0.5) 0%, rgba(165, 42, 42, 0.2) 50%, transparent 70%)' }}
@@ -238,12 +238,12 @@ export default function IntroSplash({ onComplete, fast = false }) {
           {/* Ambient Gemini Live Mesh Background */}
           <div className="absolute inset-0 burgundy-aurora-bg pointer-events-none opacity-60 z-0" />
 
-          {/* Burgundy Anamorphic Beam */}
+          {/* Burgundy Anamorphic Beam ("The Slash") */}
           <motion.div
             className="absolute top-1/2 -translate-y-1/2 h-[2px] pointer-events-none z-10"
             style={{
               background: 'linear-gradient(90deg, transparent 0%, #800020 20%, #A52A2A 50%, #C95A5A 80%, #800020 90%, transparent 100%)',
-              boxShadow: '0 0 40px #800020, 0 0 90px #800020, 0 0 50px #A52A2A',
+              boxShadow: isMobile ? 'none' : '0 0 40px #800020, 0 0 90px #800020, 0 0 50px #A52A2A',
             }}
             initial={{ width: 0, opacity: 0 }}
             animate={{
@@ -259,9 +259,9 @@ export default function IntroSplash({ onComplete, fast = false }) {
               className="text-3xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-normal tracking-[0.08em] sm:tracking-[0.15em] uppercase max-w-full"
               style={{
                 fontFamily: "'Inter', sans-serif",
-                textShadow: phase >= 1 ? '0 0 40px rgba(201,169,110,0.6), 0 0 80px rgba(201,169,110,0.3)' : 'none',
+                textShadow: phase >= 1 && !isMobile ? '0 0 40px rgba(201,169,110,0.6), 0 0 80px rgba(201,169,110,0.3)' : 'none',
               }}
-              animate={phase >= 1 ? {
+              animate={phase >= 1 && !isMobile ? {
                 textShadow: [
                   '0 0 40px rgba(201,169,110,0.6), 0 0 80px rgba(201,169,110,0.3)',
                   '0 0 60px rgba(201,169,110,0.8), 0 0 120px rgba(201,169,110,0.4)',
@@ -274,8 +274,8 @@ export default function IntroSplash({ onComplete, fast = false }) {
                 <motion.span
                   key={i}
                   className={`inline-block ${isLow ? 'text-gold-static' : 'text-rainbow-shimmer'}`}
-                  initial={{ opacity: 0, y: 80, rotate: -12, filter: 'blur(12px)' }}
-                  animate={phase >= 1 ? { opacity: 1, y: 0, rotate: 0, filter: 'blur(0px)' } : {}}
+                  initial={{ opacity: 0, y: 80, rotate: -12, filter: isMobile ? 'none' : 'blur(12px)' }}
+                  animate={phase >= 1 ? { opacity: 1, y: 0, rotate: 0, filter: isMobile ? 'none' : 'blur(0px)' } : {}}
                   transition={{ duration: 0.5, delay: 0.35 + i * 0.06, ease: [0.16, 1, 0.3, 1] }}
                 >
                   {char}
@@ -287,8 +287,8 @@ export default function IntroSplash({ onComplete, fast = false }) {
             <motion.p
               className="mt-16 sm:mt-24 text-xs sm:text-lg md:text-xl tracking-[0.25em] sm:tracking-[0.35em] uppercase font-light text-white/80 drop-shadow-[0_10px_20px_rgba(0,0,0,0.9)] max-w-full"
               style={{ fontFamily: "'Inter', sans-serif" }}
-              initial={{ opacity: 0, y: 30, filter: 'blur(4px)' }}
-              animate={phase >= 1 ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
+              initial={{ opacity: 0, y: 30, filter: isMobile ? 'none' : 'blur(4px)' }}
+              animate={phase >= 1 ? { opacity: 1, y: 0, filter: isMobile ? 'none' : 'blur(0px)' } : {}}
               transition={{ duration: 0.6, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
             >
               Time flies. Look expensive while it perishes.

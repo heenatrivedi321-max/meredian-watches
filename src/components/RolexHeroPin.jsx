@@ -22,92 +22,92 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
     const glowEl = glowRef.current;
     if (!container || !videoEl) return;
 
-    // Entrance — cross-fade from dark section above
-    const entranceTl = gsap.fromTo(".rolex-hero-pin",
-      { autoAlpha: 0, y: 40 },
-      {
-        autoAlpha: 1, y: 0,
-        duration: 1.2,
-        ease: "power1.out",
-        scrollTrigger: {
-          trigger: ".rolex-hero-pin",
-          start: "top 100%",
-          toggleActions: "play none none none"
+    const ctx = gsap.context(() => {
+      // Entrance — cross-fade from dark section above
+      const entranceTl = gsap.fromTo(".rolex-hero-pin",
+        { autoAlpha: 0, y: 40 },
+        {
+          autoAlpha: 1, y: 0,
+          duration: 1.2,
+          ease: "power1.out",
+          scrollTrigger: {
+            trigger: ".rolex-hero-pin",
+            start: "top 100%",
+            toggleActions: "play none none none"
+          }
         }
-      }
-    );
-
-    // 1. FULL-WIDTH ROLEX CINEMATIC PINNED ZOOM TIMELINE (GPU HARDWARE ACCELERATED)
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: container,
-        start: "top top",
-        end: "+=70%",
-        pin: true,
-        scrub: 0.05,
-        anticipatePin: 1,
-      }
-    });
-
-    // Scale from clean inset to full edge-to-edge
-    tl.fromTo(videoEl,
-      { scale: 0.88, borderRadius: "24px", force3D: true },
-      { scale: 1.0, borderRadius: "0px", force3D: true, duration: 1, ease: "power2.out" }
-    );
-
-    tl.fromTo(glowEl,
-      { scale: 0.5, opacity: 0.2, force3D: true },
-      { scale: 1.4, opacity: 0.6, force3D: true, duration: 1, ease: "power2.out" },
-      0
-    );
-
-    // 2. ULTRA-FAST 120 FPS GPU HARDWARE ACCELERATED TEXT REVEALS
-    if (text1Ref.current) {
-      tl.fromTo(text1Ref.current,
-        { y: 80, opacity: 0, force3D: true },
-        { y: 0, opacity: 1, force3D: true, duration: 0.4, ease: "power3.out" },
-        0.08
-      ).to(text1Ref.current, { y: -80, opacity: 0, force3D: true, duration: 0.3 }, 0.42);
-    }
-
-    if (text2Ref.current) {
-      tl.fromTo(text2Ref.current,
-        { y: 80, opacity: 0, force3D: true },
-        { y: 0, opacity: 1, force3D: true, duration: 0.4, ease: "power3.out" },
-        0.42
-      ).to(text2Ref.current, { y: -80, opacity: 0, force3D: true, duration: 0.3 }, 0.78);
-    }
-
-    if (text3Ref.current) {
-      tl.fromTo(text3Ref.current,
-        { y: 80, opacity: 0, force3D: true },
-        { y: 0, opacity: 1, force3D: true, duration: 0.4, ease: "power3.out" },
-        0.78
       );
-    }
 
-    return () => {
-      tl.kill();
-      entranceTl.kill();
-    };
+      // 1. FULL-WIDTH CINEMATIC INSET-TO-FULLSCREEN EXPANSION TIMELINE
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: container,
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.2,
+        }
+      });
+
+      // Expand container from inset rounded frame to 100% full screen
+      tl.fromTo(videoEl,
+        { scale: 0.85, borderRadius: "28px", force3D: true },
+        { scale: 1.0, borderRadius: "0px", force3D: true, duration: 1, ease: "power2.out" }
+      );
+
+      // Deep zoom into video content simultaneously
+      if (videoRef.current) {
+        tl.fromTo(videoRef.current,
+          { scale: 1.0 },
+          { scale: 1.45, duration: 1, ease: "power1.inOut" },
+          0
+        );
+      }
+
+      tl.to(glowEl,
+        { scale: 1.8, opacity: 0.8, force3D: true, duration: 1, ease: "power2.out" },
+        0
+      );
+
+      // 2. SCROLL-TIED TEXT REVEAL (MATCHING THE BLUR REVEAL ABOVE)
+      gsap.fromTo(".hero-word",
+        { autoAlpha: 0, y: 80, rotationX: -20, scale: 0.95, filter: "blur(10px)" },
+        {
+          autoAlpha: 1,
+          y: 0,
+          rotationX: 0,
+          scale: 1,
+          filter: "blur(0px)",
+          duration: 1.2,
+          stagger: 0.15,
+          ease: "expo.out",
+          scrollTrigger: {
+            trigger: container,
+            start: "top 70%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    }, container);
+
+    return () => ctx.revert();
   }, []);
 
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-screen bg-white overflow-hidden flex items-center justify-center pointer-events-auto rolex-hero-pin"
+      className="relative w-full h-screen bg-black overflow-hidden flex items-center justify-center pointer-events-auto rolex-hero-pin"
     >
       {/* Ambient Gold Radial Glow */}
       <div
         ref={glowRef}
-        className="absolute w-[800px] h-[800px] rounded-full bg-radial from-[#800020]/25 via-[#A52A2A]/10 to-transparent blur-3xl pointer-events-none z-10"
+        className="absolute w-[800px] h-[800px] rounded-full bg-radial from-[#C9A96E]/20 via-transparent to-transparent blur-3xl pointer-events-none z-10"
         style={{ willChange: 'transform, opacity' }}
       />
 
       {/* 100% CLEAN NO-WATERMARK CROPPED 4K VIDEO CONTAINER */}
       <div
         ref={pinnedVideoRef}
-        className="relative z-0 w-full h-full overflow-hidden flex items-center justify-center cursor-pointer group shadow-2xl bg-white"
+        className="relative z-0 w-full h-full overflow-hidden flex items-center justify-center cursor-pointer group shadow-2xl bg-black"
         onClick={() => onSelectWatch && onSelectWatch(watch)}
         style={{ willChange: 'transform, borderRadius' }}
       >
@@ -118,56 +118,34 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
           playsInline
           preload="none"
           src={watch?.cinematicVideo || watch?.video || "/Gold_skeleton_watch_showcase_202606290837.mp4"}
-          className="w-full h-full object-cover transition-transform duration-700 scale-125 origin-center"
+          className="w-full h-full object-cover transition-transform duration-700 scale-100 origin-center"
         />
         {/* Subtle Gradient Vignette for Text Contrast */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/60 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/60 pointer-events-none" />
       </div>
 
-      {/* Text Reveal 1: Top Left */}
-      <div className="absolute left-8 sm:left-20 right-8 top-1/3 z-30 overflow-hidden pointer-events-none">
-        <div
-          ref={text1Ref}
-          className="transform transition-transform"
-          style={{ willChange: 'transform, opacity' }}
-        >
-          <span className="text-xs font-mono tracking-[0.4em] text-[#800020] uppercase block mb-2">
-            316L SURGICAL STEEL
+      {/* SHORT & PUNCHY ROLEX GOLD EDITORIAL OVERLAY */}
+      <div className="absolute inset-0 z-30 flex items-center justify-center p-6 sm:p-12 md:p-20 pointer-events-none">
+        <div className="max-w-5xl text-center font-sans">
+          <span className="text-xs sm:text-sm font-mono tracking-[0.4em] text-[#C9A96E] uppercase block mb-6 font-bold">
+            BEYOND COMPROMISE
           </span>
-          <h2 className="text-3xl sm:text-5xl font-sans font-normal tracking-[-0.02em] text-rainbow-shimmer">
-            Looks like 50 Lacs. Costs less than your weekend tab.
-          </h2>
-        </div>
-      </div>
-
-      {/* Text Reveal 2: Bottom Right */}
-      <div className="absolute left-8 sm:left-auto right-8 sm:right-20 bottom-1/3 z-30 overflow-hidden pointer-events-none sm:text-right text-left">
-        <div
-          ref={text2Ref}
-          className="transform transition-transform"
-          style={{ willChange: 'transform, opacity' }}
-        >
-          <span className="text-xs font-mono tracking-[0.4em] text-[#800020] uppercase block mb-2">
-            SAPPHIRE CRYSTAL GLASS
-          </span>
-          <h2 className="text-3xl sm:text-5xl font-sans font-normal tracking-[-0.02em] text-rainbow-shimmer">
-            No notifications. No software updates. Just pure unadulterated steel.
-          </h2>
-        </div>
-      </div>
-
-      {/* Text Reveal 3: Center Climax */}
-      <div className="absolute inset-x-6 bottom-24 z-30 overflow-hidden text-center pointer-events-none">
-        <div
-          ref={text3Ref}
-          className="transform transition-transform max-w-5xl mx-auto"
-        >
-          <h2 className="text-xl sm:text-5xl lg:text-6xl font-sans font-normal tracking-[-0.02em] text-rainbow-shimmer mb-3 leading-tight">
-            Your smartwatch tells you to stand up. Ours tells people you own the building.
-          </h2>
-          <span className="text-xs font-mono tracking-[0.4em] text-[#800020] uppercase">
-            MERIDIAN HOROLOGY — ATELIER EDITION
-          </span>
+          <h1 className="text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-light tracking-tight leading-[1.05] flex flex-col items-center justify-center gap-2">
+            <div className="flex flex-wrap justify-center gap-x-[0.25em]">
+              {['The', 'Ultimate', 'Statement.'].map((word, i) => (
+                <span key={i} className="hero-word inline-block font-extrabold text-[#C9A96E]">
+                  {word}
+                </span>
+              ))}
+            </div>
+            <div className="flex flex-wrap justify-center gap-x-[0.25em]">
+              {['Forged', 'in', 'Time.'].map((word, i) => (
+                <span key={i + 3} className="hero-word inline-block font-extrabold text-white">
+                  {word}
+                </span>
+              ))}
+            </div>
+          </h1>
         </div>
       </div>
     </section>
