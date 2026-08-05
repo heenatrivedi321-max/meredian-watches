@@ -93,13 +93,13 @@ export default function WatchSection({ watch, index, onClick }) {
   return (
     <section
       ref={sectionRef}
-      className="sticky top-0 w-full h-screen bg-black flex items-center justify-center pointer-events-auto px-3 py-3 sm:px-6 sm:py-4"
+      className="sticky top-0 w-full h-screen bg-white flex items-center justify-center pointer-events-auto px-4 py-4 sm:px-8 sm:py-6"
       style={{ zIndex: 10 + index }}
     >
       {/* INSET ROUNDED CARD CONTAINER WITH DISTINCT LUXURY BACKDROP */}
       <div 
         ref={cardInnerRef}
-        className={`relative w-full max-w-7xl h-full rounded-[24px] sm:rounded-[32px] overflow-hidden ${currentBg} border border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.9)] flex flex-col justify-between p-5 sm:p-10 md:p-12 group`}
+        className={`relative w-full max-w-7xl h-full rounded-[28px] sm:rounded-[40px] overflow-hidden ${currentBg} shadow-[0_8px_60px_rgba(0,0,0,0.55),0_2px_12px_rgba(0,0,0,0.25)] flex flex-col justify-between p-5 sm:p-10 md:p-12 group`}
       >
         {/* 1. INLINE WATCH VIDEO BACKGROUND (AUTOPLAY) */}
         <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
