@@ -93,13 +93,13 @@ export default function WatchSection({ watch, index, onClick }) {
   return (
     <section
       ref={sectionRef}
-      className="sticky top-0 w-full h-screen bg-white flex items-center justify-center pointer-events-auto"
+      className="sticky top-0 w-full h-screen bg-white flex items-center justify-center pointer-events-auto px-3 py-3 sm:px-6 sm:py-4"
       style={{ zIndex: 10 + index }}
     >
       {/* INSET ROUNDED CARD CONTAINER WITH DISTINCT LUXURY BACKDROP */}
       <div 
         ref={cardInnerRef}
-        className={`relative w-full max-w-none sm:max-w-[95vw] md:max-w-7xl h-[100vh] sm:h-[92vh] sm:rounded-[32px] overflow-hidden ${currentBg} border border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.9)] flex flex-col justify-between p-6 sm:p-10 md:p-12 group`}
+        className={`relative w-full max-w-7xl h-full rounded-[24px] sm:rounded-[32px] overflow-hidden ${currentBg} border border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.9)] flex flex-col justify-between p-5 sm:p-10 md:p-12 group`}
       >
         {/* 1. INLINE WATCH VIDEO BACKGROUND (AUTOPLAY) */}
         <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
@@ -113,8 +113,10 @@ export default function WatchSection({ watch, index, onClick }) {
             src={watch.cinematicVideo || watch.video}
             className="w-full h-full object-cover opacity-100 group-hover:scale-105 transition-transform duration-1000 origin-center"
           />
-          {/* Strong text protection gradient at the absolute top and bottom, but transparent in the middle */}
+          {/* Strong text protection gradient at top and bottom, clear in the middle */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/0 to-black/80 pointer-events-none" />
+          {/* Gemini watermark cover — black patch bottom-right corner of video */}
+          <div className="absolute bottom-0 right-0 w-40 h-16 bg-gradient-to-tl from-black via-black/80 to-transparent pointer-events-none z-10" />
         </div>
 
         {/* 2. GIANT KINETIC BACKGROUND TYPOGRAPHY */}
