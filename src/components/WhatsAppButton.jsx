@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 // UPDATE: Replace WHATSAPP_NUMBER with your actual number.
 // ============================================================
 
-const WHATSAPP_NUMBER = '919XXXXXXXXX'; // 👈 Replace with your number (91 + number, no + or spaces)
+const WHATSAPP_NUMBER = '918431724851';
 const PRE_FILLED_MESSAGE = encodeURIComponent(
   'Hi! I saw your watches on Instagram and I\'m interested. Can you help me pick one?'
 );
