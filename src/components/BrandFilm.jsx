@@ -127,7 +127,7 @@ export default function BrandFilm() {
         className="absolute inset-0 w-full h-full object-cover transition-all duration-1000"
         style={{ transform: 'translateZ(0)', willChange: 'transform' }}
       >
-        <source src="/brand-film.mp4" type="video/mp4" />
+        <source src="/brand-film_clean_20260805_softbr_20260805.mp4" type="video/mp4" />
       </video>
 
       {/* LUXURY GRADIENT OVERLAYS */}

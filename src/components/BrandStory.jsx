@@ -28,7 +28,7 @@ export default function BrandStory({ onClose }) {
         <video
           autoPlay loop muted playsInline preload="none"
           className="absolute inset-0 w-full h-full object-cover opacity-40"
-          src="/Porsche_driving_through_tunnel_202606281316.mp4"
+          src="/Porsche_driving_through_tunnel_202606281316_softbr_20260805.mp4"
         />
         <motion.div
           initial={{ opacity: 0, y: 30 }}

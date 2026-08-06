@@ -286,14 +286,12 @@ export default function CollectionShowcase({ onSelectWatch }) {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const isMobile = window.innerWidth < 768;
-
-      // "Choose Your Legacy" — staggered reveal with scale
+      // "Choose Your Legacy" — staggered reveal (transform/opacity only — GPU-light)
       const legacyEls = gsap.utils.toArray(".legacy-text");
       gsap.fromTo(legacyEls,
-        { autoAlpha: 0, y: 80, rotationX: -20, scale: 0.95, filter: isMobile ? "none" : "blur(10px)" },
+        { autoAlpha: 0, y: 80, scale: 0.95 },
         {
-          autoAlpha: 1, y: 0, rotationX: 0, scale: 1, filter: isMobile ? "none" : "blur(0px)",
+          autoAlpha: 1, y: 0, scale: 1,
           duration: 1.2,
           stagger: 0.2,
           ease: "expo.out",
@@ -307,11 +305,11 @@ export default function CollectionShowcase({ onSelectWatch }) {
 
       // "More than an instrument of time" story — word-by-word stagger reveal
       gsap.fromTo(".story-word",
-        { autoAlpha: 0, y: 80, rotationX: -20, scale: 0.95, filter: isMobile ? "none" : "blur(10px)" },
+        { autoAlpha: 0, y: 70, rotateX: -25, scale: 0.9 },
         {
-          autoAlpha: 1, y: 0, rotationX: 0, scale: 1, filter: isMobile ? "none" : "blur(0px)",
-          duration: isMobile ? 0.7 : 1.0,
-          stagger: 0.08,
+          autoAlpha: 1, y: 0, rotateX: 0, scale: 1,
+          duration: 1.0,
+          stagger: 0.09,
           ease: "expo.out",
           scrollTrigger: {
             trigger: storyRef.current,
@@ -339,9 +337,9 @@ export default function CollectionShowcase({ onSelectWatch }) {
       // Closer section — staggered cinematic reveal
       const closerEls = gsap.utils.toArray(".closer-text");
       gsap.fromTo(closerEls,
-        { autoAlpha: 0, y: 60, rotationX: -15, filter: isMobile ? "none" : "blur(8px)" },
+        { autoAlpha: 0, y: 60, scale: 0.97 },
         {
-          autoAlpha: 1, y: 0, rotationX: 0, filter: isMobile ? "none" : "blur(0px)",
+          autoAlpha: 1, y: 0, scale: 1,
           duration: 1.2,
           stagger: 0.2,
           ease: "power3.out",
@@ -477,7 +475,7 @@ export default function CollectionShowcase({ onSelectWatch }) {
           className="absolute inset-0 w-full h-full object-cover z-0 opacity-30 scale-[1.3]"
           style={{ mixBlendMode: 'multiply' }}
         >
-          <source src="/Watch_gears_Clean.mp4" type="video/mp4" />
+          <source src="/Watch_gears_Clean_softbr_20260805.mp4" type="video/mp4" />
         </video>
 
         {/* Content */}

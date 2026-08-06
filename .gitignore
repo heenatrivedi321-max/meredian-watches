@@ -133,3 +133,6 @@ public/joker_frame_*.jpg
 public/v1.mp4
 public/v2.mp4
 public/leo_v1.mp4
+
+# Archived unreferenced videos (not deployed)
+video-archive/

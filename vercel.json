@@ -1,9 +1,18 @@
 {
   "installCommand": "npm install --legacy-peer-deps",
-  "buildCommand": "npx vite build",
+  "buildCommand": "npx vite build && mv dist/src/index.html dist/index.html",
   "outputDirectory": "dist",
   "framework": "vite",
   "headers": [
+    {
+      "source": "/(index.html)?",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
     {
       "source": "/(.*).(mp4|webm|mp3|jpg|png|svg|jpeg|webp)",
       "headers": [

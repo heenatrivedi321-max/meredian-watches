@@ -260,8 +260,7 @@ export default function App() {
         const x = (Math.random() - 0.5) * vw * 1.2;
         const y = (Math.random() - 0.5) * vh * 1.2;
         const rot = (Math.random() - 0.5) * 360;
-        const blur = isMobile ? '' : ';filter:blur(3px)';
-        c.style.cssText = `opacity:0.3;transform:translate(${x}px,${y}px) scale(0.08) rotate(${rot}deg);display:inline-block;will-change:transform,opacity${blur}`;
+        c.style.cssText = `opacity:0.3;transform:translate(${x}px,${y}px) scale(0.08) rotate(${rot}deg);display:inline-block;will-change:transform,opacity`;
       });
 
       if (titleEl) titleEl.style.opacity = '1';
@@ -283,7 +282,6 @@ export default function App() {
         x: 0,
         y: 0,
         rotation: 0,
-        filter: 'blur(0px)',
         duration: 0.9,
         stagger: 0.04,
         ease: 'power2.out',
@@ -324,7 +322,7 @@ export default function App() {
         { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" }
       );
 
-      // Hero zoom + blur on scroll (entering the watch)
+      // Hero zoom on scroll (entering the watch) — no filter (GPU-light)
       gsap.to(".hero-content", {
         scrollTrigger: {
           trigger: ".hero-spacer",
@@ -334,11 +332,10 @@ export default function App() {
         },
         scale: 2.5,
         opacity: 0,
-        filter: window.innerWidth < 768 ? "none" : "blur(20px)",
         ease: "none"
       });
 
-      // Stars video zooms in on scroll — no blur on mobile (kills perf)
+      // Stars video zooms in on scroll — transform only (kills GPU with filter)
       gsap.to(".bg-stars", {
         scrollTrigger: {
           trigger: ".hero-spacer",
@@ -347,7 +344,6 @@ export default function App() {
           scrub: true,
         },
         scale: 3,
-        filter: window.innerWidth < 768 ? "none" : "blur(30px)",
         ease: "none"
       });
 
@@ -369,34 +365,7 @@ export default function App() {
         }
       );
 
-      // 3. PORSCHE — Scroll-tied Cinematic Reveal (Mobile Performant)
-      gsap.fromTo(".porsche-word",
-        { opacity: 0.1, y: 40, scale: 0.9 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          stagger: 0.1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: ".porsche-spacer",
-            start: "top 80%",
-            end: "bottom 60%",
-            scrub: 1
-          }
-        }
-      );
 
-      // Fade out Porsche video smoothly before products
-      gsap.to(".bg-porsche", {
-        autoAlpha: 0,
-        scrollTrigger: {
-          trigger: ".product-reveal",
-          start: "top 90%",
-          end: "top 40%",
-          scrub: !isLow,
-        }
-      });
 
       // Footer reveal
       gsap.fromTo(".site-footer",
@@ -442,11 +411,11 @@ export default function App() {
             className="bg-stars absolute inset-0 w-full h-full object-cover opacity-90"
             style={{ transform: 'scale(1.3) translateZ(0)', willChange: 'transform' }}
           >
-            <source src="/hero-4k.mp4" type="video/mp4" />
+            <source src="/hero-4k_softbr_20260805.mp4" type="video/mp4" />
           </video>
 
           {/* Ambient audio for hero video */}
-          <audio ref={audioRef} loop preload="auto">
+          <audio ref={audioRef} loop preload="none">
             <source src="/ambient.mp3" type="audio/mpeg" />
           </audio>
 
@@ -573,7 +542,7 @@ export default function App() {
                 className="absolute inset-0 w-full h-full object-cover opacity-80 scale-[1.05] md:object-center object-[center_30%]"
                 style={{ transform: 'translateZ(0)', willChange: 'transform' }}
               >
-                <source src="/hero-4k.mp4" type="video/mp4" />
+                <source src="/hero-4k_softbr_20260805.mp4" type="video/mp4" />
               </video>
               <div className="absolute inset-0 burgundy-wave opacity-30 mix-blend-color-dodge pointer-events-none max-md:opacity-0" />
               <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 pointer-events-none" />
@@ -644,13 +613,13 @@ export default function App() {
             </button>
           </section>
 
-          {/* MANIFESTO — SCROLL REVEAL (WOW FACTOR) */}
-          <section ref={manifestoRef} className="manifesto-spacer relative w-full py-32 sm:py-48 flex flex-col items-center justify-center pointer-events-auto overflow-hidden bg-white text-black">
+          {/* MANIFESTO — QUICK PUNCHY HOOK */}
+          <section ref={manifestoRef} className="manifesto-spacer relative w-full py-16 sm:py-20 flex flex-col items-center justify-center pointer-events-auto overflow-hidden bg-white text-black">
             <div className="relative z-10 w-full max-w-5xl mx-auto px-6 md:px-12 text-center">
-              <span className="text-[10px] sm:text-xs font-mono tracking-[0.4em] text-[#800020] uppercase block mb-8 font-bold">
+              <span className="text-[10px] sm:text-xs font-mono tracking-[0.4em] text-[#800020] uppercase block mb-4 font-bold">
                 BEYOND DISPOSABLE TECH
               </span>
-              <h2 className="text-4xl sm:text-6xl md:text-8xl lg:text-[7rem] font-medium tracking-tight leading-[1.1] font-sans flex flex-wrap justify-center gap-x-[0.25em] gap-y-1">
+              <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight leading-[1.1] font-sans flex flex-wrap justify-center gap-x-[0.25em] gap-y-1">
                 {[
                   { text: 'A', highlight: false },
                   { text: 'smartwatch', highlight: false },
@@ -670,33 +639,21 @@ export default function App() {
             </div>
           </section>
 
-          {/* PORSCHE — SCROLL REVEAL (WOW FACTOR) */}
-          <section ref={porscheRef} className="porsche-spacer relative w-full py-32 sm:py-48 flex flex-col items-center justify-center pointer-events-auto overflow-hidden bg-white text-black border-t border-black/10">
-            <div className="relative z-10 w-full max-w-5xl mx-auto px-6 md:px-12 text-center">
-              <span className="text-[10px] sm:text-xs font-mono tracking-[0.4em] text-[#8B6914] uppercase block mb-8 font-bold">
-                THE MERIDIAN STANDARD
-              </span>
-              <h2 className="text-4xl sm:text-6xl md:text-8xl lg:text-[7rem] font-medium tracking-tight leading-[1.1] font-sans flex flex-wrap justify-center gap-x-[0.25em] gap-y-1">
-                {[
-                  { text: 'Disposable', highlight: false },
-                  { text: 'tech', highlight: false },
-                  { text: 'expires.', highlight: false },
-                  { text: 'True', highlight: true },
-                  { text: 'prestige', highlight: true },
-                  { text: 'is', highlight: true },
-                  { text: 'timeless.', highlight: true }
-                ].map((word, i) => (
-                  <span key={i} className={`porsche-word inline-block ${word.highlight ? 'font-extrabold text-[#8B6914]' : 'font-light text-black'}`}>
-                    {word.text}
-                  </span>
-                ))}
-              </h2>
-            </div>
-          </section>
-
-
+          {/* STANDARD REMOVED — now shows after products */}
 
         </div>
+
+        {/* ============================================ */}
+        {/* PRODUCTS FIRST — immediate after hero hook  */}
+        {/* ============================================ */}
+        <CollectionShowcase onSelectWatch={setSelectedWatch} />
+        <Suspense fallback={null}>
+          <ProductOverlay watch={selectedWatch} onClose={() => setSelectedWatch(null)} />
+        </Suspense>
+
+        {/* ============================================ */}
+        {/* BRAND STORY — for those who scroll further  */}
+        {/* ============================================ */}
 
         {/* 100% EXACT ROLEX PINNED 3D CENTERPIECE ZOOM ENGINE */}
         <RolexHeroPin watch={WATCHES[0]} onSelectWatch={setSelectedWatch} />
@@ -708,21 +665,18 @@ export default function App() {
           
           {/* CINEMA TAKEOVER 2: PEAKY BLINDERS SHELBY BROTHERS (FULL UNUNCUT SCENE) */}
           <CinemaIntermission 
-            videoSrc="/peaky_extended_full_44s.mp4" 
+            videoSrc="/peaky_extended_full_44s_softbr_20260805.mp4" 
             title='"Power doesn’t ask for permission. It counts every second."' 
           />
 
           {/* CINEMA TAKEOVER 3: THE DARK KNIGHT */}
           <CinemaIntermission 
-            videoSrc="/dark-knight.mp4" 
+            videoSrc="/dark-knight_softbr_20260805.mp4" 
             title='"0.001s for glory. Still late for your 9 AM."' 
           />
         </Suspense>
 
-        <CollectionShowcase onSelectWatch={setSelectedWatch} />
-        <Suspense fallback={null}>
-          <ProductOverlay watch={selectedWatch} onClose={() => setSelectedWatch(null)} />
-        </Suspense>
+
 
         {/* LUXURY COMPLIANCE FOOTER */}
         <footer className="site-footer w-full bg-[#050507] border-t border-white/10 py-12 px-6 text-center text-white/50 z-20 relative pointer-events-auto">

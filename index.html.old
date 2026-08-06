@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MERIDIAN | Luxury Watches That Outlast You</title>
+    <meta name="description" content="Meridian — curated luxury timepieces for those who refuse to blend in. Rose gold, sapphire crystal, automatic movements. Free shipping across India." />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/logo-mark.png" />
+    <link rel="apple-touch-icon" href="/logo-mark.png" />
+    <meta name="theme-color" content="#000000" />
+
+    <!-- Preload critical videos (desktop only — mobile loads on demand) -->
+    <link rel="preload" as="video" href="/hero-4k.mp4" type="video/mp4" media="(min-width: 768px)" />
+    <link rel="preload" as="video" href="/Watch_gears_forming_watch_dial_202606291025.mp4" type="video/mp4" media="(min-width: 768px)" />
+    <link rel="preload" as="video" href="/brand-film_clean_20260805.mp4" type="video/mp4" media="(min-width: 768px)" />
+    <link rel="preload" as="video" href="/peaky_extended_full_44s.mp4" type="video/mp4" media="(min-width: 768px)" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="MERIDIAN | Luxury Watches That Outlast You" />
+    <meta property="og:description" content="Curated luxury timepieces for those who refuse to blend in. Rose gold, sapphire crystal, automatic movements." />
+    <meta property="og:image" content="https://www.meredianwatches.store/watches_new/hexa%20hustlr.jpg" />
+    <meta property="og:url" content="https://www.meredianwatches.store" />
+    <meta property="og:site_name" content="Meridian Watches" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MERIDIAN | Luxury Watches That Outlast You" />
+    <meta name="twitter:description" content="Curated luxury timepieces for those who refuse to blend in." />
+    <meta name="twitter:image" content="https://www.meredianwatches.store/watches_new/hexa%20hustlr.jpg" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800;900&family=Anton&display=swap" rel="stylesheet" />
+
+    <!-- JSON-LD Product Schema (injected per product by React, but base org schema here) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Meridian Watches",
+      "url": "https://www.meredianwatches.store",
+      "logo": "https://www.meredianwatches.store/watches_new/hexa%20hustlr.jpg",
+      "description": "Curated luxury timepieces for those who refuse to blend in.",
+      "sameAs": ["https://www.instagram.com/meri.dianwatches/"],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "Customer Service",
+        "availableLanguage": "English",
+        "areaServed": "IN"
+      }
+    }
+    </script>
+
+    <!-- Google Analytics 4 (replace G-XXXXXXXXXX with your Measurement ID) -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script> -->
+
+    <!-- Meta Pixel -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '1067928095657323');
+      fbq('track', 'PageView');
+    </script>
+
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "xtyi6umold");
+    </script>
+  </head>
+  <body>
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=1067928095657323&ev=PageView&noscript=1"
+    /></noscript>
+    <audio id="ta-dum-audio" src="/ta-dum.mp3" preload="none" playsinline></audio>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

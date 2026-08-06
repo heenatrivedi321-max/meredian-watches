@@ -70,16 +70,14 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
         );
       }
 
-      // 2. WORD REVEAL — no blur on mobile
+      // 2. WORD REVEAL — transform/opacity only (GPU-light)
       gsap.fromTo(".hero-word",
         {
-          autoAlpha: 0, y: 80, rotationX: -20, scale: 0.95,
-          filter: isMobile ? "none" : "blur(10px)"
+          autoAlpha: 0, y: 80, rotationX: -20, scale: 0.95
         },
         {
           autoAlpha: 1, y: 0, rotationX: 0, scale: 1,
-          filter: isMobile ? "none" : "blur(0px)",
-          duration: isMobile ? 0.8 : 1.2,
+          duration: 1.2,
           stagger: 0.15,
           ease: "expo.out",
           scrollTrigger: {
@@ -119,7 +117,7 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
           muted
           playsInline
           preload="none"
-          src={watch?.cinematicVideo || watch?.video || "/Gold_skeleton_watch_showcase_202606290837.mp4"}
+          src={watch?.cinematicVideo || watch?.video || "/Gold_skeleton_watch_showcase_202606290837_softbr_20260805.mp4"}
           className="w-full h-full object-cover transition-transform duration-700 scale-100 origin-center"
         />
         {/* Subtle Gradient Vignette for Text Contrast */}
