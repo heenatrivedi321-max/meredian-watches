@@ -136,3 +136,25 @@ public/leo_v1.mp4
 
 # Archived unreferenced videos (not deployed)
 video-archive/
+
+# Watermark removal work files (temp crops, masks, overlays)
+public/*_overlay.png
+public/mask_*.png
+public/inpaint_*.jpg
+public/author_*.jpg
+public/book_frame*.jpg
+public/corner_*.jpg
+public/top_strip.jpg
+public/bottom_strip.jpg
+public/bright_text_*.jpg
+public/sparkle_crop.jpg
+public/watermark_*.jpg
+public/hero_clean.jpg
+public/hero_soft.jpg
+public/thumb_*.jpg
+public/elvis_00_*.jpg
+public/elvis_test.jpg
+public/test_vt*.mp4
+
+# Old HTML backup
+index.html.old
