@@ -10,6 +10,8 @@ import ProductSchema from './components/ProductSchema';
 import IntroSplash from './components/IntroSplash';
 import RolexHeroPin from './components/RolexHeroPin';
 import GoldStarDustCursor from './components/GoldStarDustCursor';
+import AnnouncementBar from './components/AnnouncementBar';
+import WhatsAppButton from './components/WhatsAppButton';
 import { isLowEndDevice } from './utils/device';
 import { useNearPlay } from './hooks/useNearPlay';
 import { WATCHES } from './data/watches';
@@ -584,6 +586,11 @@ export default function App() {
                   </svg>
                 </span>
               </button>
+
+              {/* Price hook — visible immediately under hero CTA */}
+              <p className="shop-cta-hero text-[10px] sm:text-[11px] font-mono tracking-[0.3em] text-white/50 uppercase mt-3 opacity-0" style={{ opacity: 0 }}>
+                From <span className="text-[#C9A96E] font-bold">₹999</span> · Free Delivery
+              </p>
             </div>
 
             {/* Scroll Indicator with Gemini Gradient Line */}
@@ -702,6 +709,8 @@ export default function App() {
       </div>
 
       {/* Floating UI — above everything */}
+      <AnnouncementBar />
+      <WhatsAppButton />
       {!isLow && <GoldStarDustCursor />}
       <ScrollToTop />
 
