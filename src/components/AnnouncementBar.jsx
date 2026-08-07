@@ -7,9 +7,9 @@ import React, { useState, useEffect } from 'react';
 
 const MESSAGES = [
   '✦ Watches Starting $44.99',
-  '✦ Free US & Worldwide Shipping',
+  '✦ 256-Bit Encrypted Secure Checkout',
   '✦ 30-Day Risk-Free Guarantee',
-  '✦ Secure Checkout · Apple Pay · Cards',
+  '✦ Apple Pay · PayPal · Credit Cards Accepted',
 ];
 
 export default function AnnouncementBar() {

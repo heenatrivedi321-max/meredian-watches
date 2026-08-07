@@ -268,8 +268,8 @@ export default function ProductOverlay({ watch, onClose }) {
                 <span style={{ fontSize: 'clamp(2.2rem, 3.5vw, 3.2rem)', fontWeight: 800, fontFamily: "'Inter', sans-serif", letterSpacing: '-0.03em', color: '#000' }}>
                   {watch.price}
                 </span>
-                <span style={{ fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 700, color: '#800020', padding: '6px 14px', border: '1.5px solid #800020', borderRadius: 9999, background: 'rgba(0,96,57,0.05)' }}>
-                  Free Express Delivery
+                <span style={{ fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 700, color: '#800020', padding: '6px 14px', border: '1.5px solid #800020', borderRadius: 9999, background: 'rgba(128,0,32,0.05)' }}>
+                  Insured Delivery
                 </span>
               </div>
             </FadeIn>
@@ -510,22 +510,22 @@ export default function ProductOverlay({ watch, onClose }) {
           </div>
         </FadeIn>
 
-        {/* Trust Badges */}
+        {/* Secure Checkout & Payment Badges */}
         <FadeIn delay={0.25}>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center', marginBottom: 24 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center', marginBottom: 24, maxWidth: 500 }}>
             {[
-              { icon: "🚚", label: "Free Express Shipping" },
-              { icon: "↩️", label: "7-Day Returns" },
-              { icon: "✓", label: "100% Authentic" },
-              { icon: "🛡️", label: "Insured Delivery" }
+              { icon: "🔒", label: "256-Bit Secure Checkout" },
+              { icon: "💳", label: "Credit & Debit Cards" },
+              { icon: "🍎", label: "Apple Pay" },
+              { icon: "🅿️", label: "PayPal" }
             ].map((item, i) => (
               <div key={i} style={{
                 display: 'flex', alignItems: 'center', gap: 8,
-                padding: '10px 18px', borderRadius: 9999,
-                background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.06)',
-                fontSize: 11, fontWeight: 700, letterSpacing: '0.05em', color: 'rgba(0,0,0,0.7)',
+                padding: '8px 16px', borderRadius: 9999,
+                background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)',
+                fontSize: 11, fontWeight: 700, letterSpacing: '0.04em', color: 'rgba(0,0,0,0.85)',
               }}>
-                <span style={{ fontSize: 14 }}>{item.icon}</span>
+                <span style={{ fontSize: 13 }}>{item.icon}</span>
                 <span>{item.label}</span>
               </div>
             ))}
