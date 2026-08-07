@@ -35,6 +35,9 @@ export async function createCheckout(variantId) {
   `, {
     input: {
       lines: [{ merchandiseId: gid, quantity: 1 }],
+      buyerIdentity: {
+        countryCode: 'US'
+      }
     },
   });
 
