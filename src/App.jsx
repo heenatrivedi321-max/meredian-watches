@@ -587,10 +587,7 @@ export default function App() {
                 </span>
               </button>
 
-              {/* Price hook — visible immediately under hero CTA */}
-              <p className="shop-cta-hero text-[10px] sm:text-[11px] font-mono tracking-[0.3em] text-white/50 uppercase mt-3 opacity-0" style={{ opacity: 0 }}>
-                From <span className="text-[#C9A96E] font-bold">$44.99</span> · 256-Bit Encrypted
-              </p>
+
             </div>
 
             {/* Scroll Indicator with Gemini Gradient Line */}
