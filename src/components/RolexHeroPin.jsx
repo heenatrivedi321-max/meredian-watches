@@ -5,7 +5,7 @@ import { useNearPlay } from '../hooks/useNearPlay';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function RolexHeroPin({ watch, onSelectWatch }) {
+export default function RolexHeroPin({ watch, videoSrc, onSelectWatch }) {
   const containerRef = useRef(null);
   const pinnedVideoRef = useRef(null);
   const videoRef = useRef(null);
@@ -117,7 +117,7 @@ export default function RolexHeroPin({ watch, onSelectWatch }) {
           muted
           playsInline
           preload="none"
-          src={watch?.cinematicVideo || watch?.video || "/Gold_skeleton_watch_showcase_202606290837_softbr_20260805.mp4"}
+          src={videoSrc || "/Gold_skeleton_watch_showcase_202606290837_softbr_20260805.mp4"}
           className="w-full h-full object-cover transition-transform duration-700 scale-100 origin-center"
         />
         {/* Subtle Gradient Vignette for Text Contrast */}
