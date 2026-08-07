@@ -6,19 +6,19 @@ gsap.registerPlugin(ScrollTrigger);
 
 const images = [
   {
-    src: "/watches_new/americanviber_1.jpg",
+    src: "/watches_new/MK9218_gold_auto_1.jpg",
     start: { x: "-100vw", y: "-50vh", rotation: -45, scale: 1.5 },
     end: { x: 0, y: 0, rotation: -4, scale: 1, top: "5%", left: "5%" },
     className: "w-[40%] md:w-[25%] h-auto object-cover rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 z-10 will-change-transform",
   },
   {
-    src: "/watches_new/forsining_square_2.jpg",
+    src: "/watches_new/forsining_square_1.jpg",
     start: { x: "100vw", y: "-80vh", rotation: 45, scale: 1.5 },
     end: { x: 0, y: 0, rotation: 6, scale: 1, top: "5%", right: "5%" },
     className: "w-[40%] md:w-[30%] h-auto object-cover rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 z-20 will-change-transform",
   },
   {
-    src: "/watches_new/americanviber_5.jpg",
+    src: "/watches_new/americanviber_1.jpg",
     start: { x: "-50vw", y: "100vh", rotation: -60, scale: 1.2 },
     end: { x: 0, y: 0, rotation: -2, scale: 1, bottom: "5%", left: "20%" },
     className: "w-[45%] md:w-[35%] h-auto object-cover rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 z-30 will-change-transform",
@@ -30,7 +30,7 @@ const images = [
     className: "w-[45%] md:w-[30%] h-auto object-cover rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 z-10 will-change-transform",
   },
   {
-    src: "/watches_new/forsining_square_4.jpg",
+    src: "/watches_new/FORSINING TOURBILLON.jpg",
     start: { x: 0, y: "150vh", rotation: 180, scale: 2 },
     end: { x: 0, y: 0, rotation: 0, scale: 1, top: "35%", left: "35%" },
     className: "w-[50%] md:w-[40%] h-auto object-cover rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 z-40 hidden sm:block will-change-transform",
