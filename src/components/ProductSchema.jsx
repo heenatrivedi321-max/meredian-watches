@@ -15,8 +15,8 @@ export default function ProductSchema({ watch }) {
     },
     "offers": {
       "@type": "Offer",
-      "price": watch.price.replace(/[₹,]/g, ''),
-      "priceCurrency": "INR",
+      "price": watch.price.replace(/[$₹,]/g, ''),
+      "priceCurrency": "USD",
       "availability": watch.outOfStock ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
       "seller": {
         "@type": "Organization",
@@ -26,19 +26,19 @@ export default function ProductSchema({ watch }) {
         "@type": "OfferShippingDetails",
         "shippingDestination": {
           "@type": "DefinedRegion",
-          "addressCountry": "IN"
+          "addressCountry": "US"
         },
         "deliveryTime": {
           "@type": "ShippingDeliveryTime",
-          "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 3, "unitCode": "DAY" },
-          "transitTime": { "@type": "QuantitativeValue", "minValue": 3, "maxValue": 7, "unitCode": "DAY" }
+          "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2, "unitCode": "DAY" },
+          "transitTime": { "@type": "QuantitativeValue", "minValue": 2, "maxValue": 5, "unitCode": "DAY" }
         }
       },
       "hasMerchantReturnPolicy": {
         "@type": "MerchantReturnPolicy",
-        "applicableCountry": "IN",
+        "applicableCountry": "US",
         "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
-        "merchantReturnDays": 7
+        "merchantReturnDays": 30
       }
     }
   };

@@ -6,10 +6,10 @@ import React, { useState, useEffect } from 'react';
 // ============================================================
 
 const MESSAGES = [
-  '✦ Watches Starting ₹999',
-  '✦ Free Delivery Across India',
-  '✦ Secure Checkout · UPI · Cards',
-  '✦ Easy 7-Day Returns',
+  '✦ Watches Starting $44.99',
+  '✦ Free US & Worldwide Shipping',
+  '✦ 30-Day Risk-Free Guarantee',
+  '✦ Secure Checkout · Apple Pay · Cards',
 ];
 
 export default function AnnouncementBar() {
