@@ -378,26 +378,24 @@ export default function CollectionShowcase({ onSelectWatch }) {
       {/* ======================================== */}
       {/* SECTION 4 & 5: LEGACY + PRODUCTS */}
       {/* ======================================== */}
-      {/* ======================================== */}
-      {/* SECTION 4 & 5: LEGACY + PRODUCTS */}
-      {/* ======================================== */}
       <div className="product-reveal relative z-0 w-full bg-white">
 
         {/* Legacy Header Section with Scatter-to-Center Collage */}
         <div ref={taglineRef}>
-          <LegacyCollage>
-            <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
-              <span className="text-xs font-mono tracking-[0.4em] text-[#800020] uppercase font-bold block mb-4">
-                THE MERIDIAN STANDARD
-              </span>
-              <h2
-                className="legacy-text text-[2.5rem] sm:text-[4.5rem] md:text-[5.5rem] font-extrabold tracking-[-0.03em] text-black text-center leading-[1.1] uppercase"
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-              >
-                Choose Your<br />Legacy.
-              </h2>
-            </div>
-          </LegacyCollage>
+          <div className="relative z-10 text-center px-4 max-w-5xl mx-auto py-24 sm:py-32">
+            <span className="text-xs font-mono tracking-[0.4em] text-[#800020] uppercase font-bold block mb-4">
+              THE MERIDIAN STANDARD
+            </span>
+            <h2
+              className="legacy-text text-[2.5rem] sm:text-[4.5rem] md:text-[5.5rem] font-extrabold tracking-[-0.03em] text-black text-center leading-[1.1] uppercase"
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            >
+              Choose Your<br />Legacy.
+            </h2>
+          </div>
+          
+          {/* The Model Collage that assembles together after the text */}
+          <LegacyCollage />
         </div>
 
         {/* Dedicated Story Section — High Intent Sales Quotes */}

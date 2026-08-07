@@ -6,43 +6,43 @@ gsap.registerPlugin(ScrollTrigger);
 
 const images = [
   {
-    src: "/watches_new/americanviber_1.jpg",
-    start: { x: "-150vw", y: "-50vh", rotation: -45, scale: 1.5 },
-    end: { x: 0, y: 0, rotation: -6, scale: 1, top: "10%", left: "5%" },
-    className: "w-40 sm:w-64 h-auto aspect-[4/5] object-cover rounded-xl shadow-2xl",
+    src: "/models/model_1.png",
+    start: { x: "-100vw", y: "-50vh", rotation: -45, scale: 1.5 },
+    end: { x: 0, y: 0, rotation: -4, scale: 1, top: "5%", left: "5%" },
+    className: "w-[40%] md:w-[25%] h-auto object-contain drop-shadow-2xl z-10",
     delay: 0
   },
   {
-    src: "/watches_new/forsining_square_2.jpg",
-    start: { x: "150vw", y: "-80vh", rotation: 45, scale: 1.5 },
-    end: { x: 0, y: 0, rotation: 8, scale: 1, top: "5%", right: "8%" },
-    className: "w-48 sm:w-72 h-auto aspect-square object-cover rounded-xl shadow-2xl",
+    src: "/models/model_2.png",
+    start: { x: "100vw", y: "-80vh", rotation: 45, scale: 1.5 },
+    end: { x: 0, y: 0, rotation: 6, scale: 1, top: "5%", right: "5%" },
+    className: "w-[40%] md:w-[30%] h-auto object-contain drop-shadow-2xl z-20",
+    delay: 0.05
+  },
+  {
+    src: "/models/model_3.png",
+    start: { x: "-50vw", y: "100vh", rotation: -60, scale: 1.2 },
+    end: { x: 0, y: 0, rotation: -2, scale: 1, bottom: "5%", left: "20%" },
+    className: "w-[45%] md:w-[35%] h-auto object-contain drop-shadow-2xl z-30",
     delay: 0.1
   },
   {
-    src: "/watches_new/americanviber_5.jpg",
-    start: { x: "-100vw", y: "100vh", rotation: -60, scale: 1.2 },
-    end: { x: 0, y: 0, rotation: -12, scale: 1, bottom: "10%", left: "10%" },
-    className: "w-36 sm:w-56 h-auto aspect-square object-cover rounded-xl shadow-2xl",
-    delay: 0.2
+    src: "/models/model_4.png",
+    start: { x: "50vw", y: "150vh", rotation: 90, scale: 1.8 },
+    end: { x: 0, y: 0, rotation: 8, scale: 1, bottom: "5%", right: "15%" },
+    className: "w-[45%] md:w-[30%] h-auto object-contain drop-shadow-2xl z-10",
+    delay: 0.05
   },
   {
-    src: "/watches_new/MK9189_black_1.jpg",
-    start: { x: "100vw", y: "150vh", rotation: 90, scale: 1.8 },
-    end: { x: 0, y: 0, rotation: 15, scale: 1, bottom: "5%", right: "5%" },
-    className: "w-44 sm:w-60 h-auto aspect-[3/4] object-cover rounded-xl shadow-2xl",
-    delay: 0.15
-  },
-  {
-    src: "/watches_new/forsining_square_4.jpg",
+    src: "/models/model_5.png",
     start: { x: 0, y: "150vh", rotation: 180, scale: 2 },
-    end: { x: 0, y: 0, rotation: -5, scale: 1, bottom: "-5%", left: "40%" },
-    className: "w-40 sm:w-52 h-auto aspect-video object-cover rounded-xl shadow-2xl hidden md:block",
-    delay: 0.3
+    end: { x: 0, y: 0, rotation: 0, scale: 1, top: "35%", left: "35%" },
+    className: "w-[50%] md:w-[40%] h-auto object-contain drop-shadow-2xl z-40 hidden sm:block",
+    delay: 0.15
   }
 ];
 
-export default function LegacyCollage({ children }) {
+export default function LegacyCollage() {
   const containerRef = useRef(null);
   const imageRefs = useRef([]);
 
@@ -68,9 +68,9 @@ export default function LegacyCollage({ children }) {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: container,
-          start: "top 80%",
+          start: "top 90%",
           end: "center center",
-          scrub: 1.5, // buttery smooth scrub
+          scrub: 0.2, // much faster scrub
         }
       });
 
@@ -82,10 +82,10 @@ export default function LegacyCollage({ children }) {
           y: config.end.y,
           rotation: config.end.rotation,
           scale: config.end.scale,
-          opacity: 0.9, // slightly transparent to not overpower the text if they overlap
+          opacity: 1, // Full opacity for model shots
           duration: 1,
           ease: "power2.out",
-        }, config.delay); // slight stagger using the timeline position
+        }, config.delay);
       });
       
     }, container);
@@ -94,17 +94,17 @@ export default function LegacyCollage({ children }) {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative w-full py-32 sm:py-48 flex flex-col items-center justify-center pointer-events-auto overflow-hidden bg-white text-black min-h-[80vh]">
+    <section ref={containerRef} className="relative w-full h-[60vh] md:h-[80vh] flex flex-col items-center justify-center pointer-events-auto overflow-hidden bg-white text-black my-12">
       
       {/* Absolute positioned scatter images */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden max-w-7xl mx-auto">
         {images.map((imgConfig, i) => (
           <img
             key={i}
             ref={el => imageRefs.current[i] = el}
             src={imgConfig.src}
-            alt={`Lifestyle Watch ${i + 1}`}
-            className={`absolute ${imgConfig.className} grayscale hover:grayscale-0 transition-all duration-700`}
+            alt={`Model Showcase ${i + 1}`}
+            className={`absolute ${imgConfig.className} hover:scale-105 transition-transform duration-500`}
             style={{ 
               top: imgConfig.end.top, 
               bottom: imgConfig.end.bottom, 
@@ -114,11 +114,6 @@ export default function LegacyCollage({ children }) {
             }}
           />
         ))}
-      </div>
-
-      {/* Children Content (The Text) */}
-      <div className="relative z-10 w-full max-w-5xl mx-auto px-6 md:px-12 text-center drop-shadow-[0_10px_30px_rgba(255,255,255,0.8)]">
-        {children}
       </div>
 
     </section>
