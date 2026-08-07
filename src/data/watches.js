@@ -9,7 +9,7 @@ export const WATCHES = [
     amount: 4999,
     color: "#4A3B32",
     amazonLink: "https://www.amazon.com/dp/B0CLVFDDGG",
-    shopifyVariantId: "44570259193899",
+    shopifyVariantId: "44668865445931",
     video: "/forsining_square_showcase_20260807.mp4",
     cinematicVideo: "/forsining_square_showcase_20260807.mp4",
     image: "/watches_new/forsining_square_1.jpg",
