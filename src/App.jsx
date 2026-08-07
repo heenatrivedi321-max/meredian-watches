@@ -648,10 +648,12 @@ export default function App() {
 
           {/* STANDARD REMOVED — now shows after products */}
 
+          {/* 100% EXACT ROLEX PINNED 3D CENTERPIECE ZOOM ENGINE */}
+          <RolexHeroPin watch={WATCHES[0]} onSelectWatch={setSelectedWatch} />
         </div>
 
         {/* ============================================ */}
-        {/* PRODUCTS FIRST — immediate after hero hook  */}
+        {/* PRODUCTS — CHOOSE YOUR LEGACY               */}
         {/* ============================================ */}
         <CollectionShowcase onSelectWatch={setSelectedWatch} />
         <Suspense fallback={null}>
@@ -661,9 +663,6 @@ export default function App() {
         {/* ============================================ */}
         {/* BRAND STORY — for those who scroll further  */}
         {/* ============================================ */}
-
-        {/* 100% EXACT ROLEX PINNED 3D CENTERPIECE ZOOM ENGINE */}
-        <RolexHeroPin watch={WATCHES[0]} onSelectWatch={setSelectedWatch} />
 
         <Suspense fallback={null}>
           <InstagramFeed />
