@@ -6,31 +6,31 @@ gsap.registerPlugin(ScrollTrigger);
 
 const images = [
   {
-    src: "/models/model_1.png",
+    src: "/watches_new/americanviber_1.jpg",
     start: { x: "-100vw", y: "-50vh", rotation: -45, scale: 1.5 },
     end: { x: 0, y: 0, rotation: -4, scale: 1, top: "5%", left: "5%" },
     className: "w-[40%] md:w-[25%] h-auto object-contain drop-shadow-2xl z-10",
   },
   {
-    src: "/models/model_2.png",
+    src: "/watches_new/forsining_square_2.jpg",
     start: { x: "100vw", y: "-80vh", rotation: 45, scale: 1.5 },
     end: { x: 0, y: 0, rotation: 6, scale: 1, top: "5%", right: "5%" },
     className: "w-[40%] md:w-[30%] h-auto object-contain drop-shadow-2xl z-20",
   },
   {
-    src: "/models/model_3.png",
+    src: "/watches_new/americanviber_5.jpg",
     start: { x: "-50vw", y: "100vh", rotation: -60, scale: 1.2 },
     end: { x: 0, y: 0, rotation: -2, scale: 1, bottom: "5%", left: "20%" },
     className: "w-[45%] md:w-[35%] h-auto object-contain drop-shadow-2xl z-30",
   },
   {
-    src: "/models/model_4.png",
+    src: "/watches_new/MK9189_black_1.jpg",
     start: { x: "50vw", y: "150vh", rotation: 90, scale: 1.8 },
     end: { x: 0, y: 0, rotation: 8, scale: 1, bottom: "5%", right: "15%" },
     className: "w-[45%] md:w-[30%] h-auto object-contain drop-shadow-2xl z-10",
   },
   {
-    src: "/models/model_5.png",
+    src: "/watches_new/forsining_square_4.jpg",
     start: { x: 0, y: "150vh", rotation: 180, scale: 2 },
     end: { x: 0, y: 0, rotation: 0, scale: 1, top: "35%", left: "35%" },
     className: "w-[50%] md:w-[40%] h-auto object-contain drop-shadow-2xl z-40 hidden sm:block",
