@@ -9,31 +9,31 @@ const images = [
     src: "/watches_new/americanviber_1.jpg",
     start: { x: "-100vw", y: "-50vh", rotation: -45, scale: 1.5 },
     end: { x: 0, y: 0, rotation: -4, scale: 1, top: "5%", left: "5%" },
-    className: "w-[40%] md:w-[25%] h-auto object-contain drop-shadow-2xl z-10",
+    className: "w-[40%] md:w-[25%] h-auto object-cover rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 z-10",
   },
   {
     src: "/watches_new/forsining_square_2.jpg",
     start: { x: "100vw", y: "-80vh", rotation: 45, scale: 1.5 },
     end: { x: 0, y: 0, rotation: 6, scale: 1, top: "5%", right: "5%" },
-    className: "w-[40%] md:w-[30%] h-auto object-contain drop-shadow-2xl z-20",
+    className: "w-[40%] md:w-[30%] h-auto object-cover rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 z-20",
   },
   {
     src: "/watches_new/americanviber_5.jpg",
     start: { x: "-50vw", y: "100vh", rotation: -60, scale: 1.2 },
     end: { x: 0, y: 0, rotation: -2, scale: 1, bottom: "5%", left: "20%" },
-    className: "w-[45%] md:w-[35%] h-auto object-contain drop-shadow-2xl z-30",
+    className: "w-[45%] md:w-[35%] h-auto object-cover rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 z-30",
   },
   {
     src: "/watches_new/MK9189_black_1.jpg",
     start: { x: "50vw", y: "150vh", rotation: 90, scale: 1.8 },
     end: { x: 0, y: 0, rotation: 8, scale: 1, bottom: "5%", right: "15%" },
-    className: "w-[45%] md:w-[30%] h-auto object-contain drop-shadow-2xl z-10",
+    className: "w-[45%] md:w-[30%] h-auto object-cover rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 z-10",
   },
   {
     src: "/watches_new/forsining_square_4.jpg",
     start: { x: 0, y: "150vh", rotation: 180, scale: 2 },
     end: { x: 0, y: 0, rotation: 0, scale: 1, top: "35%", left: "35%" },
-    className: "w-[50%] md:w-[40%] h-auto object-contain drop-shadow-2xl z-40 hidden sm:block",
+    className: "w-[50%] md:w-[40%] h-auto object-cover rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 z-40 hidden sm:block",
   }
 ];
 
@@ -59,12 +59,13 @@ export default function LegacyCollage() {
         });
       });
 
-      // Create the mesmerizing stagger animation
+      // Tie animation to scroll so the user sees it come together as they scroll down
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: container,
-          start: "top 75%", // Trigger as soon as a good portion enters the view
-          toggleActions: "play none none none"
+          start: "top 80%", // Starts animating when container enters 80% of screen
+          end: "center center", // Finishes exactly when container is centered
+          scrub: 0.5, // Smooth, fast scrub tied to scroll
         }
       });
 
@@ -77,9 +78,9 @@ export default function LegacyCollage() {
           rotation: config.end.rotation,
           scale: config.end.scale,
           opacity: 1, 
-          duration: 1.5,
-          ease: "expo.out",
-        }, i * 0.15); // Stagger them
+          duration: 1,
+          ease: "power2.out",
+        }, 0); // All animate at the same time during scroll for maximum impact
       });
       
     }, container);
